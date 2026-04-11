@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YTCodes — Excel Automation & Data Processing</title>
+<meta name="description" content="Custom Excel VBA and Python tools that replace manual spreadsheet work. Data cleanup, record matching, automated file generation, email automation.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0a0e1a; --bg2: #0f1424; --bg-card: #141a2e;
+    --accent: #00e5c3; --accent2: #00b4d8;
+    --accent-glow: rgba(0,229,195,0.15); --accent-glow2: rgba(0,229,195,0.06);
+    --text: #c8d6e5; --text-bright: #edf2f7; --text-muted: #6b7fa3;
+    --border: rgba(0,229,195,0.08); --border-hover: rgba(0,229,195,0.25);
+    --grid-color: rgba(0,229,195,0.03);
+    --body-font: 'Outfit', system-ui, sans-serif;
+    --mono: 'Space Mono', monospace;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--body-font); background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; z-index: 0; }
+  .orb { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; }
+  .orb-1 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(0,229,195,0.07), transparent 70%); top: -100px; right: -100px; animation: orbFloat 20s ease-in-out infinite; }
+  .orb-2 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(0,180,216,0.05), transparent 70%); bottom: 20%; left: -80px; animation: orbFloat 25s ease-in-out infinite reverse; }
+  @keyframes orbFloat { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(30px,-20px); } }
+  .page-wrap { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; padding: 0 28px; }
+
+  header { padding: 80px 0 56px; }
+  .logo-line { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
+  .logo-mark { width: 36px; height: 36px; border: 2px solid var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(0,229,195,0.15), inset 0 0 12px rgba(0,229,195,0.05); }
+  .logo-mark::after { content: '>'; font-family: var(--mono); font-size: 16px; font-weight: 700; color: var(--accent); animation: blink 1.2s step-end infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .logo-text { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--accent); letter-spacing: 1px; }
+
+  h1 { font-size: clamp(32px,6vw,48px); font-weight: 700; line-height: 1.1; color: var(--text-bright); margin-bottom: 20px; letter-spacing: -0.5px; }
+  h1 .highlight { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero-sub { font-size: 17px; color: var(--text-muted); max-width: 520px; font-weight: 300; line-height: 1.7; }
+
+  .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0.15; }
+  section { padding: 56px 0; }
+  .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
+  .section-num { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--accent); background: var(--accent-glow); border: 1px solid rgba(0,229,195,0.15); padding: 4px 10px; border-radius: 4px; letter-spacing: 1px; }
+  .section-title { font-family: var(--mono); font-size: 11px; font-weight: 400; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); }
+
+  .cap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .cap-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 28px 24px; position: relative; overflow: hidden; transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s; }
+  .cap-card:hover { border-color: var(--border-hover); box-shadow: 0 0 30px var(--accent-glow2), inset 0 1px 0 rgba(0,229,195,0.08); transform: translateY(-2px); }
+  .cap-card::before { content: ''; position: absolute; top: 0; left: 0; width: 40px; height: 40px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); border-radius: 10px 0 0 0; opacity: 0.3; transition: opacity 0.3s; }
+  .cap-card:hover::before { opacity: 0.7; }
+  .cap-icon { font-size: 24px; margin-bottom: 16px; display: block; }
+  .cap-card h3 { font-size: 15px; font-weight: 600; color: var(--text-bright); margin-bottom: 8px; }
+  .cap-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; font-weight: 300; }
+
+  .tech-wrap { display: flex; flex-wrap: wrap; gap: 10px; }
+  .tech-tag { font-family: var(--mono); font-size: 12px; color: var(--text); background: var(--bg-card); border: 1px solid var(--border); padding: 8px 16px; border-radius: 6px; transition: border-color 0.2s, color 0.2s; cursor: default; }
+  .tech-tag:hover { border-color: var(--border-hover); color: var(--accent); }
+
+  .timeline { position: relative; padding-left: 40px; }
+  .timeline::before { content: ''; position: absolute; left: 14px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(180deg, var(--accent), rgba(0,229,195,0.1)); }
+  .tl-step { position: relative; margin-bottom: 32px; }
+  .tl-step:last-child { margin-bottom: 0; }
+  .tl-dot { position: absolute; left: -33px; top: 4px; width: 12px; height: 12px; background: var(--bg); border: 2px solid var(--accent); border-radius: 50%; box-shadow: 0 0 10px rgba(0,229,195,0.3); }
+  .tl-step h4 { font-size: 15px; font-weight: 600; color: var(--text-bright); margin-bottom: 4px; }
+  .tl-step p { font-size: 13.5px; color: var(--text-muted); font-weight: 300; max-width: 500px; }
+
+  .callout { background: var(--accent-glow); border: 1px solid rgba(0,229,195,0.15); border-radius: 8px; padding: 20px 24px; margin-top: 36px; display: flex; align-items: center; gap: 14px; }
+  .callout-icon { font-size: 20px; flex-shrink: 0; }
+  .callout-text { font-size: 14px; color: var(--accent); font-weight: 500; }
+  .callout-text span { display: block; font-size: 12.5px; color: var(--text-muted); font-weight: 300; margin-top: 2px; }
+
+  .contact-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 36px 32px; position: relative; overflow: hidden; }
+  .contact-box::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0.3; }
+  .contact-name { font-size: 22px; font-weight: 700; color: var(--text-bright); margin-bottom: 10px; }
+  .contact-box > p { font-size: 14px; color: var(--text-muted); font-weight: 300; line-height: 1.65; margin-bottom: 24px; max-width: 480px; }
+  .cta-btn { display: inline-block; font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--bg); background: linear-gradient(135deg, var(--accent), var(--accent2)); padding: 12px 28px; border-radius: 6px; text-decoration: none; transition: box-shadow 0.3s, transform 0.2s; letter-spacing: 0.5px; }
+  .cta-btn:hover { box-shadow: 0 0 24px rgba(0,229,195,0.35); transform: translateY(-1px); }
+  .contact-meta { margin-top: 18px; font-size: 13px; color: var(--text-muted); font-weight: 300; }
+
+  footer { padding: 36px 0 52px; text-align: center; }
+  footer p { font-family: var(--mono); font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; }
+
+  @media (max-width: 600px) {
+    header { padding: 52px 0 40px; }
+    section { padding: 40px 0; }
+    .cap-grid { grid-template-columns: 1fr; }
+    .contact-box { padding: 24px 20px; }
+    .timeline { padding-left: 32px; }
+    .tl-dot { left: -25px; }
+  }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  header { animation: fadeUp 0.6s ease-out both; }
+  section:nth-of-type(1) { animation: fadeUp 0.6s ease-out 0.1s both; }
+  section:nth-of-type(2) { animation: fadeUp 0.6s ease-out 0.15s both; }
+  section:nth-of-type(3) { animation: fadeUp 0.6s ease-out 0.2s both; }
+  section:nth-of-type(4) { animation: fadeUp 0.6s ease-out 0.25s both; }
+</style>
+</head>
+<body>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="page-wrap">
+
+  <header>
+    <div class="logo-line">
+      <div class="logo-mark"></div>
+      <div class="logo-text">YTCODES</div>
+    </div>
+    <h1>Data in.<br><span class="highlight">Answers out.</span></h1>
+    <p class="hero-sub">I build custom tools that turn messy spreadsheets into clean, automated workflows. Excel VBA and Python. Flat rate. Fast turnaround.</p>
+  </header>
+
+  <div class="divider"></div>
+
+  <section>
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-title">Capabilities</span>
+    </div>
+    <div class="cap-grid">
+      <div class="cap-card">
+        <span class="cap-icon">&#9881;</span>
+        <h3>Data Extraction & Validation</h3>
+        <p>Pull data from messy sources. Auto-detect layouts. Validate every row against your rules. Output clean files ready for the next step.</p>
+      </div>
+      <div class="cap-card">
+        <span class="cap-icon">&#10697;</span>
+        <h3>Record Matching & Deduplication</h3>
+        <p>Fuzzy name matching across systems. Catches abbreviations, typos, and formatting differences that exact lookups miss.</p>
+      </div>
+      <div class="cap-card">
+        <span class="cap-icon">&#9776;</span>
+        <h3>Automated File Generation</h3>
+        <p>Source data to formatted output files in one click. Configurable mappings, conditional logic, auto-naming, and versioning.</p>
+      </div>
+      <div class="cap-card">
+        <span class="cap-icon">&#9993;</span>
+        <h3>Email Automation</h3>
+        <p>Grouped, templated emails from data through Outlook. Auto-routing, attachments, CC management, and full audit logging.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section>
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-title">Stack</span>
+    </div>
+    <div class="tech-wrap">
+      <span class="tech-tag">Excel VBA</span>
+      <span class="tech-tag">Python</span>
+      <span class="tech-tag">SQL</span>
+      <span class="tech-tag">Outlook COM</span>
+      <span class="tech-tag">Selenium</span>
+      <span class="tech-tag">PDF Generation</span>
+      <span class="tech-tag">Data Cleaning</span>
+      <span class="tech-tag">Fuzzy Matching</span>
+      <span class="tech-tag">Web Scraping</span>
+      <span class="tech-tag">Flask</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section>
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-title">Process</span>
+    </div>
+    <div class="timeline">
+      <div class="tl-step">
+        <div class="tl-dot"></div>
+        <h4>Send me the problem</h4>
+        <p>A sample file, a screenshot, or just a description of the process. No formal brief needed.</p>
+      </div>
+      <div class="tl-step">
+        <div class="tl-dot"></div>
+        <h4>Get a scope and price</h4>
+        <p>I outline what the tool will do, how long it takes, and what it costs. Agreed before work starts.</p>
+      </div>
+      <div class="tl-step">
+        <div class="tl-dot"></div>
+        <h4>Receive a working tool</h4>
+        <p>Delivered as a self-contained workbook or script with documentation. Your team runs it from day one.</p>
+      </div>
+    </div>
+    <div class="callout">
+      <span class="callout-icon">&#9889;</span>
+      <div class="callout-text">
+        Flat rate pricing. No hourly billing.
+        <span>Scope and cost locked before work begins.</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section>
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <span class="section-title">Contact</span>
+    </div>
+    <div class="contact-box">
+      <div class="contact-name">Darek Krawczynski</div>
+      <p>If your team spends hours on repetitive spreadsheet tasks, send me a sample file or describe the process. I will outline what automation would look like and what it would cost.</p>
+      <a href="mailto:ytcodes.work@gmail.com" class="cta-btn">ytcodes.work@gmail.com</a>
+      <div class="contact-meta">Salt Lake City, UT</div>
+    </div>
+  </section>
+
+</div>
+<footer><p>&copy; 2026 YTCodes</p></footer>
+</body>
+</html>
