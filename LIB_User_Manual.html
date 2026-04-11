@@ -1,0 +1,1902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VBA Shared Library — Developer Manual</title>
+<style>
+  body {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11pt;
+    color: #1a1a1a;
+    max-width: 980px;
+    margin: 40px auto;
+    line-height: 1.6;
+  }
+  h1 {
+    font-size: 22pt;
+    color: #1F4E79;
+    border-bottom: 3px solid #1F4E79;
+    padding-bottom: 6px;
+    margin-top: 0;
+  }
+  h2 {
+    font-size: 15pt;
+    color: #2E75B6;
+    border-bottom: 1.5px solid #BDD7EE;
+    padding-bottom: 4px;
+    margin-top: 36px;
+  }
+  h3 {
+    font-size: 12pt;
+    color: #1F4E79;
+    margin-top: 24px;
+    margin-bottom: 6px;
+  }
+  h4 {
+    font-size: 11pt;
+    color: #2E75B6;
+    margin-top: 16px;
+    margin-bottom: 4px;
+  }
+  p { margin: 6px 0 10px 0; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 12px 0;
+    font-size: 10.5pt;
+  }
+  th {
+    background-color: #2E75B6;
+    color: white;
+    padding: 7px 10px;
+    text-align: left;
+    font-weight: bold;
+  }
+  td {
+    padding: 6px 10px;
+    border: 1px solid #BDD7EE;
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background-color: #EBF3FB; }
+  .tip {
+    background-color: #E2EFDA;
+    border-left: 4px solid #70AD47;
+    padding: 8px 14px;
+    margin: 10px 0;
+    border-radius: 2px;
+  }
+  .warning {
+    background-color: #FFF2CC;
+    border-left: 4px solid #FFC000;
+    padding: 8px 14px;
+    margin: 10px 0;
+    border-radius: 2px;
+  }
+  .note {
+    background-color: #DEEAF1;
+    border-left: 4px solid #2E75B6;
+    padding: 8px 14px;
+    margin: 10px 0;
+    border-radius: 2px;
+  }
+  .danger {
+    background-color: #FCE4D6;
+    border-left: 4px solid #C00000;
+    padding: 8px 14px;
+    margin: 10px 0;
+    border-radius: 2px;
+  }
+  code {
+    background-color: #F2F2F2;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 10pt;
+    padding: 1px 4px;
+    border-radius: 2px;
+    color: #C00000;
+  }
+  pre {
+    background-color: #F7F7F7;
+    border: 1px solid #D0D0D0;
+    border-left: 4px solid #2E75B6;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 10pt;
+    padding: 12px 16px;
+    margin: 10px 0 14px 0;
+    border-radius: 2px;
+    overflow-x: auto;
+    color: #1a1a1a;
+    line-height: 1.5;
+  }
+  pre .kw  { color: #00008B; font-weight: bold; }
+  pre .cm  { color: #008000; }
+  pre .st  { color: #A31515; }
+  pre .fn  { color: #8B4513; }
+  ul, ol { margin: 6px 0 10px 0; padding-left: 26px; }
+  li { margin-bottom: 5px; }
+  .toc {
+    background-color: #F7FBFF;
+    border: 1px solid #BDD7EE;
+    padding: 14px 24px;
+    margin: 20px 0;
+    border-radius: 4px;
+  }
+  .toc h2 { border: none; margin-top: 0; font-size: 13pt; }
+  .toc ol { margin: 4px 0; }
+  .toc li { margin-bottom: 3px; color: #2E75B6; }
+  .toc a { color: #2E75B6; text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  .subtitle {
+    color: #595959;
+    font-size: 12pt;
+    margin-top: -6px;
+    margin-bottom: 24px;
+  }
+  .section-intro {
+    color: #595959;
+    font-style: italic;
+    margin-bottom: 12px;
+  }
+  .tag {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 3px;
+    font-size: 9.5pt;
+    font-weight: bold;
+    margin-right: 2px;
+  }
+  .tag-lib1 { background-color: #DEEAF1; color: #1F4E79; }
+  .tag-lib2 { background-color: #E2EFDA; color: #375623; }
+  .tag-lib3 { background-color: #FFF2CC; color: #7F5B00; }
+  .tag-lib4 { background-color: #FCE4D6; color: #843C0C; }
+  .tag-lib5 { background-color: #F2DCDB; color: #C00000; }
+  .tag-lib6 { background-color: #F0E6FF; color: #5A3080; }
+  .tag-lib7 { background-color: #E4F2E4; color: #215732; }
+  .tag-lib8 { background-color: #FEF0E8; color: #8B4000; }
+  .tag-lib9 { background-color: #E8F4F8; color: #0D5C6E; }
+  .fn-sig {
+    background-color: #F0F4FA;
+    border: 1px solid #BDD7EE;
+    border-left: 3px solid #1F4E79;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 10pt;
+    padding: 8px 14px;
+    margin: 8px 0;
+    border-radius: 2px;
+  }
+  .scenario-box {
+    background-color: #FAFAFA;
+    border: 1px solid #C8D8E8;
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin: 14px 0;
+  }
+  .scenario-box h4 {
+    margin-top: 0;
+    font-size: 11.5pt;
+    color: #1F4E79;
+  }
+  hr { border: none; border-top: 1px solid #BDD7EE; margin: 36px 0; }
+  .dep-none { color: #375623; font-weight: bold; }
+  .dep-yes  { color: #7F5B00; font-weight: bold; }
+  .returns  { color: #595959; font-size: 10pt; }
+</style>
+</head>
+<body>
+
+<h1>VBA Shared Library (LIB)</h1>
+<p class="subtitle">Developer Reference Manual &nbsp;|&nbsp; Version 1.0 &nbsp;|&nbsp; March 2026</p>
+
+<!-- ================================================================ -->
+<div class="toc">
+<h2>Contents</h2>
+<ol>
+  <li><a href="#intro">What Is the Shared Library?</a></li>
+  <li><a href="#howto">How to Import Modules Into a New Project</a></li>
+  <li><a href="#naming">Renaming the LIB Prefix</a></li>
+  <li><a href="#deps">Dependency Map</a></li>
+  <li><a href="#lib1">LIB1 — String Utilities</a></li>
+  <li><a href="#lib2">LIB2 — Sheet Utilities</a></li>
+  <li><a href="#lib3">LIB3 — Date Utilities</a></li>
+  <li><a href="#lib4">LIB4 — Fuzzy Match</a></li>
+  <li><a href="#lib5">LIB5 — Logging</a></li>
+  <li><a href="#lib6">LIB6 — Progress UI</a></li>
+  <li><a href="#lib7">LIB7 — Numeric Utilities</a></li>
+  <li><a href="#lib8">LIB8 — HTML Utilities</a></li>
+  <li><a href="#lib9">LIB9 — Org Code Utilities</a></li>
+  <li><a href="#scenarios">Use-Case Scenarios</a></li>
+  <li><a href="#antipatterns">What NOT to Do</a></li>
+</ol>
+</div>
+
+<!-- ================================================================ -->
+<h2 id="intro">1. What Is the Shared Library?</h2>
+
+<p>
+The Shared Library is a collection of nine <code>.bas</code> module files that contain
+battle-tested VBA utility functions extracted from real production macros in this
+repository. Every function has been used in at least one working project.
+</p>
+
+<p>
+Because VBA cannot share compiled code between workbooks at runtime (there is no DLL or
+add-in mechanism in this setup), the library is a <strong>copy-paste reference</strong>:
+you import the modules you need into your new project, and they become a permanent part of
+that workbook. Changes you make in one workbook do not automatically propagate to others —
+that is intentional.
+</p>
+
+<div class="note">
+<strong>The goal is to stop re-discovering the same patterns.</strong>
+Instead of writing a new <code>NzStr</code>, a new <code>Levenshtein</code>, or a new date
+formatter from scratch on every project, you import the tested version from here and move
+straight to business logic.
+</div>
+
+<h3>What is NOT in this library</h3>
+<ul>
+  <li><strong>AppLock</strong> — the <code>Application.ScreenUpdating</code> /
+      <code>EnableEvents</code> / <code>DisplayAlerts</code> / <code>Calculation</code>
+      pattern always lives in the project's own Orchestrator module. See CLAUDE.md §9.</li>
+  <li><strong>frmProgress UserForm</strong> — LIB6 is a <em>wrapper skeleton</em>; the
+      actual form must be created or imported separately for each project.</li>
+  <li><strong>Business logic</strong> — any code that is specific to a single domain
+      (BPA file generation, wire payment review, etc.) stays in that project's modules.</li>
+</ul>
+
+
+<!-- ================================================================ -->
+<h2 id="howto">2. How to Import Modules Into a New Project</h2>
+
+<ol>
+  <li>Open the target workbook in Excel.</li>
+  <li>Press <strong>Alt + F11</strong> to open the VBA Editor (VBE).</li>
+  <li>In the menu bar: <strong>File → Import File…</strong></li>
+  <li>Navigate to <code>SharedLibrary\</code> and select the <code>.bas</code> file(s) you
+      need. Import one file per operation.</li>
+  <li>The module appears in the Project Explorer under <em>Modules</em>. Its
+      <code>Attribute VB_Name</code> will be the name shown (e.g.
+      <code>LIB1_StringUtils</code>).</li>
+  <li>Check the <strong>Dependencies</strong> column in the table below — if your module
+      calls another LIB module, import that one too.</li>
+</ol>
+
+<div class="warning">
+<strong>Import order does not matter</strong>, but all dependencies must be present before
+you call any function. If LIB2 is imported but LIB1 is not, any call to
+<code>FindHeaderColMultiRow</code> (which calls <code>NzStr</code> from LIB1) will produce
+a compile error.
+</div>
+
+<div class="tip">
+<strong>Tip:</strong> You can hold <strong>Ctrl</strong> and click multiple files in the
+Import dialog to queue them, but VBE imports them one at a time regardless. Fastest
+approach: drag-and-drop the <code>.bas</code> files directly onto the VBE window — works
+in Excel 2016 and later.
+</div>
+
+
+<!-- ================================================================ -->
+<h2 id="naming">3. Renaming the LIB Prefix</h2>
+
+<p>
+The <code>LIB</code> prefix is registered to the Shared Library folder itself.
+When you import a module into a real project (e.g. <code>BPA</code>), you have two options:
+</p>
+
+<ol>
+  <li>
+    <strong>Keep the LIB prefix</strong> — simplest option, works fine when only one project
+    lives in the workbook. The module is called <code>LIB1_StringUtils</code>, etc.
+  </li>
+  <li>
+    <strong>Rename to your project's prefix</strong> — do this when multiple projects share
+    one workbook or when you want every module to use a consistent prefix.
+    After importing, go to the module's Properties window (<strong>F4</strong> in VBE),
+    change <strong>(Name)</strong> to e.g. <code>BPA1_StringUtils</code>, and update the
+    <code>Attribute VB_Name</code> line at the top of the file.  Also update every
+    internal call from <code>LIB1.</code> to <code>BPA1.</code> if VBA ever needs to
+    qualify the module name (it usually does not, because all public functions are visible
+    project-wide without a module qualifier).
+  </li>
+</ol>
+
+<div class="note">
+In practice, <strong>you rarely need to rename</strong>. VBA resolves public function
+names project-wide without module qualification. The prefix mainly matters for humans
+reading the code — to know which module a function lives in.
+</div>
+
+
+<!-- ================================================================ -->
+<h2 id="deps">4. Dependency Map</h2>
+
+<table>
+  <tr>
+    <th>Module</th>
+    <th>Primary purpose</th>
+    <th>Depends on</th>
+    <th>Required by</th>
+  </tr>
+  <tr>
+    <td><span class="tag tag-lib1">LIB1</span> LIB1_StringUtils.bas</td>
+    <td>String cleaning, normalisation, path utilities</td>
+    <td class="dep-none">none</td>
+    <td>LIB2, LIB4</td>
+  </tr>
+  <tr>
+    <td><span class="tag tag-lib2">LIB2</span> LIB2_SheetUtils.bas</td>
+    <td>Sheet safety, header finding, Dictionary helpers</td>
+    <td class="dep-yes">LIB1 <em>(for FindHeaderColMultiRow)</em></td>
+    <td>LIB5</td>
+  </tr>
+  <tr>
+    <td><span class="tag tag-lib3">LIB3</span> LIB3_DateUtils.bas</td>
+    <td>Date formatting and safe parsing</td>
+    <td class="dep-none">none</td>
+    <td>—</td>
+  </tr>
+  <tr>
+    <td><span class="tag tag-lib4">LIB4</span> LIB4_FuzzyMatch.bas</td>
+    <td>Levenshtein distance and vendor name scoring</td>
+    <td class="dep-none">none</td>
+    <td>—</td>
+  </tr>
+  <tr>
+    <td><span class="tag tag-lib5">LIB5</span> LIB5_Logging.bas</td>
+    <td>Safe log sheet append (3-col and 9-col models)</td>
+    <td class="dep-yes">LIB2 <em>(GetOrCreateSheet)</em></td>
+    <td>—</td>
+  </tr>
+  <tr>
+    <td><span class="tag tag-lib6">LIB6</span> LIB6_ProgressUI.bas</td>
+    <td>Progress bar wrapper skeleton</td>
+    <td class="dep-yes">requires <code>frmProgress</code> UserForm</td>
+    <td>—</td>
+  </tr>
+  <tr>
+    <td><span class="tag tag-lib7">LIB7</span> LIB7_NumericUtils.bas</td>
+    <td>Account number normalisation, price conversion</td>
+    <td class="dep-none">none</td>
+    <td>—</td>
+  </tr>
+  <tr>
+    <td><span class="tag tag-lib8">LIB8</span> LIB8_HtmlUtils.bas</td>
+    <td>HTML encoding, email body/address utilities</td>
+    <td class="dep-none">none</td>
+    <td>—</td>
+  </tr>
+  <tr>
+    <td><span class="tag tag-lib9">LIB9</span> LIB9_OrgUtils.bas</td>
+    <td>Oracle OU code extraction and matching</td>
+    <td class="dep-none">none</td>
+    <td>—</td>
+  </tr>
+</table>
+
+<div class="tip">
+<strong>Minimum import for most projects:</strong> LIB1 + LIB2 + LIB3 gives you safe
+string handling, all sheet/column utilities, and date formatting — the foundation
+used by every macro in this repo.
+</div>
+
+
+<!-- ================================================================ -->
+<hr>
+<h2 id="lib1">5. LIB1 — String Utilities</h2>
+<p class="section-intro">
+Safe string conversion, Unicode-aware text cleaning, accent normalisation,
+path/filename helpers, and splitting. No dependencies. Used by almost every
+other module in the library.
+</p>
+
+<h3>Function reference</h3>
+
+<h4>NzStr(<em>v</em>) → String</h4>
+<p>
+Returns <code>""</code> for Null, Error values, or anything that can't be converted with
+<code>CStr()</code>. Use everywhere you read from a cell — it prevents the
+<em>"Type mismatch"</em> and <em>"Invalid use of Null"</em> runtime errors that occur when
+a cell contains an Excel error formula result (<code>#N/A</code>, <code>#VALUE!</code>,
+etc.) or a database Null.
+</p>
+<pre>
+Dim cellVal As String
+cellVal = NzStr(ws.Cells(i, colAmount).Value)   ' safe even for #N/A cells
+</pre>
+
+<h4>GF_StrictClean(<em>s</em>) → String</h4>
+<p>
+Full Unicode-aware sanitiser. Removes all ASCII control characters (via Excel's
+<code>CLEAN()</code>), normalises every Unicode space variant (NBSP, thin space, em space,
+etc.) to a regular space, strips zero-width characters and BOM, then collapses runs of
+multiple spaces and trims. Use this before any lookup, comparison, or code substitution.
+</p>
+<pre>
+Dim vendor As String
+vendor = GF_StrictClean(CStr(ws.Cells(i, colVendor).Value))
+If vendor = "" Then GoTo NextRow
+</pre>
+
+<h4>GF_RemoveWeirdSpaces(<em>s</em>) → String</h4>
+<p>
+Lighter version of the above. Does NOT remove control characters (so bullet characters
+and other printable non-ASCII characters survive). Use for email body text or any field
+where you want to preserve special characters but still fix invisible-space paste artifacts.
+</p>
+
+<h4>CleanText(<em>txt</em>) → String</h4>
+<p>
+Calls <code>GF_StrictClean</code> then removes any remaining <code>Chr(160)</code> (NBSP).
+Drop-in replacement for the old manual <code>CleanText</code> helper used across earlier
+projects. Identical to <code>GF_StrictClean</code> for practical purposes.
+</p>
+
+<h4>StripNonAlphanumeric(<em>s</em>) → String</h4>
+<p>
+Keeps only A–Z, a–z, 0–9, and space. Use when a config flag like
+<code>Strip_Special_Chars = YES</code> is set, or when normalising a code field before
+exact comparison.
+</p>
+<pre>
+Dim code As String
+code = StripNonAlphanumeric("ACC-0012 / AU")   ' -> "ACC0012  AU" then collapsed -> "ACC0012 AU"
+</pre>
+
+<h4>NormalizeForFuzzy(<em>s</em>) → String</h4>
+<p>
+Prepares a person or company name for fuzzy comparison. Lower-cases, strips honourifics
+(Mr., Mrs., Dr., Prof., etc.), replaces all punctuation with spaces, collapses spaces.
+Use on both sides before calling <code>Similarity()</code> or <code>ScorePair()</code>.
+</p>
+<pre>
+Dim a As String, b As String
+a = NormalizeForFuzzy("Spafford, Ms. Torie")   ' -> "spafford torie"
+b = NormalizeForFuzzy("TORIE SPAFFORD")          ' -> "torie spafford"
+</pre>
+
+<h4>NormalizeText(<em>txt</em>) → String</h4>
+<p>
+Lower-cases and maps accented / diacritic characters to their ASCII equivalents.
+Covers standard Latin accents (à→a, é→e, ü→u, ñ→n, etc.) and Polish diacritics
+(ą→a, ć→c, ę→e, ł→l, etc.). Use for fuzzy name matching across inputs from different
+locales and source systems.
+</p>
+<pre>
+Dim n As String
+n = NormalizeText("Müller")    ' -> "muller"
+n = NormalizeText("Łukasz")    ' -> "lukasz"
+</pre>
+
+<h4>NormalizeHeaderText(<em>s</em>) → String</h4>
+<p>
+For column-agnostic header matching. Trims, collapses spaces, normalises all Unicode dash
+variants (en-dash, em-dash, hyphen, etc.) to a plain hyphen, lower-cases. Use together
+with <code>GetColByHeader()</code> in LIB2 to survive Excel files where headers were pasted
+from Word and contain typographic dashes.
+</p>
+<pre>
+' "E&#x2013;mail" (en-dash)  and  "E-mail" (hyphen)  both become "e-mail"
+Dim h As String
+h = NormalizeHeaderText(ws.Cells(1, c).Value)
+</pre>
+
+<h4>ConcatNote(<em>note</em>, <em>piece</em>) → String</h4>
+<p>
+Appends <em>piece</em> to <em>note</em> with <code>"; "</code> as separator. Returns
+<em>piece</em> if <em>note</em> is currently empty (so you never get a leading
+<code>"; "</code>). Use for building audit notes and log action strings.
+</p>
+<pre>
+Dim note As String
+note = ConcatNote(note, "Price normalised")
+note = ConcatNote(note, "Lead time clamped to upper bound")
+' -> "Price normalised; Lead time clamped to upper bound"
+</pre>
+
+<h4>StripOuterQuotes(<em>s</em>) → String</h4>
+<p>
+Removes one layer of matching double-quotes from both ends of a string.
+Use when reading CSV-style values that were pasted with surrounding quotes.
+</p>
+<pre>
+Dim v As String
+v = StripOuterQuotes("""hello""")   ' -> "hello"
+v = StripOuterQuotes("hello")       ' -> "hello" (no change, no outer quotes)
+</pre>
+
+<h4>SplitCommaSafe(<em>s</em>) → String()</h4>
+<p>
+Splits by comma and trims each resulting token. Safer than a raw
+<code>Split(s, ",")</code> call because it handles leading/trailing spaces around commas.
+</p>
+<pre>
+Dim parts() As String
+parts = SplitCommaSafe("  AU_611 , US_151 , GB_201 ")
+' parts(0) = "AU_611", parts(1) = "US_151", parts(2) = "GB_201"
+</pre>
+
+<h4>PathJoin(<em>a</em>, <em>b</em>) → String</h4>
+<p>
+Joins two path segments with <code>Application.PathSeparator</code>. Handles the case
+where <em>a</em> already ends with a separator, so you never get double backslashes.
+</p>
+<pre>
+Dim fullPath As String
+fullPath = PathJoin(ws.Range("B2").Value, ws.Range("B3").Value)
+' -> "C:\Output\Files\report.xlsx"  even if B2 ended with "\"
+</pre>
+
+<h4>SanitizeSegment(<em>s</em>) → String</h4>
+<p>
+Makes a string safe for use as a Windows filename token. Collapses spaces to underscores,
+removes all illegal Windows filename characters (<code>\ / : * ? " &lt; &gt; |</code>),
+strips leading/trailing underscores.
+</p>
+<pre>
+Dim token As String
+token = SanitizeSegment("Hello World!")     ' -> "Hello_World"
+token = SanitizeSegment("Q1 / AU Review")  ' -> "Q1_AU_Review"
+Dim fname As String
+fname = FormatDateForFilename(Date) & "_" & token & ".xlsx"
+' -> "26_MAR_2026_Q1_AU_Review.xlsx"
+</pre>
+
+
+<!-- ================================================================ -->
+<hr>
+<h2 id="lib2">6. LIB2 — Sheet Utilities</h2>
+<p class="section-intro">
+Worksheet safety wrappers (no more Runtime Error 9), header-column finding at any row,
+auto-detection of the header row in messy files, column management, folder creation,
+formula-to-value conversion, and Dictionary helpers.
+Depends on LIB1.
+</p>
+
+<h3>Sheet safety</h3>
+
+<h4>GetOrCreateSheet(<em>wb</em>, <em>sheetName</em>) → Worksheet</h4>
+<p>
+Returns the named sheet, creating it at the end of the workbook if it does not yet exist.
+Never raises Runtime Error 9. Use this for output sheets that must exist before you write
+to them.
+</p>
+<pre>
+Dim wsLog As Worksheet
+Set wsLog = GetOrCreateSheet(ThisWorkbook, "Log")
+wsLog.Cells(1, 1).Value = "Ready"
+</pre>
+
+<h4>GetSheetIfExists(<em>wb</em>, <em>sheetName</em>) → Worksheet (or Nothing)</h4>
+<p>
+Returns the named sheet, or <code>Nothing</code> if it does not exist. Never crashes.
+Use this instead of <code>Worksheets("name")</code> whenever the sheet's existence is
+not guaranteed. Always test <code>If ws Is Nothing Then</code> after calling it.
+</p>
+<pre>
+Dim wsOptional As Worksheet
+Set wsOptional = GetSheetIfExists(ThisWorkbook, "Config")
+If wsOptional Is Nothing Then
+    ShowError "Config sheet missing"
+    GoTo CleanUp
+End If
+</pre>
+
+<h4>SheetExists(<em>wb</em>, <em>sheetName</em>) → Boolean</h4>
+<p>Returns <code>True</code> if the named sheet exists in the workbook.</p>
+<pre>
+If Not SheetExists(ThisWorkbook, "Archive") Then
+    MsgBox "Run SetupWorkbook first to create the Archive sheet."
+    Exit Sub
+End If
+</pre>
+
+<h4>ClearSheetAndTables(<em>ws</em>)</h4>
+<p>
+Deletes all ListObjects (Excel Tables) on the sheet first, then clears all cells.
+Use at the start of a run to reset an output sheet without leaving orphaned table objects
+that would cause errors when you re-write headers.
+</p>
+<pre>
+ClearSheetAndTables wsTodo
+wsTodo.Cells(1, 1).Value = "Line Number"   ' safe to write headers now
+</pre>
+
+<h3>Header finding</h3>
+
+<h4>FindHeaderCol(<em>ws</em>, <em>headerText</em>) → Long</h4>
+<p>
+Case-insensitive match in row 1 using <code>Application.Match</code>. Returns the
+1-based column index, or 0 if not found. Fastest option when the header is always in row 1.
+</p>
+<pre>
+Dim colVendor As Long
+colVendor = FindHeaderCol(ws, "Vendor Name")
+If colVendor = 0 Then
+    MsgBox "Column 'Vendor Name' not found"
+    Exit Sub
+End If
+</pre>
+
+<h4>FindHeaderInRow(<em>ws</em>, <em>headerText</em>, <em>headerRow</em>) → Long</h4>
+<p>
+Case-insensitive scan in a specific row number. More reliable than
+<code>Application.Match</code> when the header contains extra spaces. Use when you already
+know which row the header is in but want to handle leading/trailing spaces.
+</p>
+<pre>
+Dim colEmail As Long
+colEmail = FindHeaderInRow(ws, "Email", 3)   ' header is in row 3
+</pre>
+
+<h4>FindHeaderColMultiRow(<em>ws</em>, <em>headerText</em> [, <em>maxRow</em>]) → Long</h4>
+<p>
+Scans rows 1 through <em>maxRow</em> (default 3) for an exact case-insensitive match.
+Use when source files are inconsistent — sometimes the header is in row 1, sometimes row 2
+(because of a title row above it).
+</p>
+<pre>
+Dim colSupplier As Long
+colSupplier = FindHeaderColMultiRow(ws, "Supplier Number", 5)
+</pre>
+
+<h3>Auto-detecting the header row (variable-format files)</h3>
+
+<p>Use these three functions together when you receive files where the header row position
+can vary and you cannot hardcode it:</p>
+
+<h4>DetectHeaderRow(<em>ws</em>, <em>requiredNames</em> [, <em>startRow</em>, <em>endRow</em>]) → Long</h4>
+<p>
+Scans rows <em>startRow</em> through <em>endRow</em> and returns the first row where at
+least 3 of the supplied column names are found. Returns 0 if no qualifying row is found.
+</p>
+
+<h4>MapHeaderColumns(<em>ws</em>, <em>headerRow</em>) → Object (Dictionary)</h4>
+<p>
+Returns a <code>Scripting.Dictionary</code> mapping normalised header text to its
+1-based column number. All keys are processed through <code>NormalizeHeaderText()</code>
+so Unicode dashes, extra spaces, and case differences do not matter.
+</p>
+
+<h4>GetColByHeader(<em>hdrMap</em>, <em>names</em>) → Long</h4>
+<p>
+Tries each name in the <em>names</em> array against the map dictionary. Returns the column
+of the first match, or 0. Use synonym arrays to handle alternative spellings in one call.
+</p>
+
+<pre>
+<span class="cm">' Full three-step pattern for variable-format files:</span>
+Dim hdrRow As Long
+hdrRow = DetectHeaderRow(ws, Array("OU", "Supplier Num", "Email"), 1, 5)
+If hdrRow = 0 Then MsgBox "Cannot find header row": Exit Sub
+
+Dim hdrMap As Object
+Set hdrMap = MapHeaderColumns(ws, hdrRow)
+
+Dim colOU     As Long : colOU     = GetColByHeader(hdrMap, Array("OU", "Org"))
+Dim colEmail  As Long : colEmail  = GetColByHeader(hdrMap, Array("E-mail", "Email", "Email Address"))
+Dim colSupNum As Long : colSupNum = GetColByHeader(hdrMap, Array("Supplier Num", "Supplier Number", "Vendor ID"))
+</pre>
+
+<h3>Column management</h3>
+
+<h4>GetOrAddOutputCol(<em>ws</em>, <em>headerText</em>) → Long</h4>
+<p>
+Looks for an existing column with that header in row 1 and returns it. If not found,
+appends the header at the first empty column and returns that new column number. Use to
+add output columns (BUYER_ID, SOURCING_RULE, STATUS) to a copy of the source data.
+</p>
+<pre>
+Dim colStatus As Long
+colStatus = GetOrAddOutputCol(wsTodo, "Processing Status")
+wsTodo.Cells(todoRow, colStatus).Value = "DONE"
+</pre>
+
+<h3>Header styling</h3>
+
+<h4>StyleHeader(<em>rng</em> [, <em>bgColor</em>])</h4>
+<p>
+Applies bold + background colour + white font to a range. Default colour is Excel blue
+(<code>RGB(68, 114, 196)</code>). Pass any <code>RGB()</code> value as the second argument
+to use a different colour.
+</p>
+<pre>
+StyleHeader ws.Rows(1)                           ' default blue
+StyleHeader ws.Range("A1:K1"), RGB(0, 176, 240)  ' custom cyan
+</pre>
+
+<h3>Folder creation</h3>
+
+<h4>EnsureFolderExists(<em>folderPath</em>) → Boolean</h4>
+<p>
+Creates a folder path including all intermediate parent folders using
+<code>FileSystemObject</code>. Works with UNC paths and deep nesting. Returns
+<code>True</code> on success, <code>False</code> if an error occurs (e.g. no write
+permission).
+</p>
+<pre>
+Dim outFolder As String
+outFolder = PathJoin(ws.Range("B5").Value, "Output\2026-03")
+If Not EnsureFolderExists(outFolder) Then
+    MsgBox "Cannot create output folder: " & outFolder
+    GoTo CleanUp
+End If
+</pre>
+
+<h3>Formula-to-values conversion</h3>
+
+<h4>ConvertFormulasToValues(<em>ws</em>)</h4>
+<p>
+Converts every formula cell in <code>ws.UsedRange</code> to its displayed string value.
+Uses <code>cell.Text</code> (not <code>cell.Value</code>) so that leading zeros are
+preserved — for example a cell formatted as <code>"00000"</code> containing
+<code>=A1</code> will become the string <code>"00048"</code> rather than the number
+<code>48</code>. Call this before <code>SaveAs</code> or any column scan on files that
+may contain formula-driven account numbers.
+</p>
+<pre>
+ConvertFormulasToValues dataWS   ' call once on the source sheet after opening
+</pre>
+
+<h3>Dictionary helpers</h3>
+
+<h4>NewDict([<em>compareModeText</em>]) → Object</h4>
+<p>
+Creates a new <code>Scripting.Dictionary</code>. Default is case-insensitive
+(<code>vbTextCompare = 1</code>). Pass <code>False</code> to get a case-sensitive
+dictionary.
+</p>
+<pre>
+Dim cache As Object
+Set cache = NewDict()           ' case-insensitive (default)
+Set cache = NewDict(False)      ' case-sensitive
+cache("VENDOR A") = 42
+cache("vendor a") = 42          ' same key in case-insensitive mode
+</pre>
+
+<h4>DictHasKey(<em>d</em>, <em>k</em>) → Boolean</h4>
+<p>
+Safe key-existence check that handles <code>Nothing</code> without crashing. Equivalent to
+<code>d.Exists(k)</code> but safe to call even if the dictionary was never initialised.
+</p>
+
+<h4>InCollection(<em>c</em>, <em>s</em>) → Boolean</h4>
+<p>Linear search for a string value in a <code>Collection</code>.</p>
+
+<h4>JoinCollection(<em>c</em>, <em>delim</em>) → String</h4>
+<p>Joins all items in a <code>Collection</code> with a delimiter string. Equivalent to
+<code>Join(arr, delim)</code> but works on Collection objects.</p>
+
+
+<!-- ================================================================ -->
+<hr>
+<h2 id="lib3">7. LIB3 — Date Utilities</h2>
+<p class="section-intro">
+Locale-insensitive date formatting for filenames, cells, email subjects, and report titles.
+Safe date parsing that never crashes on empty or badly-formatted inputs.
+No dependencies.
+</p>
+
+<h3>Formatting functions</h3>
+
+<table>
+  <tr>
+    <th>Function</th>
+    <th>Output format</th>
+    <th>Example output</th>
+    <th>Typical use</th>
+  </tr>
+  <tr>
+    <td><code>FormatDateForFilename(dt)</code></td>
+    <td>DD_MMM_YYYY (upper)</td>
+    <td><code>26_MAR_2026</code></td>
+    <td>Output filename prefix</td>
+  </tr>
+  <tr>
+    <td><code>FormatDateForCell(dt)</code></td>
+    <td>DD-MMM-YY (upper)</td>
+    <td><code>26-MAR-26</code></td>
+    <td>Writing a run date into a cell</td>
+  </tr>
+  <tr>
+    <td><code>FormatDateLong(dt)</code></td>
+    <td>DD-MMM-YYYY (upper)</td>
+    <td><code>26-MAR-2026</code></td>
+    <td>Email subject, archive name</td>
+  </tr>
+  <tr>
+    <td><code>FormatDateFromVariant(v)</code></td>
+    <td>DD-MMM-YYYY (upper)</td>
+    <td><code>26-MAR-2026</code></td>
+    <td>Reading a cell that might be empty</td>
+  </tr>
+</table>
+
+<div class="note">
+All formatting functions use <code>Format$()</code> which is locale-aware for the month
+abbreviation separator but the month name itself comes from the Windows locale.
+On English-locale machines this produces <code>MAR</code>, <code>JAN</code>, etc. as
+expected.
+</div>
+
+<pre>
+<span class="cm">' Building a dated output filename:</span>
+Dim fname As String
+fname = FormatDateForFilename(Date) & "_" & SanitizeSegment(projectName) & ".xlsx"
+<span class="cm">' -> "26_MAR_2026_Q1_AU_BPA.xlsx"</span>
+</pre>
+
+<h3>Validation</h3>
+
+<h4>ValidateRunDate(<em>dateStr</em>, <em>outDate</em>) → Boolean</h4>
+<p>
+Parses <em>dateStr</em> and checks that the result is <strong>today or in the future</strong>.
+Writes the parsed date back through the <em>outDate</em> ByRef parameter on success.
+Use to validate a run-date entered by the user in a cell or TextBox.
+</p>
+<pre>
+Dim runDate As Date
+If Not ValidateRunDate(ws.Range("B1").Value, runDate) Then
+    MsgBox "Run date must be today or a future date."
+    Exit Sub
+End If
+</pre>
+
+<h3>Safe parsing</h3>
+
+<h4>TryParseDate(<em>s</em>, <em>d</em>) → Boolean</h4>
+<p>
+Returns <code>True</code> and sets <em>d</em> on success; returns <code>False</code> on
+any failure. Never raises an error. Use when you want explicit success/fail branching.
+</p>
+<pre>
+Dim d As Date
+If TryParseDate(CStr(ws.Cells(i, colDate).Value), d) Then
+    ws.Cells(i, colOutput).Value = FormatDateLong(d)
+Else
+    ws.Cells(i, colOutput).Value = "INVALID DATE"
+End If
+</pre>
+
+<h4>TryCDate(<em>s</em>) → Date &nbsp;/&nbsp; SafeDate(<em>s</em>) → Date</h4>
+<p>
+Returns the parsed date, or <code>0</code> (= <code>#30 Dec 1899#</code>) on any failure.
+Use when you want a simple return value rather than a ByRef out-parameter.
+<code>SafeDate</code> is an alias for <code>TryCDate</code>.
+</p>
+<pre>
+Dim d As Date
+d = TryCDate(CStr(ws.Cells(i, colDate).Value))
+If d = 0 Then
+    SafeLog ThisWorkbook, "DateParser", "Row " & i & " — unparseable date"
+End If
+</pre>
+
+
+<!-- ================================================================ -->
+<hr>
+<h2 id="lib4">8. LIB4 — Fuzzy Match</h2>
+<p class="section-intro">
+Levenshtein edit distance, similarity scoring, token-sort comparison, and company-name
+preprocessing. Used for matching vendor names from different source systems where spelling,
+punctuation, and word order differ. No dependencies.
+</p>
+
+<h3>Core functions</h3>
+
+<h4>Levenshtein(<em>s</em>, <em>t</em>) → Long</h4>
+<p>
+Returns the minimum number of single-character edits (insert, delete, substitute) needed
+to transform <em>s</em> into <em>t</em>. Dynamic-programming O(n×m) implementation.
+Rarely called directly — use <code>Similarity()</code> or <code>ScorePair()</code> instead.
+</p>
+
+<h4>Similarity(<em>a</em>, <em>b</em>) → Double (0.0–1.0)</h4>
+<p>
+Converts Levenshtein distance to a 0.0–1.0 similarity score. 1.0 = identical, 0.0 = no
+characters in common. Use this for simple two-string comparisons; use
+<code>ScorePair()</code> for the full vendor-name matching pipeline.
+</p>
+<pre>
+If Similarity("ACME CORP", "ACME CORPORATION") > 0.8 Then
+    ' close enough
+End If
+</pre>
+
+<h4>CleanCompanyName(<em>s</em>) → String</h4>
+<p>
+Prepares a vendor or company name for comparison: upper-cases, strips punctuation
+(periods, commas, dashes, ampersands, brackets, slashes), removes noise words as whole
+words (LLC, INC, LTD, THE, CORP, CO). Always apply to <strong>both sides</strong> before
+scoring.
+</p>
+<pre>
+CleanCompanyName("Smith, LLC.")       ' -> "SMITH"
+CleanCompanyName("The Widget Co.")    ' -> "WIDGET"
+CleanCompanyName("ACME &amp; Partners")  ' -> "ACME PARTNERS"
+</pre>
+
+<h4>TokenSortKey(<em>s</em>) → String</h4>
+<p>
+Sorts the space-separated tokens of a cleaned name alphabetically. This means
+<em>"WIDGET BLUE ABC"</em> and <em>"ABC BLUE WIDGET"</em> produce the same key, so word
+order differences (common when the same vendor is entered differently in different systems)
+do not reduce the similarity score.
+</p>
+
+<h4>ScorePair(<em>aClean</em>, <em>aTok</em>, <em>bClean</em>, <em>bTok</em>) → Double</h4>
+<p>
+The main entry point for vendor name matching. Combines three strategies and returns the
+maximum:
+</p>
+<ol>
+  <li>Levenshtein similarity on cleaned names (handles typos and abbreviations)</li>
+  <li>Levenshtein similarity on token-sorted keys (handles word-order differences)</li>
+  <li>Substring containment boost — returns 0.9 if one cleaned name is contained within
+      the other (handles short codes vs full names)</li>
+</ol>
+<p>
+Pre-compute <code>CleanCompanyName</code> and <code>TokenSortKey</code> once for each side
+before entering the inner loop to avoid O(n²) redundant work.
+</p>
+<pre>
+<span class="cm">' Pre-compute once for the query name:</span>
+Dim aClean As String : aClean = CleanCompanyName(queryVendor)
+Dim aTok   As String : aTok   = TokenSortKey(aClean)
+
+<span class="cm">' Inner loop over candidates:</span>
+Const ACCEPT_THRESHOLD As Double = 0.72
+
+Dim i As Long
+For i = 2 To lastRow
+    Dim bClean As String : bClean = CleanCompanyName(CStr(oracleWS.Cells(i, colName).Value))
+    Dim bTok   As String : bTok   = TokenSortKey(bClean)
+    Dim score  As Double : score  = ScorePair(aClean, aTok, bClean, bTok)
+    If score >= ACCEPT_THRESHOLD Then
+        ' Found a match — record it and exit
+        matchName = CStr(oracleWS.Cells(i, colName).Value)
+        Exit For
+    End If
+Next i
+</pre>
+
+<div class="warning">
+<strong>Threshold guidance:</strong> 0.72 is the default threshold used in Wire Payment
+Review and BPA. It accepts <em>"ACME CORP"</em> vs <em>"ACME CORPORATION"</em> (0.81) but
+rejects <em>"SMITH PTY LTD"</em> vs <em>"SMITHFIELD FOODS"</em> (0.62). Adjust lower
+(0.65) for noisier data, or higher (0.85) when false positives are costly.
+</div>
+
+<h4>QuickSortStrings(<em>arr()</em>, <em>first</em>, <em>last</em>)</h4>
+<p>
+In-place ascending quicksort on a string array slice. Used internally by
+<code>TokenSortKey</code>. Can also be used directly on any string array you need sorted.
+</p>
+
+
+<!-- ================================================================ -->
+<hr>
+<h2 id="lib5">9. LIB5 — Logging</h2>
+<p class="section-intro">
+Two complementary logging models in one module. Both create the Log sheet automatically
+on first call and never crash if the sheet is absent. Depends on LIB2.
+</p>
+
+<h3>Model A — SafeLog (3-column, event-level)</h3>
+
+<h4>SafeLog(<em>wb</em>, <em>where</em>, <em>message</em>)</h4>
+<p>
+Appends one row to the <code>Log</code> sheet with three columns: Timestamp, Where
+(caller label), Message. Best for event-level tracing: recording that something happened,
+that a file was opened, that a match was not found.
+</p>
+<pre>
+SafeLog ThisWorkbook, "FuzzyMatch", "No match found for vendor: " &amp; vendorName
+SafeLog ThisWorkbook, "BuildRegistry", "Registry loaded: " &amp; entryCount &amp; " entries"
+</pre>
+
+<h3>Model B — GF_LogRowAction (9-column, row-level)</h3>
+
+<h4>GF_LogRowAction(<em>wb</em>, <em>macroName</em>, <em>sourceFile</em>, <em>sourceSheet</em>, <em>sourceRow</em>, <em>indexVal</em>, <em>decisionVal</em>, <em>outcome</em>, <em>actions</em>)</h4>
+<p>
+Appends one row to the <code>Log</code> sheet with nine columns: Timestamp, Macro,
+Source File, Source Sheet, Source Row, Index, Decision, Outcome, Actions/Notes.
+Best for row-by-row processing records where you need a full audit trail of which rows
+were accepted, skipped, or fixed and why.
+</p>
+
+<table>
+  <tr><th>Parameter</th><th>Column</th><th>What to pass</th></tr>
+  <tr><td><code>wb</code></td><td>—</td><td><code>ThisWorkbook</code></td></tr>
+  <tr><td><code>macroName</code></td><td>B</td><td>Name of the Sub/Function logging this row</td></tr>
+  <tr><td><code>sourceFile</code></td><td>C</td><td>Filename of the source workbook</td></tr>
+  <tr><td><code>sourceSheet</code></td><td>D</td><td>Sheet name in the source workbook</td></tr>
+  <tr><td><code>sourceRow</code></td><td>E</td><td>Row number in the source data (0 for summary events)</td></tr>
+  <tr><td><code>indexVal</code></td><td>F</td><td>The row's unique index value (e.g. LP number, BPA index)</td></tr>
+  <tr><td><code>decisionVal</code></td><td>G</td><td>The decision column value from that row (or "")</td></tr>
+  <tr><td><code>outcome</code></td><td>H</td><td>One of: <code>START</code>, <code>DONE</code>, <code>SKIPPED</code>, <code>FIXED_AND_PROCESSED</code>, <code>ABORTED</code>, <code>INFO</code>, <code>WARN</code>, <code>ERROR</code></td></tr>
+  <tr><td><code>actions</code></td><td>I</td><td>Human-readable description of what happened and why</td></tr>
+</table>
+
+<pre>
+<span class="cm">' Summary event (no specific row):</span>
+GF_LogRowAction ThisWorkbook, "BuildToDoSheet", "", "", 0, "", "", _
+                "START", "Log cleared for new run"
+
+<span class="cm">' Row skipped:</span>
+GF_LogRowAction ThisWorkbook, "BuildToDoSheet", srcFile, srcTab, i, idxVal, _
+                "", "SKIPPED", "Duplicate of source row 14 (KEEP_FIRST mode)"
+
+<span class="cm">' Row fixed and kept:</span>
+GF_LogRowAction ThisWorkbook, "BuildToDoSheet", srcFile, srcTab, i, idxVal, _
+                "", "FIXED_AND_PROCESSED", "PRICE: [1.234,56] -> [1234.56] (EU format converted)"
+</pre>
+
+<h4>GF_EnsureLogSheet(<em>wb</em>) → Worksheet</h4>
+<p>
+Ensures the Log sheet exists with 9-column headers. Returns the worksheet.
+Called internally by <code>GF_LogRowAction</code>; you rarely need to call it directly
+unless you want to pre-create the sheet before the first action row.
+</p>
+
+<h4>GF_ClearLogSheet(<em>wb</em>)</h4>
+<p>
+Clears all data rows (A2 downward) while keeping the header row intact.
+Call at the start of a new run so the log only contains entries for the current session.
+</p>
+<pre>
+<span class="cm">' Always clear at the start of a run:</span>
+GF_ClearLogSheet ThisWorkbook
+GF_LogRowAction ThisWorkbook, "MyMacro", "", "", 0, "", "", "START", "New run started"
+</pre>
+
+<div class="tip">
+<strong>Which model to use?</strong> Use <code>SafeLog</code> for simple macros with no
+row loop, or for logging events outside the main loop (file opened, config loaded).
+Use <code>GF_LogRowAction</code> in any macro that processes rows one by one and needs
+a full audit trail reviewers can filter in Excel.
+</div>
+
+
+<!-- ================================================================ -->
+<hr>
+<h2 id="lib6">10. LIB6 — Progress UI</h2>
+<p class="section-intro">
+A thin wrapper module that connects your macro's main loop to a progress bar UserForm.
+The wrapper isolates all form references so the macro compiles and runs cleanly even when
+the form is not present (useful during testing). Requires an <code>frmProgress</code>
+UserForm in the same workbook.
+</p>
+
+<h3>Setup for a new project</h3>
+<ol>
+  <li>Import <code>LIB6_ProgressUI.bas</code> into the project.</li>
+  <li>Create (or import from another project) a UserForm named <code>frmProgress</code>
+      that exposes these members:
+      <ul>
+        <li><code>Sub Init(titleText As String, totalItems As Long)</code></li>
+        <li><code>Sub UpdateProgress(processed As Long)</code></li>
+        <li><code>Sub SetTitle(s As String)</code></li>
+        <li><code>Sub ConfigureTimeGate(enable As Boolean, ms As Long, min As Long)</code></li>
+        <li><code>Sub BeginMarquee(msg As String)</code></li>
+        <li><code>Sub EndMarquee()</code></li>
+        <li><code>Property Get IsCancelled() As Boolean</code></li>
+      </ul>
+  </li>
+  <li>If you rename the form (e.g. to <code>frmBPAProgress</code>), update the two
+      lines marked <code>' *** rename here</code> in the module.</li>
+</ol>
+
+<h3>Function reference</h3>
+
+<h4>ProgressStart(<em>titleText</em>, <em>totalItems</em>)</h4>
+<p>
+Shows the form, calls <code>Init</code>, sets a 200 ms time gate (so fast loops don't
+flicker), and yields to Windows with <code>DoEvents</code>. Call once before the main loop.
+</p>
+
+<h4>ProgressUpdate(<em>processed</em>)</h4>
+<p>
+Updates the bar value and calls <code>DoEvents</code>. The <code>DoEvents</code> here is
+critical — it is what prevents Excel from going <em>"Not Responding"</em> during long loops
+and what allows the Cancel button click to be processed. Call once per loop iteration.
+</p>
+
+<h4>ProgressCancelled() → Boolean</h4>
+<p>
+Returns <code>True</code> if the user clicked the Cancel button on the form. Check this
+inside your loop to stop gracefully.
+</p>
+
+<h4>ProgressMarquee(<em>msg</em>) / ProgressEndMarquee()</h4>
+<p>
+Switches the bar to indeterminate (spinning) mode for phases where you don't know the
+total item count (e.g. sorting, saving). Call <code>ProgressEndMarquee</code> when that
+phase ends to return to normal mode.
+</p>
+
+<h4>ProgressFinish()</h4>
+<p>
+Hides and unloads the form, clears the status bar. Call from the <code>CleanUp:</code>
+label so it always runs, even if the macro aborted early.
+</p>
+
+<pre>
+<span class="cm">' Typical main-loop pattern:</span>
+ProgressStart "Processing rows...", lastRow - 1
+
+Dim i As Long
+For i = 2 To lastRow
+    If ProgressCancelled() Then
+        SafeLog ThisWorkbook, "MyMacro", "User cancelled at row " &amp; i
+        GoTo CleanUp
+    End If
+    ProgressUpdate i - 1
+
+    <span class="cm">' ... process row i ...</span>
+Next i
+
+ProgressMarquee "Saving output file..."
+<span class="cm">' ... save file ...</span>
+ProgressEndMarquee
+
+CleanUp:
+    ProgressFinish
+</pre>
+
+
+<!-- ================================================================ -->
+<hr>
+<h2 id="lib7">11. LIB7 — Numeric Utilities</h2>
+<p class="section-intro">
+Digit extraction, account-number normalisation (scientific notation, leading zeros),
+and price format conversion from EU comma-decimal to US dot-decimal with salvage logic.
+No dependencies.
+</p>
+
+<h3>Digit extraction</h3>
+
+<h4>OnlyDigits(<em>s</em>) → String</h4>
+<p>Returns only the digit characters (0–9) from a string. All other characters are removed.
+Leading zeros are preserved because the result is a string, not a number.</p>
+<pre>
+OnlyDigits("ACC-0012345 ")   ' -> "0012345"
+OnlyDigits("AU_611_GDSAU_OU") ' -> "611"
+</pre>
+
+<h4>IsNumericDigits(<em>s</em>) → Boolean</h4>
+<p>Returns <code>True</code> if <em>s</em> is non-empty and consists entirely of digits 0–9.</p>
+
+<h4>TailMask(<em>acct</em>) → String</h4>
+<p>
+Masks an account number to its last 4 digits for safe display in notes, logs, or emails.
+Strings shorter than 4 digits are returned unchanged.
+</p>
+<pre>
+TailMask("1234567890")   ' -> "...7890"
+TailMask("AB12")          ' -> "AB12" (too short to mask, returned as-is)
+</pre>
+
+<h3>Account number normalisation</h3>
+
+<h4>ExpandScientificNotation(<em>s</em>) → String</h4>
+<p>
+Expands an Excel scientific-notation string (e.g. <code>1.53697E+11</code>) to its full
+plain digit string (<code>153697000000</code>) without using VBA's numeric types, which
+would lose precision. Returns <code>""</code> if no <code>E</code> character is found.
+</p>
+
+<h4>NormalizeAccountStr(<em>s</em>) → String</h4>
+<p>
+Uses <code>VBScript.RegExp</code> for robust detection of scientific notation; returns the
+expanded digit string. Non-scientific strings are returned unchanged. Use when reading
+account numbers from cells that Excel may have auto-formatted as scientific notation.
+</p>
+<pre>
+NormalizeAccountStr("1.53697E+11")   ' -> "153697000000"
+NormalizeAccountStr("ACC001234")      ' -> "ACC001234" (unchanged)
+</pre>
+
+<h4>CanonicalizeAccountStr(<em>s</em>) → String</h4>
+<p>
+Full normalisation pipeline: handles scientific notation, strips all non-digit characters,
+removes trailing <code>.00</code> decimal portions. Use to normalise both sides before
+exact-match comparison of account numbers from different source systems.
+</p>
+<pre>
+CanonicalizeAccountStr("ACC-001234.00")   ' -> "001234"
+CanonicalizeAccountStr("1.23E+8")          ' -> "123000000"
+CanonicalizeAccountStr("  007 500  ")      ' -> "007500"
+</pre>
+
+<h3>Price normalisation (EU → US format)</h3>
+
+<h4>GF_PriceNeedsNormalization(<em>v</em>) → Boolean</h4>
+<p>
+Returns <code>True</code> if the value looks like it needs conversion. Checks for: letter
+or currency symbol characters (€, $, £, ¥), multiple dots, multiple commas, any comma,
+or any space within a numeric-looking value.
+</p>
+<pre>
+If GF_PriceNeedsNormalization(ws.Cells(i, colPrice).Value) Then
+    ' warn user or auto-fix
+End If
+</pre>
+
+<h4>GF_NormalizePriceToUS(<em>v</em>, <em>wasChanged</em>, <em>note</em>) → String</h4>
+<p>
+Strips currency symbols, converts EU comma-decimal format to US dot-decimal, forces
+exactly 2 decimal places. Returns a formatted string like <code>"1234.56"</code>.
+Sets <em>wasChanged</em> = <code>True</code> if any transformation was applied.
+Sets <em>note</em> to a plain-English description of what changed.
+Returns <code>""</code> if the value is empty or cannot be parsed after cleanup.
+</p>
+
+<p>Salvage logic (controlled by module-level constants):</p>
+<ul>
+  <li><code>"13.218.22"</code> → <code>"13218.22"</code> (multi-dot: last segment is
+      decimals, earlier dots are thousands separators)</li>
+  <li><code>"13,218,22"</code> → <code>"13218.22"</code> (multi-comma: same logic)</li>
+</ul>
+
+<pre>
+Dim priceNorm As String
+Dim wasChanged As Boolean, priceNote As String
+priceNorm = GF_NormalizePriceToUS(ws.Cells(i, colPrice).Value, wasChanged, priceNote)
+If Len(priceNorm) = 0 Then
+    GF_LogRowAction ThisWorkbook, "MyMacro", srcFile, srcTab, i, idxVal, _
+                    "", "SKIPPED", "Unparseable price: [" &amp; CStr(ws.Cells(i, colPrice).Value) &amp; "]"
+    GoTo NextRow
+End If
+ws.Cells(i, colPrice).NumberFormat = "@"
+ws.Cells(i, colPrice).Value = priceNorm
+If wasChanged Then SafeLog ThisWorkbook, "PriceFix", "Row " &amp; i &amp; ": " &amp; priceNote
+</pre>
+
+<h4>GF_FormatDot2NoThousands(<em>n</em>) → String</h4>
+<p>
+Locale-safe <code>"0.00"</code> formatting. Always outputs a dot as decimal separator and
+no thousands separator, regardless of Windows regional settings. Use when writing a price
+to a cell or file that will be processed by another system.
+</p>
+
+<h4>GF_IsDecisionYes(<em>v</em>) → Boolean</h4>
+<p>
+Returns <code>True</code> for <code>"YES"</code> or <code>"Y"</code> (case-insensitive).
+Use to parse a decision/flag column where the user types Yes, YES, Y, or yes.
+</p>
+
+
+<!-- ================================================================ -->
+<hr>
+<h2 id="lib8">12. LIB8 — HTML Utilities</h2>
+<p class="section-intro">
+HTML email composition utilities: entity encoding, plain-text-to-HTML conversion with
+bullet detection, email address validation and normalisation, attachment path building,
+and ON/OFF flag parsing. No dependencies.
+</p>
+
+<h3>HTML encoding</h3>
+
+<h4>HtmlEncode(<em>s</em>) → String</h4>
+<p>
+Escapes the five HTML special characters so they display literally in a browser or Outlook:
+<code>&amp;</code> → <code>&amp;amp;</code>, <code>&lt;</code> → <code>&amp;lt;</code>,
+<code>&gt;</code> → <code>&amp;gt;</code>, <code>"</code> → <code>&amp;quot;</code>,
+<code>'</code> → <code>&amp;#39;</code>.
+</p>
+<pre>
+HtmlEncode("AT&amp;T &lt;sender&gt;")   ' -> "AT&amp;amp;T &amp;lt;sender&amp;gt;"
+</pre>
+
+<h3>Plain text to HTML conversion</h3>
+
+<h4>PlainToHtml(<em>txt</em>) → String</h4>
+<p>
+Simple conversion: encodes entities and converts line breaks to <code>&lt;br&gt;</code>.
+Use for signature blocks or plain paragraphs where you do not need bullet list detection.
+</p>
+
+<h4>PlainToHtmlRich(<em>txt</em>) → String</h4>
+<p>
+Full rich conversion:
+</p>
+<ul>
+  <li>Blank lines → <code>&lt;br&gt;&lt;br&gt;</code> (paragraph break)</li>
+  <li>Lines starting with <code>•</code>, <code>-</code>, or <code>*</code>
+      → <code>&lt;li&gt;</code> items inside <code>&lt;ul&gt;</code></li>
+  <li>All other lines → encoded text + <code>&lt;br&gt;</code></li>
+  <li>Lists are automatically opened and closed as the bullet/non-bullet state changes</li>
+</ul>
+<pre>
+Dim body As String
+body = "Dear Vendor," &amp; vbCrLf &amp; vbCrLf
+body = body &amp; "Please review your account details:" &amp; vbCrLf
+body = body &amp; "- Bank: ANZ" &amp; vbCrLf
+body = body &amp; "- Account: ...7890" &amp; vbCrLf
+Dim htmlBody As String
+htmlBody = PlainToHtmlRich(body)
+mail.HTMLBody = WrapHtml(htmlBody)
+</pre>
+
+<h4>NormalizeParagraphs(<em>s</em>) → String</h4>
+<p>
+Collapses 3 or more consecutive blank lines to 1. Call on the body string before passing
+it to <code>PlainToHtmlRich</code> to avoid excessive vertical whitespace when users paste
+from Word.
+</p>
+
+<h3>Email body composition</h3>
+
+<h4>ComposeBodyHtml(<em>baseText</em>, <em>accountsHtml</em>) → String</h4>
+<p>
+Replaces the placeholder <code>[[BANK_ACCOUNTS]]</code> in <em>baseText</em> with
+<em>accountsHtml</em>, converting the rest of the body to rich HTML. If the placeholder is
+absent, the accounts block is appended at the end. Use for templated vendor notification
+emails where the account list is injected at a specific position in the body.
+</p>
+<pre>
+Dim tmplBody As String
+tmplBody = CStr(ws.Range("B5").Value)   ' "Please review [[BANK_ACCOUNTS]] above."
+Dim acctHtml As String
+acctHtml = BuildAccountsHtml(acctList)
+mail.HTMLBody = WrapHtml(ComposeBodyHtml(tmplBody, acctHtml))
+</pre>
+
+<h4>BuildAccountsHtml(<em>listL</em>) → String</h4>
+<p>
+Converts a comma- or newline-separated list of account numbers to an HTML bullet list
+(<code>&lt;ul&gt;</code>). Returns <code>&lt;em&gt;Not currently on file.&lt;/em&gt;</code>
+for empty input.
+</p>
+
+<h4>WrapHtml(<em>bodyInner</em>) → String</h4>
+<p>
+Wraps a body fragment in a complete HTML document with charset UTF-8 and
+Calibri/Arial 11pt body font. Assign the result directly to <code>mail.HTMLBody</code>.
+</p>
+
+<h3>Email address utilities</h3>
+
+<h4>IsValidEmail(<em>e</em>) → Boolean</h4>
+<p>
+Basic structural check: verifies <code>@</code> exists with at least one character before
+it, a dot exists after the <code>@</code>, and the dot is not the last character. Not a
+full RFC validator — fast enough for filtering obviously bad addresses.
+</p>
+
+<h4>NormalizeEmails(<em>s</em>) → String</h4>
+<p>
+Splits a semicolon-or-comma-separated list of addresses, validates each with
+<code>IsValidEmail</code>, and returns the valid ones joined with semicolons (Outlook format).
+Returns <code>""</code> if no valid addresses are found.
+</p>
+<pre>
+mail.To = NormalizeEmails(ws.Cells(i, colEmail).Value)
+If Len(mail.To) = 0 Then
+    SafeLog ThisWorkbook, "SendEmail", "Row " &amp; i &amp; " — no valid To address, skipped"
+    GoTo NextRow
+End If
+</pre>
+
+<h3>Attachment path and flag parsing</h3>
+
+<h4>BuildAttachmentPath(<em>folder</em>, <em>fname</em>) → String</h4>
+<p>
+Builds a full attachment file path from a folder and filename. Returns <code>""</code> if
+either part is empty. Handles the case where the folder already ends with a separator.
+</p>
+
+<h4>ParseOnOff(<em>v</em> [, <em>defaultVal</em>]) → Boolean</h4>
+<p>
+Interprets ON/OFF/YES/NO/TRUE/FALSE/1/0 strings as Boolean. Returns <em>defaultVal</em>
+(default: <code>True</code>) for any unrecognised input (including blank). Use to read
+toggle settings from cells or configuration tables.
+</p>
+<pre>
+Dim sendAttach As Boolean
+sendAttach = ParseOnOff(ws.Range("B8").Value, False)   ' default off if blank
+</pre>
+
+
+<!-- ================================================================ -->
+<hr>
+<h2 id="lib9">13. LIB9 — Org Code Utilities</h2>
+<p class="section-intro">
+Oracle Operating Unit (OU) code extraction and symmetric matching. Handles the three ORG
+formats that appear in Oracle ERP: full string, short code, and digits only. No dependencies.
+</p>
+
+<h3>Oracle ORG formats</h3>
+<table>
+  <tr><th>Format name</th><th>Example</th><th>Description</th></tr>
+  <tr><td>Full</td><td><code>AU_611_GDSAU_OU</code></td><td>Complete ORG string from Oracle</td></tr>
+  <tr><td>Short</td><td><code>AU_611</code></td><td>Country code + OU number</td></tr>
+  <tr><td>Digits</td><td><code>611</code></td><td>Numeric OU code only</td></tr>
+</table>
+
+<h3>Extraction</h3>
+
+<h4>OrgShortCode(<em>orgFull</em>) → String</h4>
+<p>
+Returns <code>"AU_611"</code> from <code>"AU_611_GDSAU_OU"</code>. Returns <code>""</code>
+if the string does not match the expected pattern (2-char country code + underscore +
+3-digit OU).
+</p>
+
+<h4>OrgDigitsCode(<em>orgFull</em>) → String</h4>
+<p>
+Returns <code>"611"</code> from <code>"AU_611_GDSAU_OU"</code>. Returns <code>""</code>
+if the string does not match.
+</p>
+
+<h3>Matching</h3>
+
+<h4>OrgMatches(<em>sourceOrg</em>, <em>userOrg</em>) → Boolean</h4>
+<p>
+Returns <code>True</code> if <em>sourceOrg</em> and <em>userOrg</em> refer to the same
+Operating Unit, regardless of which format either side uses. The matching is
+<strong>symmetric</strong> — either argument can be in any format.
+A blank <em>userOrg</em> is treated as a wildcard and always returns <code>True</code>.
+</p>
+
+<table>
+  <tr><th>sourceOrg</th><th>userOrg</th><th>Result</th></tr>
+  <tr><td><code>AU_611_GDSAU_OU</code></td><td><code>611</code></td><td>True</td></tr>
+  <tr><td><code>AU_611</code></td><td><code>AU_611_GDSAU_OU</code></td><td>True</td></tr>
+  <tr><td><code>611</code></td><td><code>AU_611</code></td><td>True</td></tr>
+  <tr><td><code>AU_611</code></td><td><code>US_151_DSUSA_OU</code></td><td>False</td></tr>
+  <tr><td><code>AU_611</code></td><td><code>""</code> (blank)</td><td>True (wildcard)</td></tr>
+</table>
+
+<pre>
+<span class="cm">' Filtering Oracle rows by user-selected OU:</span>
+Dim userOU As String
+userOU = Trim$(CStr(wsRun.Range("K6").Value))   ' "" means "all OUs"
+
+Dim i As Long
+For i = 2 To lastRow
+    Dim rowOrg As String
+    rowOrg = GF_StrictClean(CStr(oracleWS.Cells(i, colOrg).Value))
+    If Not OrgMatches(rowOrg, userOU) Then GoTo NextRow
+    ' ... process row i ...
+NextRow:
+Next i
+</pre>
+
+
+<!-- ================================================================ -->
+<hr>
+<h2 id="scenarios">14. Use-Case Scenarios</h2>
+
+<p class="section-intro">
+These end-to-end examples show how the library modules work together in realistic situations
+drawn from the macros in this repository.
+</p>
+
+<!-- SCENARIO 1 -->
+<div class="scenario-box">
+<h4>Scenario 1 — Processing a source file with unknown column layout</h4>
+<p>
+You receive an Oracle extract every month, but the columns are in a different order each
+time and sometimes there is a title row above the headers. You need to find the columns
+you care about reliably, regardless of layout.
+</p>
+<p><strong>Modules needed:</strong> LIB1, LIB2</p>
+<pre>
+<span class="cm">' Step 1: auto-detect the header row anywhere in rows 1-5</span>
+Dim hdrRow As Long
+hdrRow = DetectHeaderRow(dataWS, Array("Supplier Num", "Email", "OU"), 1, 5)
+If hdrRow = 0 Then
+    MsgBox "Cannot identify header row in source file."
+    GoTo CleanUp
+End If
+
+<span class="cm">' Step 2: map all headers to column numbers</span>
+Dim hdrMap As Object
+Set hdrMap = MapHeaderColumns(dataWS, hdrRow)
+
+<span class="cm">' Step 3: look up each column with synonym lists</span>
+Dim colSupplier As Long
+Dim colEmail    As Long
+Dim colOU       As Long
+Dim colVendName As Long
+
+colSupplier = GetColByHeader(hdrMap, Array("Supplier Num", "Supplier Number", "Vendor ID"))
+colEmail    = GetColByHeader(hdrMap, Array("E-mail", "Email", "Email Address", "Contact Email"))
+colOU       = GetColByHeader(hdrMap, Array("OU", "Org", "Operating Unit"))
+colVendName = GetColByHeader(hdrMap, Array("Vendor Name", "Supplier Name", "Name"))
+
+<span class="cm">' Step 4: process rows (hdrRow+1 onward)</span>
+Dim lastRow As Long
+lastRow = dataWS.UsedRange.Row + dataWS.UsedRange.Rows.Count - 1
+
+Dim i As Long
+For i = hdrRow + 1 To lastRow
+    Dim supplierNum As String
+    supplierNum = GF_StrictClean(NzStr(dataWS.Cells(i, colSupplier).Value))
+    If Len(supplierNum) = 0 Then GoTo NextRow
+
+    Dim email As String
+    email = NormalizeEmails(NzStr(dataWS.Cells(i, colEmail).Value))
+
+    <span class="cm">' ... process row ...</span>
+NextRow:
+Next i
+</pre>
+</div>
+
+<!-- SCENARIO 2 -->
+<div class="scenario-box">
+<h4>Scenario 2 — Matching vendors from two different systems</h4>
+<p>
+You have a list of vendors from a bank payment file and a list from Oracle. The names
+don't match exactly — one system uses "ACME CORP", the other "Acme Corporation Pty Ltd".
+You need to find the best match from Oracle for each bank vendor.
+</p>
+<p><strong>Modules needed:</strong> LIB1, LIB4, LIB5</p>
+<pre>
+Const ACCEPT_THRESHOLD As Double = 0.72
+
+<span class="cm">' Pre-load Oracle names into an array once:</span>
+Dim oracleCount As Long
+oracleCount = oracleWS.Cells(oracleWS.Rows.Count, colOracleName).End(xlUp).Row - 1
+Dim oracleClean() As String, oracleTok() As String
+ReDim oracleClean(1 To oracleCount)
+ReDim oracleTok(1 To oracleCount)
+Dim j As Long
+For j = 1 To oracleCount
+    oracleClean(j) = CleanCompanyName(NzStr(oracleWS.Cells(j + 1, colOracleName).Value))
+    oracleTok(j)   = TokenSortKey(oracleClean(j))
+Next j
+
+<span class="cm">' Match each bank row:</span>
+Dim i As Long
+For i = 2 To lastBankRow
+    Dim bankName As String
+    bankName = GF_StrictClean(NzStr(bankWS.Cells(i, colBankName).Value))
+    Dim aClean As String : aClean = CleanCompanyName(bankName)
+    Dim aTok   As String : aTok   = TokenSortKey(aClean)
+
+    Dim bestScore As Double : bestScore = 0
+    Dim bestIdx   As Long   : bestIdx   = 0
+    For j = 1 To oracleCount
+        Dim score As Double
+        score = ScorePair(aClean, aTok, oracleClean(j), oracleTok(j))
+        If score > bestScore Then
+            bestScore = score
+            bestIdx   = j
+        End If
+    Next j
+
+    If bestScore >= ACCEPT_THRESHOLD Then
+        bankWS.Cells(i, colMatchName).Value  = NzStr(oracleWS.Cells(bestIdx + 1, colOracleName).Value)
+        bankWS.Cells(i, colMatchScore).Value = Format$(bestScore, "0.00")
+        bankWS.Cells(i, colMatchStatus).Value = "MATCHED"
+    Else
+        bankWS.Cells(i, colMatchStatus).Value = "NO MATCH"
+        SafeLog ThisWorkbook, "FuzzyMatch", "No match for: " &amp; bankName &amp; _
+                              " (best=" &amp; Format$(bestScore, "0.00") &amp; ")"
+    End If
+Next i
+</pre>
+</div>
+
+<!-- SCENARIO 3 -->
+<div class="scenario-box">
+<h4>Scenario 3 — Building a dated output file with a progress bar</h4>
+<p>
+Your macro generates an output Excel file, saves it to a timestamped folder, and shows
+a progress bar while processing rows. The user should be able to cancel.
+</p>
+<p><strong>Modules needed:</strong> LIB1, LIB2, LIB3, LIB5, LIB6</p>
+<pre>
+Public Sub RunGenerateReport()
+    On Error GoTo CleanUp
+
+    <span class="cm">' 1. Build output folder and filename</span>
+    Dim outFolder As String
+    outFolder = PathJoin(ws.Range("B5").Value, FormatDateForFilename(Date))
+    If Not EnsureFolderExists(outFolder) Then
+        MsgBox "Cannot create output folder: " &amp; outFolder
+        GoTo CleanUp
+    End If
+
+    Dim outFile As String
+    outFile = PathJoin(outFolder, _
+              FormatDateForFilename(Date) &amp; "_" &amp; SanitizeSegment(ws.Range("B2").Value) &amp; ".xlsx")
+
+    <span class="cm">' 2. Prepare output sheet</span>
+    Dim wsOut As Worksheet
+    Set wsOut = GetOrCreateSheet(ThisWorkbook, "Output")
+    ClearSheetAndTables wsOut
+    wsOut.Cells(1, 1).Value = "Vendor Name"
+    wsOut.Cells(1, 2).Value = "Account"
+    wsOut.Cells(1, 3).Value = "Status"
+    StyleHeader wsOut.Rows(1)
+
+    <span class="cm">' 3. Clear log and log the run start</span>
+    GF_ClearLogSheet ThisWorkbook
+    GF_LogRowAction ThisWorkbook, "RunGenerateReport", "", "", 0, "", "", "START", _
+                    "Output: " &amp; outFile
+
+    <span class="cm">' 4. Show progress bar and process rows</span>
+    Dim lastRow As Long : lastRow = dataWS.UsedRange.Rows.Count
+    ProgressStart "Generating report...", lastRow - 1
+
+    Dim outRow As Long : outRow = 2
+    Dim i As Long
+    For i = 2 To lastRow
+        If ProgressCancelled() Then
+            GF_LogRowAction ThisWorkbook, "RunGenerateReport", "", "", 0, "", "", "ABORTED", _
+                            "User cancelled at row " &amp; i
+            GoTo CleanUp
+        End If
+        ProgressUpdate i - 1
+
+        Dim vendName As String : vendName = GF_StrictClean(NzStr(dataWS.Cells(i, 1).Value))
+        If Len(vendName) = 0 Then GoTo NextRow
+
+        Dim acctRaw As Variant : acctRaw = dataWS.Cells(i, 2).Value
+        Dim acctNorm As String : acctNorm = CanonicalizeAccountStr(CStr(acctRaw))
+
+        wsOut.Cells(outRow, 1).Value = vendName
+        wsOut.Cells(outRow, 2).Value = acctNorm
+        wsOut.Cells(outRow, 3).Value = "PROCESSED"
+        outRow = outRow + 1
+
+NextRow:
+    Next i
+
+    <span class="cm">' 5. Save the output file</span>
+    ProgressMarquee "Saving file..."
+    ThisWorkbook.SaveCopyAs outFile
+    ProgressEndMarquee
+
+    GF_LogRowAction ThisWorkbook, "RunGenerateReport", "", "", 0, "", "", "DONE", _
+                    "Rows written: " &amp; outRow - 2
+
+CleanUp:
+    ProgressFinish
+End Sub
+</pre>
+</div>
+
+<!-- SCENARIO 4 -->
+<div class="scenario-box">
+<h4>Scenario 4 — Sending an HTML email with validated addresses and account list</h4>
+<p>
+You need to email each vendor their bank account details. The email addresses come from a
+spreadsheet and may be semicolon-separated lists, some invalid. The body template contains
+a <code>[[BANK_ACCOUNTS]]</code> placeholder.
+</p>
+<p><strong>Modules needed:</strong> LIB1, LIB3, LIB5, LIB8</p>
+<pre>
+Dim i As Long
+For i = 2 To lastRow
+    Dim rawEmail  As String : rawEmail  = NzStr(ws.Cells(i, colEmail).Value)
+    Dim toAddrs   As String : toAddrs   = NormalizeEmails(rawEmail)
+    If Len(toAddrs) = 0 Then
+        GF_LogRowAction ThisWorkbook, "SendVendorEmail", srcFile, "Data", i, _
+                        NzStr(ws.Cells(i, colIndex).Value), "", _
+                        "SKIPPED", "No valid email address in: [" &amp; rawEmail &amp; "]"
+        GoTo NextRow
+    End If
+
+    <span class="cm">' Build accounts HTML from a comma-separated cell value:</span>
+    Dim acctList  As String : acctList  = NzStr(ws.Cells(i, colAccounts).Value)
+    Dim acctHtml  As String : acctHtml  = BuildAccountsHtml(acctList)
+
+    <span class="cm">' Compose full body from template with placeholder injection:</span>
+    Dim tmplBody  As String : tmplBody  = NzStr(templateWS.Range("B2").Value)
+    Dim bodyHtml  As String : bodyHtml  = ComposeBodyHtml(tmplBody, acctHtml)
+
+    <span class="cm">' Build attachment path (if configured):</span>
+    Dim attachPath As String
+    attachPath = BuildAttachmentPath(ws.Cells(i, colAttachFolder).Value, _
+                                     ws.Cells(i, colAttachFile).Value)
+
+    <span class="cm">' Send via Outlook:</span>
+    Dim mail As Object
+    Set mail = CreateObject("Outlook.Application").CreateItem(0)
+    With mail
+        .To        = toAddrs
+        .Subject   = "Bank Account Verification — " &amp; FormatDateLong(Date)
+        .HTMLBody  = WrapHtml(bodyHtml)
+        If Len(attachPath) > 0 Then .Attachments.Add attachPath
+        .Send
+    End With
+
+    GF_LogRowAction ThisWorkbook, "SendVendorEmail", srcFile, "Data", i, _
+                    NzStr(ws.Cells(i, colIndex).Value), "", _
+                    "DONE", "Sent to: " &amp; toAddrs
+
+NextRow:
+Next i
+</pre>
+</div>
+
+<!-- SCENARIO 5 -->
+<div class="scenario-box">
+<h4>Scenario 5 — Filtering Oracle rows by OU with any format input</h4>
+<p>
+Your macro has a Run sheet where the user types an OU filter. They might type
+<code>611</code>, <code>AU_611</code>, or <code>AU_611_GDSAU_OU</code>. The Oracle extract
+has the full OU string. You need to filter rows where the OU matches, regardless of format.
+Blank filter = include all rows.
+</p>
+<p><strong>Modules needed:</strong> LIB1, LIB9</p>
+<pre>
+Dim userOU As String
+userOU = GF_StrictClean(NzStr(wsRun.Range("K6").Value))
+<span class="cm">' userOU could be "", "611", "AU_611", or "AU_611_GDSAU_OU"</span>
+
+Dim i As Long
+For i = 2 To lastRow
+    Dim rowOrg As String
+    rowOrg = GF_StrictClean(NzStr(oracleWS.Cells(i, colOrg).Value))
+
+    If Not OrgMatches(rowOrg, userOU) Then GoTo NextRow
+    <span class="cm">' Row's OU matches the filter (or filter is blank) — include it</span>
+
+    <span class="cm">' ... process the row ...</span>
+NextRow:
+Next i
+</pre>
+</div>
+
+<!-- SCENARIO 6 -->
+<div class="scenario-box">
+<h4>Scenario 6 — Normalising prices from an international supplier file</h4>
+<p>
+A file from a European supplier has prices in German format: <code>1.234,56</code> (dot
+as thousands separator, comma as decimal). You need to convert them to US format
+<code>1234.56</code> before storing in Oracle.
+</p>
+<p><strong>Modules needed:</strong> LIB5, LIB7</p>
+<pre>
+<span class="cm">' Pre-scan: count how many rows need fixing to warn the user first</span>
+Dim issueCount As Long : issueCount = 0
+Dim i As Long
+For i = 2 To lastRow
+    If GF_PriceNeedsNormalization(dataWS.Cells(i, colPrice).Value) Then
+        issueCount = issueCount + 1
+    End If
+Next i
+
+If issueCount > 0 Then
+    Dim answer As VbMsgBoxResult
+    answer = MsgBox(issueCount &amp; " rows have non-standard price formatting." &amp; vbCrLf &amp; _
+                    "Click YES to auto-convert, NO to skip those rows.", _
+                    vbYesNo + vbExclamation, "Price Format Warning")
+    If answer = vbNo Then
+        MsgBox "Macro cancelled."
+        Exit Sub
+    End If
+End If
+
+<span class="cm">' Processing loop:</span>
+For i = 2 To lastRow
+    Dim rawPrice As Variant : rawPrice = dataWS.Cells(i, colPrice).Value
+    Dim normPrice As String
+    Dim wasChanged As Boolean, priceNote As String
+    normPrice = GF_NormalizePriceToUS(rawPrice, wasChanged, priceNote)
+
+    If Len(normPrice) = 0 Then
+        GF_LogRowAction ThisWorkbook, "ImportPrices", srcFile, srcTab, i, _
+                        NzStr(dataWS.Cells(i, colIndex).Value), "", _
+                        "SKIPPED", "Unparseable price: [" &amp; CStr(rawPrice) &amp; "]"
+        GoTo NextRow
+    End If
+
+    dataWS.Cells(i, colPrice).NumberFormat = "@"
+    dataWS.Cells(i, colPrice).Value = normPrice
+
+    If wasChanged Then
+        GF_LogRowAction ThisWorkbook, "ImportPrices", srcFile, srcTab, i, _
+                        NzStr(dataWS.Cells(i, colIndex).Value), "", _
+                        "FIXED_AND_PROCESSED", "PRICE: [" &amp; CStr(rawPrice) &amp; "] -> [" &amp; normPrice &amp; "] " &amp; priceNote
+    End If
+NextRow:
+Next i
+</pre>
+</div>
+
+
+<!-- ================================================================ -->
+<hr>
+<h2 id="antipatterns">15. What NOT to Do</h2>
+
+<div class="danger">
+<strong>Do NOT use these patterns when working with library functions.</strong>
+</div>
+
+<h3>1. Using Worksheets("name") directly</h3>
+<p>
+<code>Worksheets("name")</code> raises Runtime Error 9 if the sheet does not exist.
+Always use <code>GetSheetIfExists()</code> or <code>GetOrCreateSheet()</code> from LIB2.
+</p>
+<pre>
+<span class="cm">' WRONG — crashes if "Config" sheet is missing:</span>
+Set wsConfig = ThisWorkbook.Worksheets("Config")
+
+<span class="cm">' RIGHT:</span>
+Set wsConfig = GetSheetIfExists(ThisWorkbook, "Config")
+If wsConfig Is Nothing Then MsgBox "Config sheet missing": GoTo CleanUp
+</pre>
+
+<h3>2. Reading cells without NzStr</h3>
+<p>
+Excel error values (<code>#N/A</code>, <code>#VALUE!</code>) and Null values crash
+<code>CStr()</code>. Always wrap cell reads with <code>NzStr()</code>.
+</p>
+<pre>
+<span class="cm">' WRONG — crashes if cell contains #N/A:</span>
+Dim v As String : v = CStr(ws.Cells(i, c).Value)
+
+<span class="cm">' RIGHT:</span>
+Dim v As String : v = NzStr(ws.Cells(i, c).Value)
+</pre>
+
+<h3>3. Pre-computing CleanCompanyName inside the inner loop</h3>
+<p>
+<code>CleanCompanyName</code> and <code>TokenSortKey</code> do string replacement work on
+every call. If you are comparing one query name against 5,000 Oracle rows, call them once
+for the query name before the loop — not inside it.
+</p>
+<pre>
+<span class="cm">' WRONG — computes the same query key 5000 times:</span>
+For i = 2 To 5001
+    score = ScorePair(CleanCompanyName(queryName), TokenSortKey(CleanCompanyName(queryName)), _
+                      oracleClean(i), oracleTok(i))
+Next i
+
+<span class="cm">' RIGHT — compute once:</span>
+Dim aClean As String : aClean = CleanCompanyName(queryName)
+Dim aTok   As String : aTok   = TokenSortKey(aClean)
+For i = 2 To 5001
+    score = ScorePair(aClean, aTok, oracleClean(i), oracleTok(i))
+Next i
+</pre>
+
+<h3>4. Using GF_LogRowAction with 0-indexed arrays</h3>
+<p>
+Worksheet <code>Range().Value</code> arrays are <strong>1-based</strong>. Never access
+index 0 on an array read from a worksheet range.
+</p>
+
+<h3>5. Calling AppLock from a step module</h3>
+<p>
+<code>AppLock</code> (the <code>Application.ScreenUpdating</code> / <code>EnableEvents</code>
+/ <code>DisplayAlerts</code> / <code>Calculation</code> toggle) always lives in the
+Orchestrator module. Step modules (Helpers, Extract, etc.) never call it directly.
+See CLAUDE.md §9 for the canonical implementation.
+</p>
+
+<h3>6. Forgetting ProgressFinish in early-exit paths</h3>
+<p>
+Always call <code>ProgressFinish</code> from the <code>CleanUp:</code> label, not just at
+the end of the normal execution path. If your macro errors out or the user aborts, the
+form will stay open and block Excel.
+</p>
+<pre>
+<span class="cm">' WRONG — ProgressFinish only on normal path:</span>
+ProgressStart "Working...", 100
+If someError Then Exit Sub    ' form left open!
+
+<span class="cm">' RIGHT — ProgressFinish always reached:</span>
+ProgressStart "Working...", 100
+If someError Then GoTo CleanUp
+
+CleanUp:
+    ProgressFinish
+</pre>
+
+<hr>
+<p style="color:#595959; font-size:9.5pt; text-align:center; margin-top:40px;">
+VBA Shared Library (LIB) &nbsp;|&nbsp; Developer Reference Manual &nbsp;|&nbsp;
+Version 1.0 &nbsp;|&nbsp; March 2026 &nbsp;|&nbsp;
+Part of the <em>GenerateBPAFiles</em> macro project suite
+</p>
+
+</body>
+</html>

@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Generate BPA Files V2 — User Manual</title>
+<style>
+  body {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11pt;
+    color: #1a1a1a;
+    max-width: 900px;
+    margin: 40px auto;
+    line-height: 1.6;
+  }
+  h1 {
+    font-size: 22pt;
+    color: #1F4E79;
+    border-bottom: 3px solid #1F4E79;
+    padding-bottom: 6px;
+    margin-top: 0;
+  }
+  h2 {
+    font-size: 15pt;
+    color: #2E75B6;
+    border-bottom: 1.5px solid #BDD7EE;
+    padding-bottom: 4px;
+    margin-top: 32px;
+  }
+  h3 {
+    font-size: 12pt;
+    color: #1F4E79;
+    margin-top: 22px;
+    margin-bottom: 6px;
+  }
+  h4 {
+    font-size: 11pt;
+    color: #2E75B6;
+    margin-top: 14px;
+    margin-bottom: 4px;
+  }
+  p { margin: 6px 0 10px 0; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 12px 0;
+    font-size: 10.5pt;
+  }
+  th {
+    background-color: #2E75B6;
+    color: white;
+    padding: 7px 10px;
+    text-align: left;
+    font-weight: bold;
+  }
+  td {
+    padding: 6px 10px;
+    border: 1px solid #BDD7EE;
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background-color: #EBF3FB; }
+  .tip {
+    background-color: #E2EFDA;
+    border-left: 4px solid #70AD47;
+    padding: 8px 14px;
+    margin: 10px 0;
+  }
+  .warning {
+    background-color: #FFF2CC;
+    border-left: 4px solid #FFC000;
+    padding: 8px 14px;
+    margin: 10px 0;
+  }
+  .note {
+    background-color: #DEEAF1;
+    border-left: 4px solid #2E75B6;
+    padding: 8px 14px;
+    margin: 10px 0;
+  }
+  code {
+    background-color: #F2F2F2;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 10pt;
+    padding: 1px 4px;
+    color: #C00000;
+  }
+  ul, ol { margin: 6px 0 10px 0; padding-left: 26px; }
+  li { margin-bottom: 5px; }
+  .step-table { width: 100%; border-collapse: collapse; margin: 14px 0; }
+  .step-table td { border: 1px solid #BDD7EE; padding: 8px 12px; vertical-align: top; }
+  .step-num {
+    background-color: #1F4E79;
+    color: white;
+    font-weight: bold;
+    font-size: 12pt;
+    width: 36px;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .step-body { background-color: #F5F9FD; }
+  .btn-label {
+    background-color: #1F4E79;
+    color: white;
+    font-weight: bold;
+    padding: 2px 8px;
+    font-size: 10pt;
+  }
+  .tab-label {
+    background-color: #D6E4F0;
+    color: #1F4E79;
+    font-weight: bold;
+    padding: 1px 6px;
+    font-size: 10pt;
+  }
+  .phase-header {
+    background-color: #1F4E79;
+    color: white;
+    padding: 10px 14px;
+    margin-top: 28px;
+    margin-bottom: 0;
+    font-size: 13pt;
+    font-weight: bold;
+  }
+  .toc { background-color: #EBF3FB; padding: 14px 20px; margin-bottom: 28px; }
+  .toc ol { margin: 6px 0; }
+  .toc li { margin-bottom: 3px; }
+  .toc a { color: #2E75B6; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<h1>Generate BPA Files V2 &mdash; User Manual</h1>
+
+<p><strong>Tool:</strong> Generate BPA Files V2 &nbsp;|&nbsp; <strong>Version:</strong> 2.0 &nbsp;|&nbsp; <strong>Platform:</strong> Microsoft Excel (Windows)</p>
+
+<div class="note">
+<strong>Who this manual is for:</strong> This guide is written for everyday users with no programming background.
+Every step is described exactly as it appears on screen. If you can open Excel and click a button, you can use this tool.
+</div>
+
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc">
+<strong>Contents</strong>
+<ol>
+  <li><a href="#what">What Does This Tool Do?</a></li>
+  <li><a href="#overview">Workbook Overview</a></li>
+  <li><a href="#first-setup">First-Time Setup</a></li>
+  <li><a href="#workflow">The Two-Step Workflow</a></li>
+  <li><a href="#step1">Step 1 &mdash; Build To Do Sheet</a></li>
+  <li><a href="#step2">Step 2 &mdash; Generate Output Files</a>
+    <ol type="a">
+      <li><a href="#mapper">First Time: Open Mapper (create configs)</a></li>
+      <li><a href="#batch">Every Run: Run Template Batch</a></li>
+    </ol>
+  </li>
+  <li><a href="#review-todo">Reviewing and Editing the To Do Sheet</a></li>
+  <li><a href="#templates">Template Tabs Explained</a></li>
+  <li><a href="#ref-tabs">Reference Tabs</a></li>
+  <li><a href="#deployment">Deployment Scenarios and Sharing the Workbook</a></li>
+  <li><a href="#send-email">Send Email</a></li>
+  <li><a href="#oracle">Oracle Refresh</a></li>
+  <li><a href="#troubleshoot">Troubleshooting</a></li>
+</ol>
+</div>
+
+
+<!-- SECTION 1 -->
+<h2 id="what">1. What Does This Tool Do?</h2>
+
+<p>
+The <strong>Generate BPA Files V2</strong> macro automates the production of Oracle ERP upload files
+from a daily RFQ (Request for Quotation) spreadsheet. Without this tool, a user would need to
+manually copy data from the RFQ file into several Oracle upload templates — a process that is
+slow and error-prone.
+</p>
+<p>This tool handles that automatically:</p>
+
+<table>
+  <tr><th>What it produces</th><th>What Oracle does with it</th></tr>
+  <tr><td><strong>BPA TXT file</strong> (one per BPA number)</td><td>Updates Blanket Purchase Agreement contract lines</td></tr>
+  <tr><td><strong>Update Lead Times file</strong></td><td>Updates item lead times in Oracle</td></tr>
+  <tr><td><strong>Update Buyer Names file</strong></td><td>Reassigns item buyer codes in Oracle</td></tr>
+  <tr><td><strong>Assignment Set file</strong></td><td>Assigns sourcing rules to items and organisations</td></tr>
+</table>
+
+<div class="tip">
+<strong>In plain terms:</strong> You give the tool your RFQ Excel file. It reads the data, validates it,
+lets you review a clean list, and then creates all the Oracle upload files automatically — named,
+formatted, and ready to submit.
+</div>
+
+
+<!-- SECTION 2 -->
+<h2 id="overview">2. Workbook Overview</h2>
+
+<h3>The Run Sheet</h3>
+<p>
+When you open the workbook, go to the <span class="tab-label">Run</span> tab.
+This is the main control panel. All five buttons are here.
+</p>
+
+<table>
+  <tr><th>Button</th><th>What it does</th><th>When to use it</th></tr>
+  <tr>
+    <td><span class="btn-label">Build To Do</span></td>
+    <td>Reads your RFQ source file and writes a clean, validated list to the <span class="tab-label">To Do</span> tab.</td>
+    <td>Every run &mdash; always the first step.</td>
+  </tr>
+  <tr>
+    <td><span class="btn-label">Open Mapper</span></td>
+    <td>Opens the Template Mapper form, where you create or edit output configurations.</td>
+    <td>First time only (or when you need to change a mapping).</td>
+  </tr>
+  <tr>
+    <td><span class="btn-label">Run Template Batch</span></td>
+    <td>Uses your saved configurations to generate all output files in one click.</td>
+    <td>Every run &mdash; after reviewing the To Do sheet.</td>
+  </tr>
+  <tr>
+    <td><span class="btn-label">Send Email</span></td>
+    <td>Opens a draft Outlook email with all output files attached.</td>
+    <td>After files are generated and ready to distribute.</td>
+  </tr>
+  <tr>
+    <td><span class="btn-label">Oracle Refresh</span></td>
+    <td>Refreshes the Sourcing Rule reference data from an Oracle extract.</td>
+    <td>When the Sourcing_Rule tab needs updating.</td>
+  </tr>
+</table>
+
+<h3>The Workbook Tabs</h3>
+
+<table>
+  <tr><th>Tab name</th><th>Purpose</th><th>Do you edit it?</th></tr>
+  <tr><td><span class="tab-label">Run</span></td><td>Main control panel. Buttons and settings.</td><td>Yes — fill in Source Path, Initials, Output Path, Email.</td></tr>
+  <tr><td><span class="tab-label">To Do</span></td><td>Validated data extracted from the RFQ file. Review before generating files.</td><td>Yes — review and correct Sourcing_Rule_Name.</td></tr>
+  <tr><td><span class="tab-label">Log</span></td><td>Record of every row processed, including skip reasons.</td><td>No — read only.</td></tr>
+  <tr><td><span class="tab-label">File_Log</span></td><td>List of every output file created in the last batch run.</td><td>No — read only.</td></tr>
+  <tr><td><span class="tab-label">Email_Template</span></td><td>Email recipient addresses, subject line, and body text.</td><td>Yes — set up once.</td></tr>
+  <tr><td><span class="tab-label">BUYER_ID</span></td><td>Maps buyer full names to Oracle buyer codes.</td><td>Yes — keep up to date.</td></tr>
+  <tr><td><span class="tab-label">Sourcing_Rule</span></td><td>Oracle Sourcing Rule reference data used to fill the Assignment Set template.</td><td>No — updated by Oracle Refresh.</td></tr>
+  <tr><td><span class="tab-label">BPA_Filters</span></td><td>Named filter sets that control which rows are included in the To Do sheet.</td><td>Yes — managed via the Build To Do form.</td></tr>
+  <tr><td><span class="tab-label">BPA_SkipRules</span></td><td>Rules that determine when a row is skipped during validation.</td><td>Rarely — adjust only if validation rules change.</td></tr>
+  <tr><td><span class="tab-label">Saved_Configs</span></td><td>Stores your saved Template Mapper configurations. The <strong>Output_Path</strong> column can be edited directly to redirect output without re-creating configs.</td><td>Mostly no — but Output_Path can be edited manually.</td></tr>
+  <tr><td><span class="tab-label">TEMP_BPA_TXT</span></td><td>Blank BPA contract upload template. Used by the Mapper.</td><td>No — do not modify.</td></tr>
+  <tr><td><span class="tab-label">TEMP_UPDATE_LEAD_TIMES</span></td><td>Blank Lead Times upload template.</td><td>No — do not modify.</td></tr>
+  <tr><td><span class="tab-label">TEMP_UPDATE_BUYER_NAMES</span></td><td>Blank Buyer Names upload template.</td><td>No — do not modify.</td></tr>
+  <tr><td><span class="tab-label">TEMP_ASSIGNMENT_SET</span></td><td>Blank Assignment Set upload template.</td><td>No — do not modify.</td></tr>
+</table>
+
+
+<!-- SECTION 3 -->
+<h2 id="first-setup">3. First-Time Setup</h2>
+<p>Complete these steps once before your first run. You will not need to repeat them.</p>
+
+<h3>3.1 &mdash; Fill In the Run Sheet</h3>
+<p>Open the <span class="tab-label">Run</span> tab. The left column shows labels; type your values in column B.</p>
+
+<table>
+  <tr><th>Field</th><th>What to enter</th><th>Example</th></tr>
+  <tr><td>Source Path</td><td>The folder where your RFQ Excel file is saved.</td><td><code>C:\Users\darek.krawczynski\Documents\Tools\BPA</code></td></tr>
+  <tr><td>Source File</td><td>The filename of your RFQ file (including extension).</td><td><code>RFQ_MK_2026.xlsx</code></td></tr>
+  <tr><td>Source Tab</td><td>The sheet name inside that file that contains the data.</td><td><code>2026</code></td></tr>
+  <tr><td>Output Path</td><td>The folder where generated files will be saved.</td><td><code>C:\Users\darek.krawczynski\Documents\Tools\BPA\Outputs</code></td></tr>
+  <tr><td>Initials</td><td>Your two- or three-letter initials. Used in output file names.</td><td><code>DK</code></td></tr>
+</table>
+
+<div class="tip">
+<strong>Tip:</strong> The Build To Do button also has a Browse button inside the form — you can pick your source
+file from there and it will update the Run sheet automatically.
+</div>
+
+<h3>3.2 &mdash; Set Up the Email Template</h3>
+<p>Open the <span class="tab-label">Email_Template</span> tab and fill in the following rows:</p>
+
+<table>
+  <tr><th>Row label</th><th>What to enter</th></tr>
+  <tr><td>To</td><td>Recipient email address(es), separated by semicolons.</td></tr>
+  <tr><td>CC</td><td>CC email address(es), separated by semicolons.</td></tr>
+  <tr><td>Subject</td><td>Email subject line. You may use the token <code>{DATE}</code> which is replaced automatically with today's date.</td></tr>
+  <tr><td>Body</td><td>Body text. The token <code>{FILES}</code> is replaced with a list of attached file names.</td></tr>
+</table>
+
+<h3>3.3 &mdash; Populate the BUYER_ID Tab</h3>
+<p>
+Open the <span class="tab-label">BUYER_ID</span> tab. This table maps each buyer's full name (as it appears in
+the RFQ file) to their Oracle Buyer ID code. There are two columns:
+</p>
+<ul>
+  <li><strong>Buyer Full Name</strong> &mdash; must match exactly how the name appears in the source file (not case-sensitive).</li>
+  <li><strong>BUYER_ID</strong> &mdash; the Oracle buyer code for that person.</li>
+</ul>
+<div class="warning">
+<strong>Important:</strong> If a buyer's name appears in the source data but has no entry here, the row will be
+skipped and logged with the reason <em>"Buyer missing"</em>.
+</div>
+
+<h3>3.4 &mdash; Create Your Template Configs (Open Mapper)</h3>
+<p>
+This is a one-time step. You need to tell the tool how to map data from the <span class="tab-label">To Do</span>
+sheet into each of the four output templates. This is done using the <strong>Open Mapper</strong> button.
+See <a href="#mapper">Section 6a</a> for full instructions.
+</p>
+
+
+<!-- SECTION 4 -->
+<h2 id="workflow">4. The Two-Step Workflow</h2>
+
+<p>Every time you need to generate BPA files, you follow two steps:</p>
+
+<table>
+  <tr>
+    <td style="background-color:#1F4E79; color:white; font-weight:bold; font-size:13pt; padding:10px 14px; width:50%; text-align:center;">
+      STEP 1<br><span style="font-size:11pt; font-weight:normal;">Build To Do</span>
+    </td>
+    <td style="background-color:#2E75B6; color:white; font-weight:bold; font-size:13pt; padding:10px 14px; width:50%; text-align:center;">
+      STEP 2<br><span style="font-size:11pt; font-weight:normal;">Run Template Batch</span>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding:10px 14px; border:1px solid #BDD7EE; vertical-align:top;">
+      Click <strong>Build To Do</strong>.<br>
+      Browse to your RFQ source file.<br>
+      Set any column filters needed.<br>
+      Click <strong>Run</strong>.<br><br>
+      Then open the <span class="tab-label">To Do</span> tab and review the data &mdash;
+      especially the <strong>Sourcing_Rule_Name</strong> column.
+    </td>
+    <td style="padding:10px 14px; border:1px solid #BDD7EE; vertical-align:top;">
+      Click <strong>Run Template Batch</strong>.<br>
+      Select your saved configs.<br>
+      Select the <span class="tab-label">To Do</span> tab as the source.<br>
+      Click <strong>Run</strong>.<br><br>
+      Output files are created in your Output folder, named and ready to upload.
+    </td>
+  </tr>
+</table>
+
+<div class="note">
+<strong>The first time</strong> you use the tool, there is an additional step between Step 1 and Step 2:
+you must create your saved configurations using <strong>Open Mapper</strong>. Once that is done,
+you never need to repeat it — future runs go straight from Step 1 to Step 2.
+</div>
+
+
+<!-- SECTION 5 -->
+<h2 id="step1">5. Step 1 &mdash; Build To Do Sheet</h2>
+<p>This step reads your RFQ source file, validates every row, and writes the clean result to the <span class="tab-label">To Do</span> tab.</p>
+
+<table class="step-table">
+  <tr>
+    <td class="step-num">1</td>
+    <td class="step-body">On the <span class="tab-label">Run</span> tab, click <span class="btn-label">Build To Do</span>.<br>
+    The <em>Build To Do</em> form opens.</td>
+  </tr>
+  <tr>
+    <td class="step-num">2</td>
+    <td class="step-body">
+      Click <strong>Browse...</strong> and navigate to your RFQ source file. Select it and click OK.<br>
+      The tool automatically scans the file and populates the <em>Source Tab</em> dropdown
+      and the column filter rows below.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">3</td>
+    <td class="step-body">
+      <strong>Select the correct source tab</strong> from the <em>Source Tab</em> dropdown
+      if the file has more than one sheet.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">4</td>
+    <td class="step-body">
+      <strong>Set column filters</strong> (optional but recommended).<br>
+      Each row in the filter panel corresponds to one column in the source file.
+      Leave a field blank to include all values from that column.
+      Type comma-separated values to include only specific rows.<br><br>
+      <strong>Special filter keywords:</strong>
+      <ul>
+        <li><code>YES</code> &mdash; includes only rows where the cell contains a value recognised as "yes" (Y, Yes, TRUE, etc.).</li>
+        <li><code>BLANK</code> &mdash; includes only rows where the cell is empty.</li>
+      </ul>
+      <div class="tip">
+        To include only rows where the Decision column is "Yes", add a filter row for <strong>Decision</strong>
+        with value <code>YES</code>. This is the most common setup and is recommended as the default active filter set.
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">5</td>
+    <td class="step-body">
+      <strong>Save your filter set</strong> (optional).<br>
+      If you use the same filters every time, type a name in the <em>Filter Set Name</em> field
+      and click <strong>Save Set</strong>. You can reload it next time with <strong>Load Set</strong>.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">6</td>
+    <td class="step-body">
+      Click <strong>Run</strong>.<br>
+      The macro reads the source file, validates each row against the skip rules,
+      resolves buyer IDs, and writes all passing rows to the <span class="tab-label">To Do</span> tab.<br>
+      A progress bar shows the status. When complete, a summary message appears.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">7</td>
+    <td class="step-body">
+      <strong>Review the To Do sheet</strong> before continuing.<br>
+      See <a href="#review-todo">Section 7</a> for what to check.
+    </td>
+  </tr>
+</table>
+
+<h3>What Happens Behind the Scenes</h3>
+<ul>
+  <li>Rows are skipped if the BPA number is not exactly 9 digits.</li>
+  <li>Rows are skipped if the price is zero or negative.</li>
+  <li>Rows are skipped if the buyer name is not found in the <span class="tab-label">BUYER_ID</span> tab.</li>
+  <li>Rows are skipped if the lead time value is missing or cannot be parsed as a number.</li>
+  <li>All skipped rows are recorded in the <span class="tab-label">Log</span> tab with the reason.</li>
+  <li>For each vendor, the macro searches the <span class="tab-label">Sourcing_Rule</span> tab and fills in the best matching sourcing rule name. If multiple rules match, a dropdown is placed in the cell so you can choose.</li>
+</ul>
+
+
+<!-- SECTION 6 -->
+<h2 id="step2">6. Step 2 &mdash; Generate Output Files</h2>
+
+<div class="phase-header">6a. First Time Only &mdash; Open Mapper (Create Saved Configs)</div>
+
+<p id="mapper" style="margin-top:12px;">
+Before you can use <strong>Run Template Batch</strong>, you need to create one saved configuration for each
+output template. You do this once using <strong>Open Mapper</strong>. You need to create four configs:
+</p>
+
+<table>
+  <tr><th>Config name (suggested)</th><th>Template tab</th><th>What it produces</th></tr>
+  <tr><td><code>BPA_TXT</code></td><td><span class="tab-label">TEMP_BPA_TXT</span></td><td>One BPA contract file per BPA number</td></tr>
+  <tr><td><code>LEAD_TIMES</code></td><td><span class="tab-label">TEMP_UPDATE_LEAD_TIMES</span></td><td>Lead time update file</td></tr>
+  <tr><td><code>BUYER_NAMES</code></td><td><span class="tab-label">TEMP_UPDATE_BUYER_NAMES</span></td><td>Buyer name update file</td></tr>
+  <tr><td><code>ASSIGNMENT_SET</code></td><td><span class="tab-label">TEMP_ASSIGNMENT_SET</span></td><td>Sourcing rule assignment file</td></tr>
+</table>
+
+<p>Follow these steps for <strong>each</strong> of the four configs:</p>
+
+<table class="step-table">
+  <tr>
+    <td class="step-num">1</td>
+    <td class="step-body">Click <span class="btn-label">Open Mapper</span> on the <span class="tab-label">Run</span> tab. The Template Mapper form opens.</td>
+  </tr>
+  <tr>
+    <td class="step-num">2</td>
+    <td class="step-body">
+      <strong>Template section (top of form):</strong><br>
+      Select <em>This workbook &mdash; tab:</em> and choose the appropriate <code>TEMP_</code> tab from the dropdown.
+      Then click <strong>Scan Template</strong>. The Column Mapping section will populate with the template's column names.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">3</td>
+    <td class="step-body">
+      <strong>Data Source section:</strong><br>
+      Select <em>This workbook &mdash; sheet:</em> and choose <span class="tab-label">To Do</span> from the dropdown.<br>
+      The tool scans the To Do headers and shows a preview of the first few rows.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">4</td>
+    <td class="step-body">
+      <strong>Column Mapping section:</strong><br>
+      For each row, set the <strong>Type</strong> and <strong>Source / Value</strong>:
+      <ul>
+        <li><code>SKIP</code> &mdash; this template column is left blank. No value is written.</li>
+        <li><code>COL</code> &mdash; copy a value from a source column. Choose the column name from the dropdown.</li>
+        <li><code>STATIC</code> &mdash; write the same fixed text for every row. Type the value in the Source/Value field.</li>
+        <li><code>COUNT</code> &mdash; automatically number rows 1, 2, 3&hellip;</li>
+        <li><code>DATE</code> &mdash; reads a date from a source column. If the date is in the past or blank, today's date is used. Formatted as <code>23-MAR-2026</code>.</li>
+        <li><code>LOOKUP</code> &mdash; looks up a value from a named lookup table (advanced).</li>
+      </ul>
+      <div class="tip">
+        <strong>Norm checkbox:</strong> Tick this for text columns where you want the macro to clean up
+        extra spaces and special characters automatically.
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">5</td>
+    <td class="step-body">
+      <strong>Filter / Group section:</strong><br>
+      This controls how rows are split into separate files.
+      <ul>
+        <li>For <strong>BPA_TXT</strong>: set <em>Group by column</em> to <strong>BPA no.</strong>,
+            select <em>Not blank</em>, and set Output to <em>One file per group value</em>.
+            This creates one file per BPA number automatically.</li>
+        <li>For all other configs: leave Group by column blank and select <em>One combined file</em>.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">6</td>
+    <td class="step-body">
+      <strong>Output section:</strong>
+      <ul>
+        <li>Set the <strong>Folder</strong> to your output path (same as the Run sheet Output Path).</li>
+        <li>Choose the file format: <em>Tab-delimited (.txt)</em> for BPA_TXT; <em>Excel 97-2003 (.xls)</em> for the others.</li>
+        <li>The <strong>File Pattern</strong> controls the output file name. Tokens are replaced automatically:
+          <ul>
+            <li><code>{DATE}</code> &rarr; today's date, e.g. <code>25MAR2026</code></li>
+            <li><code>{GROUP}</code> &rarr; the BPA number (when grouping by BPA no.)</li>
+            <li><code>{TMPL}</code> &rarr; the template tab name</li>
+            <li><code>{INITIALS}</code> &rarr; your initials from the Run sheet</li>
+          </ul>
+          For BPA_TXT, use: <code>{GROUP}_BPA_{DATE}</code> to get <code>111306362_BPA_25MAR2026.txt</code>
+        </li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">7</td>
+    <td class="step-body">
+      Click <strong>Save Config</strong>.<br>
+      Type a name (e.g. <code>BPA_TXT</code>) and click OK.
+      The config is saved to the <span class="tab-label">Saved_Configs</span> tab and
+      will appear in the Run Template Batch form from now on.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">8</td>
+    <td class="step-body">
+      Click <strong>Close</strong> and repeat from Step 1 for the next template.
+    </td>
+  </tr>
+</table>
+
+
+<div class="phase-header">6b. Every Run &mdash; Run Template Batch</div>
+
+<p id="batch" style="margin-top:12px;">
+Once your four configs exist, this is all you need to do to generate the output files.
+</p>
+
+<table class="step-table">
+  <tr>
+    <td class="step-num">1</td>
+    <td class="step-body">
+      On the <span class="tab-label">Run</span> tab, click <span class="btn-label">Run Template Batch</span>.<br>
+      The Batch Run form opens, showing a list of all your saved configs.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">2</td>
+    <td class="step-body">
+      <strong>Select the configs to run.</strong><br>
+      Tick the checkbox next to each config you want. To run all four, tick all four.<br>
+      <div class="tip">You can run just one config if you only need to regenerate a specific file type.</div>
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">3</td>
+    <td class="step-body">
+      <strong>Select the data source.</strong><br>
+      Choose <em>This Workbook Tab</em> and select <span class="tab-label">To Do</span> from the dropdown.<br>
+      This tells the batch to use the data you built in Step 1.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">4</td>
+    <td class="step-body">
+      Click <strong>Run</strong>.<br>
+      The macro processes each selected config in sequence.
+      A progress bar shows which config is currently running and how far along it is.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">5</td>
+    <td class="step-body">
+      When complete, a summary message shows how many files were created.<br>
+      The <span class="tab-label">File_Log</span> tab lists every file created, including its name, config, and row count.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">6</td>
+    <td class="step-body">
+      Navigate to your output folder and confirm the files are there. They are ready to upload to Oracle.
+    </td>
+  </tr>
+</table>
+
+
+<!-- SECTION 7 -->
+<h2 id="review-todo">7. Reviewing and Editing the To Do Sheet</h2>
+
+<p>
+After clicking <strong>Build To Do</strong>, always open the <span class="tab-label">To Do</span> tab
+before running the batch. The most important column to check is <strong>Sourcing_Rule_Name</strong>.
+</p>
+
+<h3>Sourcing Rule Name</h3>
+<p>
+The macro automatically matches each vendor to a sourcing rule from the <span class="tab-label">Sourcing_Rule</span>
+reference tab using the vendor name, currency, and rank. The result is placed in the
+<strong>Sourcing_Rule_Name</strong> column.
+</p>
+<ul>
+  <li>If a <strong>single best match</strong> is found, it is written directly into the cell.</li>
+  <li>If <strong>multiple matches</strong> are found, a dropdown arrow appears in the cell.
+      Click the dropdown and select the correct sourcing rule.</li>
+  <li>If <strong>no match</strong> is found, the cell is left blank. You can type the rule name manually
+      or leave it blank (the row will still be processed, but without a sourcing rule).</li>
+</ul>
+
+<div class="warning">
+<strong>Do not modify column headers</strong> on the To Do sheet. Only edit values in data cells.
+Changing column headers will break the batch run.
+</div>
+
+<h3>Other Columns to Check</h3>
+<table>
+  <tr><th>Column</th><th>What to look for</th></tr>
+  <tr><td>Price</td><td>Should be a positive number. Rows with zero or negative price are skipped.</td></tr>
+  <tr><td>Lead Time [days]</td><td>Should be a whole number. Ranges (e.g. &ldquo;30-45&rdquo;) use the upper value.</td></tr>
+  <tr><td>Buyer</td><td>Should resolve to a buyer code. If missing, check the BUYER_ID tab.</td></tr>
+  <tr><td>BPA no.</td><td>Must be exactly 9 digits. Rows with invalid BPA numbers are excluded.</td></tr>
+</table>
+
+<h3>Checking Skipped Rows</h3>
+<p>
+If the row count in the To Do sheet seems lower than expected, check the <span class="tab-label">Log</span> tab.
+Every skipped row appears there with:
+</p>
+<ul>
+  <li>The row number from the source file.</li>
+  <li>The BPA number and item index (if available).</li>
+  <li>The reason it was skipped (e.g. <em>Invalid BPA (not 9 digits)</em>, <em>Buyer missing</em>, etc.).</li>
+</ul>
+
+
+<!-- SECTION 8 -->
+<h2 id="templates">8. Template Tabs Explained</h2>
+
+<p>
+The four <code>TEMP_</code> tabs are blank Oracle upload templates embedded in the workbook.
+The macro copies data into a fresh copy of these templates for each output file — the originals
+are never modified.
+</p>
+
+<table>
+  <tr><th>Tab</th><th>Oracle upload type</th><th>Output mode</th></tr>
+  <tr>
+    <td><span class="tab-label">TEMP_BPA_TXT</span></td>
+    <td>Blanket Purchase Agreement contract lines</td>
+    <td>One <code>.txt</code> file per BPA number (e.g. <code>111306362_BPA_25MAR2026.txt</code>)</td>
+  </tr>
+  <tr>
+    <td><span class="tab-label">TEMP_UPDATE_LEAD_TIMES</span></td>
+    <td>Item lead time update</td>
+    <td>One combined <code>.xls</code> file for all items</td>
+  </tr>
+  <tr>
+    <td><span class="tab-label">TEMP_UPDATE_BUYER_NAMES</span></td>
+    <td>Item buyer assignment</td>
+    <td>One combined <code>.xls</code> file for all items</td>
+  </tr>
+  <tr>
+    <td><span class="tab-label">TEMP_ASSIGNMENT_SET</span></td>
+    <td>Sourcing rule assignment</td>
+    <td>One combined <code>.xls</code> file for all items</td>
+  </tr>
+</table>
+
+<div class="warning">
+<strong>Do not add, remove, or rename columns</strong> in any <code>TEMP_</code> tab.
+The Mapper configuration references columns by name. Any change will break the mapping.
+</div>
+
+
+<!-- SECTION 9 -->
+<h2 id="ref-tabs">9. Reference Tabs</h2>
+
+<h3>BUYER_ID</h3>
+<p>Maps buyer full names to Oracle buyer codes. The macro uses this during Build To Do to resolve the buyer code for each row.</p>
+<table>
+  <tr><th>Column</th><th>Description</th></tr>
+  <tr><td>Buyer Full Name</td><td>Exactly as it appears in the RFQ source file (not case-sensitive).</td></tr>
+  <tr><td>BUYER_ID</td><td>The Oracle buyer code for that person.</td></tr>
+</table>
+
+<h3>Sourcing_Rule</h3>
+<p>
+Contains Oracle sourcing rule data used to auto-populate the <strong>Sourcing_Rule_Name</strong> column
+on the To Do sheet during Build To Do. This tab is normally populated using the
+<span class="btn-label">Oracle Refresh</span> button, but you can also edit it manually to add or
+adjust rules — for example, to set preferred Rank values.
+</p>
+
+<table>
+  <tr><th>Column</th><th>Description</th></tr>
+  <tr><td>Vendor_Number</td><td>Oracle vendor number. Used as the primary match key.</td></tr>
+  <tr><td>Vendor_Name</td><td>Vendor name. Used for fuzzy matching when the vendor number is absent or does not match.</td></tr>
+  <tr><td>Vendor_Site_Code</td><td>Vendor site code.</td></tr>
+  <tr><td>Sourcing_Rule_Name</td><td>The rule name written into the To Do sheet and the Assignment Set template.</td></tr>
+  <tr><td>Currency</td><td>Used to prioritise the best match when multiple rules exist for one vendor. The rule whose currency matches the RFQ row is preferred.</td></tr>
+  <tr><td>Rank</td><td>Your preferred priority order. <strong>Lower number = higher priority.</strong> Blank = lowest priority.</td></tr>
+</table>
+
+<h4>How Sourcing Rule Matching Works</h4>
+<p>
+When multiple sourcing rules exist for the same vendor, the macro selects the best one using the
+following priority order (highest to lowest):
+</p>
+<ol>
+  <li><strong>Currency match</strong> — the rule whose Currency matches the row's currency in the RFQ is preferred.</li>
+  <li><strong>Rank</strong> — among rules with equal currency match, the one with the lowest Rank number wins.</li>
+  <li><strong>Fuzzy vendor name score</strong> — if Rank is blank for all candidates, the closest name match is used.</li>
+  <li><strong>First match</strong> — if everything else is equal, the first row in the tab wins.</li>
+</ol>
+<p>
+If more than one rule is equally good, a <strong>dropdown</strong> is placed in the Sourcing_Rule_Name
+cell on the To Do sheet so the user can make the final selection manually.
+</p>
+
+<h4>Setting Up Rank Values</h4>
+<p>
+The Rank column gives you direct control over which sourcing rule is selected when a vendor has
+multiple options. This is the recommended approach when you always want a specific rule for a vendor.
+</p>
+<div class="tip">
+<strong>Example:</strong> Vendor <em>BASS ANTRIEBSTECHNIK GMBH</em> has three rules — one with a full name and vendor
+number, one with a short name, and one generic. To ensure the full-name rule is always chosen,
+set its Rank to <code>1</code> and leave the others blank (or set them to <code>2</code> and <code>3</code>).
+The macro will select Rank 1 automatically without showing a dropdown.
+</div>
+<div class="note">
+<strong>How to edit Rank:</strong> Open the <span class="tab-label">Sourcing_Rule</span> tab directly in Excel.
+Find the vendor rows you want to prioritise and type a number in the <strong>Rank</strong> column.
+Use <code>1</code> for the preferred rule, <code>2</code> for the fallback, and so on.
+Rows with no Rank value are treated as the lowest priority.
+</div>
+<div class="warning">
+<strong>Important:</strong> If you run <span class="btn-label">Oracle Refresh</span>, it will overwrite the
+Sourcing_Rule tab with fresh data from Oracle — any Rank values you have added manually will be lost.
+Re-apply your Rank values after each Oracle Refresh, or keep a separate record of your preferred rankings.
+</div>
+
+<h3>BPA_Filters</h3>
+<p>
+Stores column filter definitions that control which rows from the source file are included in the
+To Do sheet. The tab has three columns:
+</p>
+<table>
+  <tr><th>Column</th><th>Description</th></tr>
+  <tr><td>Set_Name</td><td>The name of the filter set this row belongs to.</td></tr>
+  <tr><td>Header_Name</td><td>The source file column to filter on (e.g. <code>Decision</code>, <code>SET</code>).</td></tr>
+  <tr><td>Values</td><td>The value(s) to match. Supports <code>YES</code>, <code>BLANK</code>, a literal value, or a comma-separated list.</td></tr>
+</table>
+
+<h4>Two Types of Rows: Named Presets and Active</h4>
+<p>There are two distinct roles a row in this tab can have, determined entirely by the Set_Name value:</p>
+
+<table>
+  <tr><th>Set_Name value</th><th>Role</th><th>Does the macro read it?</th></tr>
+  <tr>
+    <td><code>Active</code></td>
+    <td>The <strong>live filter set</strong>. This is the only set the macro reads when Build To Do runs.</td>
+    <td><strong>Yes — always.</strong></td>
+  </tr>
+  <tr>
+    <td>Any other name (e.g. <code>BPA_STANDARD_YES_BLANK</code>)</td>
+    <td>A <strong>saved preset</strong>. Stored for future reuse but ignored at run time.</td>
+    <td>No — stored only.</td>
+  </tr>
+</table>
+
+<h4>How the Workflow Works</h4>
+<ol>
+  <li>
+    <strong>Open Build To Do</strong> and set your column filters in the form.
+  </li>
+  <li>
+    <strong>Save Set</strong> — type a name (e.g. <code>BPA_STANDARD_YES_BLANK</code>) and click Save Set.
+    The macro writes those filter rows to the tab under that name. This is your saved template —
+    you can reload it any time.
+  </li>
+  <li>
+    <strong>Click Run</strong> — the macro takes whatever filters are currently in the form and
+    writes them to the tab under the name <code>Active</code>, overwriting the previous Active rows.
+    Only the Active rows are applied during Build To Do.
+  </li>
+  <li>
+    <strong>Next time</strong> — open Build To Do, click <strong>Load Set</strong>, pick your saved
+    preset (e.g. <code>BPA_STANDARD_YES_BLANK</code>), and the form refills with those values.
+    Click Run and they become Active again.
+  </li>
+</ol>
+
+<div class="tip">
+<strong>In plain terms:</strong> Your named presets are saved templates you can switch between.
+<code>Active</code> is what is actually running right now. Every time you click Run, the form's
+current filters become the new Active set automatically.
+</div>
+
+<div class="note">
+<strong>The name <code>Active</code> is reserved.</strong> You cannot save a preset with that name —
+the form will block it and show a warning. Always use a descriptive name for your presets,
+such as <code>BPA_STANDARD_YES_BLANK</code> or <code>MY_CUSTOM_FILTER</code>.
+</div>
+
+<div class="warning">
+<strong>Do not edit this tab manually</strong> unless you are comfortable with the structure.
+All filter management should be done through the Build To Do form. Editing rows directly
+(especially changing a Set_Name to <code>Active</code>) will affect what the macro applies on the next run.
+</div>
+
+<h3>BPA_SkipRules</h3>
+<p>
+Defines the validation rules applied to each source row during Build To Do.
+Each row in this tab is one rule. Rules with <strong>Enabled = YES</strong> are active.
+</p>
+<table>
+  <tr><th>Rule_Type</th><th>What it does</th></tr>
+  <tr><td><code>REQUIRED</code></td><td>Skips the row if the specified column is blank.</td></tr>
+  <tr><td><code>DIGITS_LENGTH</code></td><td>Skips the row if the column value is not exactly N digits long (e.g. BPA number must be 9 digits).</td></tr>
+  <tr><td><code>VALUE_IN</code></td><td>Skips the row unless the column value matches one of a comma-separated list.</td></tr>
+  <tr><td><code>VALUE_NOT_IN</code></td><td>Skips the row if the column value matches any value in the list.</td></tr>
+  <tr><td><code>DUPLICATE</code></td><td>Skips subsequent rows where this column duplicates a value already written.</td></tr>
+  <tr><td><code>PRICE_POSITIVE</code></td><td>Skips rows where the price cannot be parsed to a value greater than zero.</td></tr>
+  <tr><td><code>LEAD_TIME</code></td><td>Skips rows where the lead time is blank or not a number (or parseable range).</td></tr>
+</table>
+<div class="note">
+You do not need to change these rules for normal use. Consult your administrator before modifying them.
+</div>
+
+
+<!-- SECTION 10 -->
+<h2 id="deployment">10. Deployment Scenarios and Sharing the Workbook</h2>
+
+<h3>The Workbook is Self-Contained and Portable</h3>
+<p>
+Every configuration the macro needs — column mappings, filter sets, skip rules, buyer IDs, email
+templates, and output paths — is stored <strong>inside the workbook itself</strong>, across its various tabs.
+This means the workbook can be copied, emailed, or placed on a shared drive and it will work
+immediately, with no installation and no external configuration files to manage.
+</p>
+<p>
+Each user who receives a copy has complete, independent control over their own setup.
+Changes one user makes to their copy have no effect on anyone else.
+</p>
+
+<h3>Adjusting the Output Path Without Recreating Configs</h3>
+<p>
+When a workbook is passed from one person to another, the saved configurations are already
+complete — the column mappings, filter settings, and file patterns are all correct.
+The only value that typically needs updating is the <strong>Output_Path</strong>, which points to
+a folder on the original user's computer.
+</p>
+<p>
+You do <strong>not</strong> need to delete and recreate configs just to change where files are saved.
+Go directly to the <span class="tab-label">Saved_Configs</span> tab, find the <strong>Output_Path</strong>
+column on the meta-row of each config (the bold blue header row for each config block), and type
+your own folder path.
+</p>
+<div class="tip">
+<strong>How to identify the meta-row:</strong> Each config block starts with a bold blue row.
+That row contains the Output_Path, File_Pattern, Filter settings, and template details.
+The rows below it (normal white rows) are the column mappings and do not contain Output_Path.
+</div>
+<div class="note">
+Alternatively, open <strong>Open Mapper</strong>, load the config from the dropdown, update the
+Output Folder field, and click <strong>Save Config</strong>. This is safer and recommended if
+you are not confident editing the sheet directly.
+</div>
+
+<h3>Use Case 1 &mdash; Individual User, Personal Workbook</h3>
+<p>
+This is the standard setup. Each user has their own copy of the workbook on their computer.
+</p>
+<table>
+  <tr><th>Aspect</th><th>Detail</th></tr>
+  <tr><td>Workbook location</td><td>Local drive, personal OneDrive folder, or any path the user can access.</td></tr>
+  <tr><td>Source file</td><td>Set on the Run sheet. Browsed and updated each run via Build To Do.</td></tr>
+  <tr><td>Output folder</td><td>Set in Saved_Configs Output_Path. Points to the user's own output folder.</td></tr>
+  <tr><td>Configs</td><td>Created once using Open Mapper. Never need to be recreated unless the template structure changes.</td></tr>
+  <tr><td>BUYER_ID tab</td><td>Maintained by the user. Only needs updating when buyers are added or removed.</td></tr>
+  <tr><td>Receiving a new version</td><td>Copy the new workbook, open Saved_Configs, update Output_Path on each config's meta-row to point to your folder. Done.</td></tr>
+</table>
+<div class="tip">
+<strong>Typical first-time setup time:</strong> 20&ndash;30 minutes to create the four configs and fill in
+the Run sheet. All subsequent runs take 2&ndash;3 minutes from source file to output files.
+</div>
+
+<h3>Use Case 2 &mdash; Team Sharing a Single Workbook</h3>
+<p>
+A team can share one workbook placed on a network drive, SharePoint sync folder, or shared
+OneDrive location. Because all configuration lives inside the workbook, the team immediately
+benefits from any improvements made by one member.
+</p>
+<table>
+  <tr><th>Aspect</th><th>Detail</th></tr>
+  <tr><td>Workbook location</td><td>Shared network folder, OneDrive shared folder, or SharePoint document library synced locally.</td></tr>
+  <tr><td>Output folder</td><td>Each user updates Output_Path in Saved_Configs to point to their own output folder. Alternatively, a shared output folder can be used so all team members write files to the same location.</td></tr>
+  <tr><td>Configs</td><td>Created once by one team member. All others inherit the same configs when they open the shared workbook — no individual setup needed.</td></tr>
+  <tr><td>BUYER_ID tab</td><td>Maintained centrally. One person updates it; all team members benefit immediately.</td></tr>
+  <tr><td>Sourcing_Rule tab</td><td>Updated centrally via Oracle Refresh. One refresh benefits the whole team.</td></tr>
+  <tr><td>Simultaneous editing</td><td>Excel does not support two people editing a macro-enabled workbook at the same time. Coordinate within the team — one person runs the macro at a time.</td></tr>
+</table>
+<div class="warning">
+<strong>Important for shared workbooks:</strong> If two people open and run the macro at the same time,
+they may overwrite each other's Log, File_Log, or To Do data. Establish a simple team agreement
+(e.g. a Teams message before running) to avoid conflicts.
+</div>
+
+<h3>OneDrive and SharePoint Compatibility</h3>
+<p>
+The macro works with OneDrive and SharePoint <strong>provided the files are synced to a local folder</strong>
+on your computer. The macro uses standard Windows file paths — it cannot access web URLs directly.
+</p>
+<table>
+  <tr><th>Storage location</th><th>Compatible?</th><th>Notes</th></tr>
+  <tr>
+    <td>Local drive (C:\, D:\, etc.)</td>
+    <td><strong>Yes</strong></td>
+    <td>Always works. Recommended for best performance.</td>
+  </tr>
+  <tr>
+    <td>OneDrive (synced local folder)</td>
+    <td><strong>Yes</strong></td>
+    <td>
+      OneDrive syncs to a local folder such as
+      <code>C:\Users\yourname\OneDrive\BPA\Outputs</code>.
+      Use that local path in Output_Path and on the Run sheet.
+      Files are synced to the cloud automatically after the macro writes them.
+    </td>
+  </tr>
+  <tr>
+    <td>SharePoint (synced via OneDrive client)</td>
+    <td><strong>Yes</strong></td>
+    <td>
+      When a SharePoint document library is synced to your computer via the OneDrive sync client,
+      it appears as a local folder (e.g.
+      <code>C:\Users\yourname\CompanyName\SiteName - Documents\BPA</code>).
+      Use that local path. Files are uploaded to SharePoint automatically after the macro writes them.
+    </td>
+  </tr>
+  <tr>
+    <td>Mapped network drive (\\server\share or Z:\)</td>
+    <td><strong>Yes</strong></td>
+    <td>Works as long as the drive is connected and the path is accessible when the macro runs.</td>
+  </tr>
+  <tr>
+    <td>SharePoint web URL (https://...)</td>
+    <td><strong>No</strong></td>
+    <td>
+      The macro cannot use web URLs as file paths. You must sync the library locally first
+      using the OneDrive sync client, then use the resulting local folder path.
+    </td>
+  </tr>
+</table>
+<div class="tip">
+<strong>Finding your OneDrive or SharePoint local path:</strong> Open File Explorer, navigate to
+your OneDrive or synced SharePoint folder, and copy the path from the address bar at the top.
+Paste that path into the Output_Path field in Saved_Configs or into the Output Folder in Open Mapper.
+</div>
+
+
+<!-- SECTION 11 (was 10) -->
+<h2 id="send-email">11. Send Email</h2>
+
+<p>After the batch run is complete and you have confirmed the output files are correct, click <span class="btn-label">Send Email</span>.</p>
+
+<p>The macro:</p>
+<ol>
+  <li>Reads the To, CC, Subject, and Body from the <span class="tab-label">Email_Template</span> tab.</li>
+  <li>Reads the list of files created in the last batch run from <span class="tab-label">File_Log</span>.</li>
+  <li>Opens a new email draft in Microsoft Outlook with all output files attached.</li>
+  <li>Replaces <code>{DATE}</code> in the subject with today's date, and <code>{FILES}</code> in the body with the file names.</li>
+</ol>
+
+<div class="warning">
+<strong>The email is not sent automatically.</strong> Outlook opens with a draft that you can review and edit before clicking Send.
+</div>
+
+<div class="tip">
+<strong>Requirement:</strong> Microsoft Outlook must be installed and configured on your computer. The macro uses Outlook's COM interface to create the draft.
+</div>
+
+
+<!-- SECTION 12 -->
+<h2 id="oracle">12. Oracle Refresh</h2>
+
+<p>
+The <span class="tab-label">Sourcing_Rule</span> tab must be kept up to date for the sourcing rule matching
+to work correctly. When Oracle data changes (new vendors, updated rules, or site code changes),
+use <span class="btn-label">Oracle Refresh</span> to update it.
+</p>
+
+<table class="step-table">
+  <tr>
+    <td class="step-num">1</td>
+    <td class="step-body">Export the Sourcing Rules extract from Oracle in Excel format.</td>
+  </tr>
+  <tr>
+    <td class="step-num">2</td>
+    <td class="step-body">Click <span class="btn-label">Oracle Refresh</span> on the <span class="tab-label">Run</span> tab.</td>
+  </tr>
+  <tr>
+    <td class="step-num">3</td>
+    <td class="step-body">Browse to the Oracle extract file and confirm.</td>
+  </tr>
+  <tr>
+    <td class="step-num">4</td>
+    <td class="step-body">The macro clears the old data from <span class="tab-label">Sourcing_Rule</span> and pastes the new data in its place.</td>
+  </tr>
+</table>
+
+
+<!-- SECTION 13 -->
+<h2 id="troubleshoot">13. Troubleshooting</h2>
+
+<table>
+  <tr><th>Problem</th><th>Likely cause</th><th>Solution</th></tr>
+  <tr>
+    <td>Build To Do produces no rows (or far fewer than expected)</td>
+    <td>Column filters are too restrictive, or the source file path is incorrect.</td>
+    <td>Check the <span class="tab-label">Log</span> tab for skip reasons. Verify the source path and tab name on the Run sheet.</td>
+  </tr>
+  <tr>
+    <td>&ldquo;Source file not found&rdquo; error</td>
+    <td>The file has been moved, renamed, or the path on the Run sheet is wrong.</td>
+    <td>Click <strong>Browse...</strong> in the Build To Do form to pick the file again. The Run sheet updates automatically.</td>
+  </tr>
+  <tr>
+    <td>Buyer missing on To Do sheet / rows skipped with &ldquo;Buyer missing&rdquo;</td>
+    <td>The buyer name in the source file is not in the <span class="tab-label">BUYER_ID</span> tab.</td>
+    <td>Open the BUYER_ID tab, add the missing buyer name and Oracle ID, then re-run Build To Do.</td>
+  </tr>
+  <tr>
+    <td>Sourcing_Rule_Name column is blank for many rows</td>
+    <td>The Sourcing_Rule tab is out of date, or the vendor name does not match closely enough.</td>
+    <td>Run <strong>Oracle Refresh</strong> to update the Sourcing_Rule data. For individual rows, type the rule name manually.</td>
+  </tr>
+  <tr>
+    <td>&ldquo;No rows matched the filter criteria&rdquo; during batch run</td>
+    <td>The Filter / Group settings in the saved config do not match any data in the To Do sheet.</td>
+    <td>Open Mapper, load the config, check the Group by column and filter mode settings, then re-save.</td>
+  </tr>
+  <tr>
+    <td>&ldquo;No template columns found&rdquo; error in Mapper</td>
+    <td>Scan Template was not run, or the template tab name does not exist.</td>
+    <td>In the Mapper form, confirm the correct TEMP_ tab is selected and click <strong>Scan Template</strong>.</td>
+  </tr>
+  <tr>
+    <td>Run Template Batch produces no files</td>
+    <td>No configs are selected, or the source (To Do tab) was not chosen.</td>
+    <td>Ensure at least one config checkbox is ticked and that <em>This Workbook Tab &rarr; To Do</em> is selected as the source.</td>
+  </tr>
+  <tr>
+    <td>Output file names look wrong</td>
+    <td>The File Pattern in the saved config uses incorrect or missing tokens.</td>
+    <td>Open Mapper, load the config, and correct the File Pattern field. Valid tokens: <code>{DATE}</code> <code>{GROUP}</code> <code>{TMPL}</code> <code>{INITIALS}</code>.</td>
+  </tr>
+  <tr>
+    <td>Email button does nothing or shows an Outlook error</td>
+    <td>Microsoft Outlook is not installed, not set as the default mail client, or is not running.</td>
+    <td>Open Outlook manually and try again. If Outlook is not available, attach the files from the output folder manually.</td>
+  </tr>
+  <tr>
+    <td>Macro does not run / buttons are greyed out</td>
+    <td>Excel macros are disabled in your security settings.</td>
+    <td>Close the file. Re-open it and click <strong>Enable Content</strong> when Excel prompts you. If the prompt does not appear, check your Trust Center settings (File &rarr; Options &rarr; Trust Center &rarr; Trust Center Settings &rarr; Macro Settings).</td>
+  </tr>
+</table>
+
+<br>
+<hr>
+<p style="font-size:9pt; color:#888888;">
+Generate BPA Files V2 &mdash; User Manual &nbsp;|&nbsp; For internal use only &nbsp;|&nbsp; Generated 2026 &nbsp;|&nbsp; To report issues or request enhancements, contact Darek Krawczynski.
+</p>
+
+</body>
+</html>

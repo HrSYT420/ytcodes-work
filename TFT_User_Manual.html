@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Template Filler Tool — User Manual</title>
+<style>
+  body {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11pt;
+    color: #1a1a1a;
+    max-width: 900px;
+    margin: 40px auto;
+    line-height: 1.5;
+  }
+  h1 {
+    font-size: 22pt;
+    color: #1F4E79;
+    border-bottom: 3px solid #1F4E79;
+    padding-bottom: 6px;
+    margin-top: 0;
+  }
+  h2 {
+    font-size: 15pt;
+    color: #2E75B6;
+    border-bottom: 1.5px solid #BDD7EE;
+    padding-bottom: 4px;
+    margin-top: 28px;
+  }
+  h3 {
+    font-size: 12pt;
+    color: #1F4E79;
+    margin-top: 20px;
+    margin-bottom: 6px;
+  }
+  h4 {
+    font-size: 11pt;
+    color: #2E75B6;
+    margin-top: 14px;
+    margin-bottom: 4px;
+  }
+  p {
+    margin: 6px 0 10px 0;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 12px 0;
+    font-size: 10.5pt;
+  }
+  th {
+    background-color: #2E75B6;
+    color: white;
+    padding: 7px 10px;
+    text-align: left;
+    font-weight: bold;
+  }
+  td {
+    padding: 6px 10px;
+    border: 1px solid #BDD7EE;
+    vertical-align: top;
+  }
+  tr:nth-child(even) td {
+    background-color: #EBF3FB;
+  }
+  .tip {
+    background-color: #E2EFDA;
+    border-left: 4px solid #70AD47;
+    padding: 8px 12px;
+    margin: 10px 0;
+    border-radius: 2px;
+  }
+  .warning {
+    background-color: #FFF2CC;
+    border-left: 4px solid #FFC000;
+    padding: 8px 12px;
+    margin: 10px 0;
+    border-radius: 2px;
+  }
+  .note {
+    background-color: #DEEAF1;
+    border-left: 4px solid #2E75B6;
+    padding: 8px 12px;
+    margin: 10px 0;
+    border-radius: 2px;
+  }
+  code {
+    background-color: #F2F2F2;
+    font-family: Consolas, Courier New, monospace;
+    font-size: 10pt;
+    padding: 1px 4px;
+    border-radius: 2px;
+    color: #C00000;
+  }
+  ul, ol {
+    margin: 6px 0 10px 0;
+    padding-left: 24px;
+  }
+  li {
+    margin-bottom: 4px;
+  }
+  .toc {
+    background-color: #F7FBFF;
+    border: 1px solid #BDD7EE;
+    padding: 14px 20px;
+    margin: 20px 0;
+    border-radius: 4px;
+  }
+  .toc h2 {
+    border: none;
+    margin-top: 0;
+    font-size: 13pt;
+  }
+  .toc ol {
+    margin: 4px 0;
+  }
+  .toc li {
+    margin-bottom: 3px;
+    color: #2E75B6;
+  }
+  .subtitle {
+    color: #595959;
+    font-size: 12pt;
+    margin-top: -6px;
+    margin-bottom: 20px;
+  }
+  .section-intro {
+    color: #595959;
+    font-style: italic;
+    margin-bottom: 12px;
+  }
+  .step-box {
+    border: 1px solid #BDD7EE;
+    border-radius: 4px;
+    padding: 10px 16px;
+    margin: 10px 0;
+    background-color: #F7FBFF;
+  }
+  .step-number {
+    display: inline-block;
+    background-color: #2E75B6;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    font-size: 10pt;
+    font-weight: bold;
+    margin-right: 6px;
+  }
+  hr {
+    border: none;
+    border-top: 1px solid #BDD7EE;
+    margin: 30px 0;
+  }
+  .type-col    { background-color: #DEEAF1; font-weight: bold; }
+  .type-static { background-color: #E2EFDA; font-weight: bold; }
+  .type-skip   { background-color: #F2F2F2; font-weight: bold; color: #7F7F7F; }
+  .type-cond   { background-color: #FFF2CC; font-weight: bold; }
+  .type-lookup { background-color: #EAD1F5; font-weight: bold; }
+  .type-count  { background-color: #FCE4D6; font-weight: bold; }
+  .type-sum    { background-color: #DDEBF7; font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h1>Template Filler Tool</h1>
+<p class="subtitle">User Manual &amp; Job Aid &nbsp;|&nbsp; Version 1.0 &nbsp;|&nbsp; March 2026</p>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li>What is the Template Filler Tool?</li>
+    <li>Typical Workflow — Quick Start</li>
+    <li>The Run Sheet — Buttons &amp; Email Settings</li>
+    <li>Template Filler Form — Section by Section</li>
+    <li>Column Mapping Types (COL, STATIC, SKIP, COUNT, LOOKUP, COND, SUM)</li>
+    <li>The Norm (Normalize) Checkbox</li>
+    <li>Filter / Group Section</li>
+    <li>Saved Configs — Saving and Loading Mappings</li>
+    <li>The Presets Sheet</li>
+    <li>Batch Run — Running Multiple Configs at Once</li>
+    <li>The Log Sheet</li>
+    <li>Send Email</li>
+    <li>Log Archive</li>
+    <li>Best Practices</li>
+    <li>Common Mistakes &amp; Troubleshooting</li>
+  </ol>
+</div>
+
+<!-- 1 -->
+<h2>1 &nbsp; What is the Template Filler Tool?</h2>
+<p>
+  The <strong>Template Filler Tool (TFT)</strong> is an Excel macro workbook that automates the
+  process of filling Oracle ERP upload templates from a Master Raw Data file.
+</p>
+<p>
+  Without TFT, a user would open the raw export, copy columns into the template manually,
+  apply transformations (remove dashes, add fixed values, decide CREATE vs UPDATE row by row),
+  save the file with a dated name, and repeat for every template variant. This takes hours
+  and introduces copy-paste errors.
+</p>
+<p>
+  With TFT, you configure the mapping once, save it, and from then on the whole process runs
+  in a single click — including file naming, filtering, and email dispatch.
+</p>
+
+<div class="note">
+  <strong>Who is this for?</strong> Anyone who receives a Master Raw Data file and must produce
+  one or more Oracle upload files from it on a recurring basis.
+</div>
+
+<hr>
+
+<!-- 2 -->
+<h2>2 &nbsp; Typical Workflow — Quick Start</h2>
+<p class="section-intro">First time with a new template — takes about 5–10 minutes to set up. Every run after that takes seconds.</p>
+
+<div class="step-box">
+  <p><span class="step-number">1</span> <strong>Open the TFT workbook.</strong> Go to the <em>Run</em> sheet.</p>
+</div>
+<div class="step-box">
+  <p><span class="step-number">2</span> <strong>Click Template Filler.</strong> The mapping form opens.</p>
+</div>
+<div class="step-box">
+  <p><span class="step-number">3</span> <strong>Select your template</strong> — either a sheet in this workbook, or browse to an external file. Click <em>Scan Template</em>.</p>
+</div>
+<div class="step-box">
+  <p><span class="step-number">4</span> <strong>Select your source file</strong> — the Master Raw Data file. Set the header row and data start row. Click <em>Scan Source</em>.</p>
+</div>
+<div class="step-box">
+  <p><span class="step-number">5</span> <strong>Map each template column</strong> — for every column in your template, choose a Type and a Source/Value. See Section 5 for all types explained.</p>
+</div>
+<div class="step-box">
+  <p><span class="step-number">6</span> <strong>Set your output folder</strong> and file name pattern. Set any filters if needed.</p>
+</div>
+<div class="step-box">
+  <p><span class="step-number">7</span> <strong>Click Save Config</strong> — give it a name. Your mapping is saved and can be reloaded next time.</p>
+</div>
+<div class="step-box">
+  <p><span class="step-number">8</span> <strong>Click Run.</strong> The output file is created, named, and saved to your folder.</p>
+</div>
+<div class="step-box">
+  <p><span class="step-number">9</span> <strong>Next time:</strong> open the form, Load Config, browse to the source file, Scan Source, Run. Done.</p>
+</div>
+
+<hr>
+
+<!-- 3 -->
+<h2>3 &nbsp; The Run Sheet — Buttons &amp; Email Settings</h2>
+<p>The <em>Run</em> sheet is the home screen of TFT. It contains four buttons and the email configuration area.</p>
+
+<table>
+  <tr>
+    <th>Button</th>
+    <th>What it does</th>
+  </tr>
+  <tr>
+    <td><strong>Template Filler</strong></td>
+    <td>Opens the main mapping form (frmTFTMapper). Use this to create, edit, and run a single config.</td>
+  </tr>
+  <tr>
+    <td><strong>Run Batch</strong></td>
+    <td>Opens the Batch Run form. Select multiple saved configs and run them all in one click with one source file.</td>
+  </tr>
+  <tr>
+    <td><strong>Send Email</strong></td>
+    <td>Opens the file picker. Select output files to attach, preview the email, and send to Outlook Drafts for review.</td>
+  </tr>
+  <tr>
+    <td><strong>Log Archive</strong></td>
+    <td>Exports all Log rows to an Excel archive file, then clears the Log sheet. Asks for confirmation before clearing.</td>
+  </tr>
+</table>
+
+<h3>Email Settings (cells B16–B19 on the Run sheet)</h3>
+<p>Fill these in once. They are used every time you click Send Email.</p>
+<table>
+  <tr><th>Cell</th><th>Field</th><th>Notes</th></tr>
+  <tr><td><code>B16</code></td><td>To:</td><td>Comma-separated recipient email addresses. <strong>Required</strong> — the email will not open if this is blank.</td></tr>
+  <tr><td><code>B17</code></td><td>CC:</td><td>Optional. Comma-separated CC addresses.</td></tr>
+  <tr><td><code>B18</code></td><td>Subject</td><td>Supports the <code>{DATE}</code> token. Example: <em>Output Files Ready — {DATE}</em></td></tr>
+  <tr><td><code>B19</code></td><td>Body</td><td>Supports <code>{DATE}</code>, <code>{FILES}</code> (list of attached filenames), and <code>{FOLDER}</code> (output folder path). Use Alt+Enter for line breaks.</td></tr>
+</table>
+
+<hr>
+
+<!-- 4 -->
+<h2>4 &nbsp; Template Filler Form — Section by Section</h2>
+<p class="section-intro">The main form is divided into four sections: Template, Data Source, Output, and Column Mapping.</p>
+
+<h3>4.1 Template Section</h3>
+<p>Choose where your template lives:</p>
+<ul>
+  <li><strong>External file</strong> — browse to an .xls or .xlsx template file on your computer.</li>
+  <li><strong>This workbook — sheet</strong> — pick a sheet tab in the TFT workbook that serves as the template layout.</li>
+</ul>
+<p>
+  <strong>Header row</strong> — the row in the template that contains column names. Usually row 1.
+  Use the arrow (◄ ►) buttons to change it. After changing, click <strong>Scan Template</strong>
+  to refresh the column list.
+</p>
+<p>
+  <strong>Scan Template</strong> — reads the template headers and populates the Template Column
+  column in the mapping grid. Always click this before mapping for the first time, or after
+  changing the header row.
+</p>
+
+<h3>4.2 Config Load / Save Bar</h3>
+<p>
+  The dropdown lists all saved configs. Select one and click <strong>Load Config</strong>
+  to restore all settings (template, mapping, output folder, filter, etc.) from a previous session.
+</p>
+<p>
+  After making changes, click <strong>Save Config</strong>. If the config name already exists
+  it is overwritten. To create a new one, type a new name in the box first.
+</p>
+<div class="tip">
+  <strong>Tip:</strong> Name configs after the template and variant, e.g.
+  <em>ITM_UPD_1234</em> or <em>STATUS_UPDATE_A_B_C</em>. Avoid spaces — use underscores.
+</div>
+
+<h3>4.3 Data Source Section</h3>
+<p>
+  <strong>Source file</strong> — browse to your Master Raw Data file (.xlsx or .xls).
+  The path is stored in the config but the file is never modified.
+</p>
+<p>
+  <strong>Hdr row</strong> — the row containing column headers in the source file. Usually 1.
+</p>
+<p>
+  <strong>Dat row</strong> — the first row of actual data. Usually header row + 1 = 2.
+</p>
+<p>
+  <strong>Scan Source</strong> — reads the source file headers and makes them available
+  in the Source/Value dropdowns in the mapping grid. <strong>You must click this before the
+  dropdowns will show your source columns.</strong>
+</p>
+
+<div class="warning">
+  <strong>Important:</strong> The source file path is NOT saved in the config.
+  Each run you must browse to (or re-select) the source file and click Scan Source.
+  This is by design — the source file changes every week/month.
+</div>
+
+<h3>4.4 Output Section</h3>
+<table>
+  <tr><th>Setting</th><th>What it does</th></tr>
+  <tr><td><strong>Folder</strong></td><td>The folder where output files are saved. Use Browse… to pick it.</td></tr>
+  <tr><td><strong>Excel 97-2003 (.xls)</strong></td><td>Saves as the legacy .xls format. Required for most Oracle upload tools.</td></tr>
+  <tr><td><strong>Tab-delimited (.txt)</strong></td><td>Saves as a plain text file with tabs between columns. Use when the system requires a text upload.</td></tr>
+  <tr><td><strong>File name pattern</strong></td><td>The output filename template. Supports tokens (see below).</td></tr>
+</table>
+
+<h4>File Name Tokens</h4>
+<table>
+  <tr><th>Token</th><th>Replaced with</th><th>Example result</th></tr>
+  <tr><td><code>{DATE}</code></td><td>Today's date in DDMMMYYYY format</td><td><code>18MAR2026</code></td></tr>
+  <tr><td><code>{TMPL}</code></td><td>The template sheet/file name (spaces replaced by underscores)</td><td><code>TEMP_ITM_UPD_CATG</code></td></tr>
+  <tr><td><code>{GROUP}</code></td><td>The current group value (when "One file per group value" is selected)</td><td><code>1234</code></td></tr>
+</table>
+<p>Example pattern: <code>{DATE}_DK_{TMPL}_{GROUP}_ABCD</code> → produces <code>18MAR2026_DK_TEMP_ITM_UPD_CATG_1234_ABCD.xls</code></p>
+
+<div class="tip">
+  <strong>Auto-versioning:</strong> If an output file with the same name already exists in the
+  folder, TFT automatically appends <code>_V1</code>, <code>_V2</code>, etc. rather than
+  overwriting. You will never lose a previous run's output.
+</div>
+
+<h3>4.5 Column Mapping Grid</h3>
+<p>
+  The heart of the tool. Each row in the grid represents one column in the template.
+  For each column you choose:
+</p>
+<ul>
+  <li><strong>Type</strong> — how to fill this column (see Section 5)</li>
+  <li><strong>Source / Value</strong> — the source column name or value to use</li>
+  <li><strong>Lookup Set</strong> — only used for LOOKUP and COND types</li>
+  <li><strong>Norm</strong> — whether to clean up the value (see Section 6)</li>
+</ul>
+
+<hr>
+
+<!-- 5 -->
+<h2>5 &nbsp; Column Mapping Types</h2>
+<p class="section-intro">Every template column must be assigned a Type. The Type tells TFT where the value comes from.</p>
+
+<table>
+  <tr>
+    <th>Type</th>
+    <th>Plain English</th>
+    <th>Source / Value field</th>
+    <th>Lookup Set field</th>
+    <th>Common use</th>
+  </tr>
+  <tr>
+    <td class="type-col">COL</td>
+    <td>Copy a value from the source file, row by row</td>
+    <td>Pick the source column name</td>
+    <td>Leave blank</td>
+    <td>Item number, description, category name — any column that varies per row</td>
+  </tr>
+  <tr>
+    <td class="type-static">STATIC</td>
+    <td>Write the same fixed value into every row</td>
+    <td>Type or pick the value (presets available)</td>
+    <td>Leave blank</td>
+    <td>Organization code (always 100), Process ID (always 4455), set name</td>
+  </tr>
+  <tr>
+    <td class="type-skip">SKIP</td>
+    <td>Leave this template column blank</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Template has columns your upload doesn't need</td>
+  </tr>
+  <tr>
+    <td class="type-count">COUNT</td>
+    <td>Auto-number each row: 1, 2, 3…</td>
+    <td>—</td>
+    <td>—</td>
+    <td>Line number or sequence column required by the system</td>
+  </tr>
+  <tr>
+    <td class="type-lookup">LOOKUP</td>
+    <td>Look up the source value in a table and write the mapped result</td>
+    <td>Pick the source column to look up</td>
+    <td>Pick the lookup table name (from Lookup_Sets sheet)</td>
+    <td>Map a buyer ID to a buyer name; map a code to a description</td>
+  </tr>
+  <tr>
+    <td class="type-cond">COND</td>
+    <td>Conditional: if source column is blank → write value A; if filled → write value B</td>
+    <td>Pick the source column to check</td>
+    <td>Type <code>blank_result|notblank_result</code> e.g. <code>CREATE|UPDATE</code></td>
+    <td>TRANSACTION_TYPE: no old category → CREATE; old category present → UPDATE</td>
+  </tr>
+  <tr>
+    <td class="type-sum">SUM</td>
+    <td>Sum all values in a source column and write the total once</td>
+    <td>Pick the source column to sum</td>
+    <td>Leave blank</td>
+    <td>Total quantity or value lines at the bottom of an upload</td>
+  </tr>
+</table>
+
+<h3>5.1 COL — Detailed Notes</h3>
+<p>
+  Use COL whenever the value comes from your raw data and differs from row to row.
+  The Source/Value dropdown shows all column headers found in the source file after Scan Source.
+</p>
+<p>
+  Pair with <strong>Norm</strong> (Section 6) when the source data may contain dirty values
+  (dashes as placeholders, leading spaces, invisible characters).
+</p>
+
+<h3>5.2 STATIC — Detailed Notes</h3>
+<p>
+  Use STATIC for any value that is always the same regardless of the data row.
+  The Source/Value dropdown shows <em>presets</em> — common values stored in the
+  <em>Presets</em> sheet (see Section 9). You can also type a value directly.
+</p>
+<p>
+  When you save a config with a STATIC value that is not yet in the Presets sheet,
+  TFT automatically adds it so it is available next time.
+</p>
+
+<h3>5.3 COND — Detailed Notes</h3>
+<p>
+  COND checks whether the source column cell is blank for each row and writes one
+  of two values accordingly.
+</p>
+<p>
+  <strong>Blank detection is smart:</strong> a cell containing only dashes (<code>-</code>),
+  equals signs (<code>=</code>), spaces, or other non-alphanumeric characters is treated as
+  blank. This prevents false UPDATE results when the source file uses <code>-</code>
+  as a "no value" placeholder.
+</p>
+<p>
+  <strong>Lookup Set format:</strong> type the two values separated by a pipe character with
+  no spaces: <code>CREATE|UPDATE</code>
+  The value before the pipe is used when the source cell is blank; the value after the pipe
+  is used when the source cell has content.
+</p>
+
+<div class="note">
+  <strong>Column read order does not matter for COND.</strong>
+  COND reads from the source file (loaded into memory before the run), not from the
+  template being written. So even if TRANSACTION_TYPE (col E) is filled before
+  OLD_CATEGORY_NAME (col G), the check is always correct.
+</div>
+
+<h3>5.4 LOOKUP — Detailed Notes</h3>
+<p>
+  Lookup tables live on the <em>Lookup_Sets</em> sheet. Each named range is a two-column
+  table: column A = the key to match, column B = the value to write.
+</p>
+<p>
+  The Lookup Set dropdown in the mapping form lists all named tables on the Lookup_Sets sheet.
+  If a key is not found in the table, the cell is left blank.
+</p>
+
+<hr>
+
+<!-- 6 -->
+<h2>6 &nbsp; The Norm (Normalize) Checkbox</h2>
+<p>
+  The <strong>Norm</strong> checkbox appears at the end of each mapping row.
+  When ticked, TFT cleans the resolved value before writing it to the template.
+</p>
+
+<h3>What Norm does</h3>
+<ol>
+  <li>Removes leading and trailing whitespace and invisible control characters.</li>
+  <li>If the result contains <strong>no letters or digits at all</strong>
+      (only dashes, equals, at-signs, pipes, etc.) → the cell is <strong>cleared</strong>.
+      These are data-entry errors or placeholder values in the source.</li>
+  <li>If the result contains at least one letter or digit → it is kept exactly as cleaned.</li>
+</ol>
+
+<h3>What Norm preserves</h3>
+<table>
+  <tr><th>Source value</th><th>After Norm</th><th>Why</th></tr>
+  <tr><td><code>   Item 123  </code></td><td><code>Item 123</code></td><td>Leading/trailing spaces stripped; content kept</td></tr>
+  <tr><td><code>C-SPARES</code></td><td><code>C-SPARES</code></td><td>Has letters — kept exactly</td></tr>
+  <tr><td><code>Active NFS</code></td><td><code>Active NFS</code></td><td>Has letters — kept exactly</td></tr>
+  <tr><td><code>4M5</code></td><td><code>4M5</code></td><td>Has alphanumeric — kept exactly</td></tr>
+  <tr><td><code>-</code></td><td><em>(blank)</em></td><td>No alphanumeric content — cleared</td></tr>
+  <tr><td><code>---</code></td><td><em>(blank)</em></td><td>No alphanumeric content — cleared</td></tr>
+  <tr><td><code>@</code></td><td><em>(blank)</em></td><td>No alphanumeric content — cleared</td></tr>
+</table>
+
+<h3>When to use Norm</h3>
+<div class="tip">
+  <strong>Use Norm on COL columns</strong> when your source data comes from an Oracle export or
+  manual entry and may contain dirty values — dashes as placeholders, extra spaces, or
+  invisible characters copied from another system.
+</div>
+<div class="warning">
+  <strong>Do NOT use Norm on ITEM_NUMBER</strong> or any column where the value is a controlled
+  code that you do not expect to be dirty. Norm on a clean column does no harm, but it is
+  unnecessary and could obscure issues if the source changes unexpectedly.
+</div>
+<p>
+  Norm has no effect on STATIC, COUNT, COND, or LOOKUP types — those values are controlled
+  by the mapping, not the source data. The Norm checkbox is automatically greyed out for
+  those types.
+</p>
+
+<hr>
+
+<!-- 7 -->
+<h2>7 &nbsp; Filter / Group Section</h2>
+<p>
+  Use this section to control which source rows appear in the output and whether to split
+  the output into separate files.
+</p>
+
+<h3>7.1 Group by Column</h3>
+<p>
+  Select a source column from the dropdown. This is the column whose values determine
+  which rows belong together. Leave as <em>(none)</em> to include all rows in one file.
+</p>
+<p>
+  Click <strong>Load Values</strong> to populate the value list below with the unique values
+  found in that column. Then select which values to include or exclude.
+</p>
+
+<h3>7.2 Filter Modes</h3>
+<table>
+  <tr><th>Mode</th><th>What it does</th><th>When to use</th></tr>
+  <tr>
+    <td><strong>Include selected</strong></td>
+    <td>Only rows where the Group column matches one of your ticked values</td>
+    <td>You want specific groups only (e.g. only org codes 100 and 200)</td>
+  </tr>
+  <tr>
+    <td><strong>Exclude selected</strong></td>
+    <td>All rows EXCEPT those matching your ticked values</td>
+    <td>You want everything except a few known bad groups</td>
+  </tr>
+  <tr>
+    <td><strong>Not blank</strong></td>
+    <td>All rows where the Group column has any non-empty value</td>
+    <td>Best for recurring runs — automatically includes any new values added to the source in future</td>
+  </tr>
+</table>
+
+<div class="tip">
+  <strong>Best practice:</strong> Use <em>Not blank</em> wherever possible. It is future-proof —
+  if a new category or org code appears in next month's data export, it will automatically
+  be included without you having to re-open the form and tick it.
+</div>
+
+<h3>7.3 Output Modes</h3>
+<table>
+  <tr><th>Mode</th><th>What it does</th></tr>
+  <tr>
+    <td><strong>One file per group value</strong></td>
+    <td>Creates a separate output file for each unique value in the Group column. Use <code>{GROUP}</code> in the file name pattern to include the value in the filename.</td>
+  </tr>
+  <tr>
+    <td><strong>One combined file</strong></td>
+    <td>All matching rows go into a single output file.</td>
+  </tr>
+</table>
+
+<hr>
+
+<!-- 8 -->
+<h2>8 &nbsp; Saved Configs — Saving and Loading Mappings</h2>
+<p>
+  A <strong>config</strong> stores everything you set in the form: template selection,
+  header row, column mapping (type, source, lookup set, norm for every column),
+  output folder, file format, file name pattern, filter mode, and group column.
+</p>
+<p>
+  Configs are stored on the <em>Saved_Configs</em> sheet. You can view them there but
+  should not edit them manually.
+</p>
+<p>
+  <strong>The source file path is intentionally NOT saved.</strong> Each run you browse to
+  the current month's source file. This prevents the config from accidentally pointing to
+  last month's data.
+</p>
+
+<h3>Loading a config</h3>
+<ol>
+  <li>Open the Template Filler form.</li>
+  <li>Select the config name from the dropdown at the top of the form.</li>
+  <li>Click <strong>Load Config</strong>.</li>
+  <li>The template and all mapping settings are restored. A green confirmation message appears.</li>
+  <li>Browse to your source file and click <strong>Scan Source</strong>.</li>
+  <li>Click <strong>Run</strong>.</li>
+</ol>
+
+<hr>
+
+<!-- 9 -->
+<h2>9 &nbsp; The Presets Sheet</h2>
+<p>
+  The <em>Presets</em> sheet is a reference table of common STATIC values.
+  Column A = <strong>Template_Column</strong> (the template column name, e.g. <code>ORGANIZATION_CODE</code>).
+  Column B = <strong>Preset_Value</strong> (the value to fill, e.g. <code>100</code>).
+</p>
+<p>
+  When you select <strong>STATIC</strong> type for a column in the mapping form, the
+  Source/Value dropdown is pre-populated with all Preset_Value entries that match the
+  template column name. This saves typing and prevents typos.
+</p>
+<p>
+  <strong>Auto-append:</strong> When you save a config with a STATIC value that is not
+  already in the Presets sheet, TFT adds it automatically. Over time the Presets sheet
+  builds up a complete library of known values.
+</p>
+<div class="tip">
+  You can manually add rows to the Presets sheet at any time. Just type the Template_Column
+  name in column A and the value in column B. No formatting needed.
+</div>
+
+<hr>
+
+<!-- 10 -->
+<h2>10 &nbsp; Batch Run — Running Multiple Configs at Once</h2>
+<p>
+  The <strong>Batch Run</strong> form lets you run several saved configs sequentially with
+  one source file and one click. This is ideal when you produce multiple template variants
+  from the same Master Raw Data file.
+</p>
+
+<h3>How to use Batch Run</h3>
+<ol>
+  <li>Click <strong>Run Batch</strong> on the Run sheet.</li>
+  <li>Tick the configs you want to run in the list.</li>
+  <li>Click <strong>Browse…</strong> next to <em>Master Source Data File</em> and select your source file.</li>
+  <li>Optionally, browse to an <em>Output Folder</em> to override the folder stored in each config.
+      Leave blank to use each config's own saved folder.</li>
+  <li>Click <strong>Run Selected</strong>.</li>
+</ol>
+
+<p>
+  Each config runs in sequence. Progress is shown in the status bar. Results are logged
+  to the Log sheet when complete.
+</p>
+
+<div class="note">
+  The output folder override is applied at run time only — it does not change the folder
+  stored in the saved config. Next time you load the config in the mapper form, the
+  original folder is still there.
+</div>
+
+<hr>
+
+<!-- 11 -->
+<h2>11 &nbsp; The Log Sheet</h2>
+<p>
+  Every run is recorded on the <em>Log</em> sheet. The log is cumulative — rows are never
+  removed automatically (use Log Archive to clear it periodically).
+</p>
+
+<table>
+  <tr><th>Column</th><th>Contents</th></tr>
+  <tr><td><strong>A — Timestamp</strong></td><td>Date and time of the event</td></tr>
+  <tr><td><strong>B — Event</strong></td><td>INFO (starting a config), SAVED (file written), DONE (config complete), ERROR (something failed)</td></tr>
+  <tr><td><strong>C — Detail</strong></td><td>File path (clickable hyperlink for SAVED rows), or a descriptive message</td></tr>
+  <tr><td><strong>D — Rows</strong></td><td>Number of data rows written to the output file</td></tr>
+  <tr><td><strong>E — Open Folder</strong></td><td>Clickable hyperlink to the output folder in Windows Explorer</td></tr>
+  <tr><td><strong>F — Hint</strong></td><td>Additional context (e.g. config name, filter applied)</td></tr>
+</table>
+
+<div class="tip">
+  Click any hyperlink in column C or E to open the file or folder directly from the Log
+  without having to navigate in Windows Explorer.
+</div>
+
+<hr>
+
+<!-- 12 -->
+<h2>12 &nbsp; Send Email</h2>
+<p>
+  The Send Email button opens a file picker that shows all output files recorded in the Log.
+  The email is composed in Outlook and opened for your review — it is <strong>never sent
+  automatically</strong>.
+</p>
+
+<h3>The file picker</h3>
+<ul>
+  <li>All SAVED files from the Log are listed, pre-selected.</li>
+  <li>Files that no longer exist on disk are shown with <code>[file not found]</code> and
+      are NOT pre-selected.</li>
+  <li>Each row shows the <strong>filename</strong> prominently, with the folder path as
+      context to the right.</li>
+  <li><strong>Select All</strong> — ticks all existing files.</li>
+  <li><strong>Clear All</strong> — unticks everything.</li>
+  <li><strong>Add File…</strong> — browse to any file anywhere on your computer and add it
+      to the list. Use this to attach files that were not created by TFT (e.g. a cover note
+      or a reference document).</li>
+</ul>
+
+<h3>Email preview</h3>
+<p>
+  The bottom of the picker shows a preview of the To:, Subject:, and file list that will
+  appear in the email. If the To: field (cell B16 on the Run sheet) is blank, a warning is
+  shown — you can still open the email and fill in the address manually in Outlook.
+</p>
+
+<h3>After clicking Send Email</h3>
+<p>
+  Outlook opens with the email ready to review. You can edit the recipients, subject,
+  body, or add additional attachments before clicking Send in Outlook.
+</p>
+
+<hr>
+
+<!-- 13 -->
+<h2>13 &nbsp; Log Archive</h2>
+<p>
+  When the Log sheet grows large, use <strong>Log Archive</strong> to export it and clear it.
+</p>
+<ol>
+  <li>Click <strong>Log Archive</strong> on the Run sheet.</li>
+  <li>Browse to the folder where you want to save the archive file.</li>
+  <li>A confirmation dialog appears: <em>"This will archive X log rows and clear the Log sheet. Are you sure?"</em> — <strong>No is the default</strong>. Click Yes to proceed.</li>
+  <li>The archive is saved as an .xlsx file with a dated name. The Log sheet is cleared.</li>
+</ol>
+
+<div class="warning">
+  Once the Log is cleared it cannot be restored from the workbook. The archive file is your
+  only copy. Make sure you have browsed to a safe folder before confirming.
+</div>
+
+<hr>
+
+<!-- 14 -->
+<h2>14 &nbsp; Best Practices</h2>
+
+<ol>
+  <li>
+    <strong>Always Scan Source before running.</strong>
+    Even if you loaded a config, the source columns are not in memory until you scan.
+    Without scanning, the run will fail or produce empty columns.
+  </li>
+  <li>
+    <strong>Save your config before running for the first time.</strong>
+    If the run fails you can reload the config and adjust without re-mapping everything.
+  </li>
+  <li>
+    <strong>Use Norm on COL columns from Oracle exports.</strong>
+    Oracle exports frequently contain dashes, extra spaces, or invisible characters in
+    "empty" cells. Norm clears these automatically without affecting real values.
+  </li>
+  <li>
+    <strong>Do not use Norm on code columns (item numbers, IDs).</strong>
+    These are controlled values. If they are dirty in the source, that is a source data
+    problem that should be fixed upstream, not silently modified by TFT.
+  </li>
+  <li>
+    <strong>Prefer "Not blank" filter over "Include selected".</strong>
+    Selecting individual values means you must re-open the config every time a new
+    org code or category appears in the data. "Not blank" handles new values automatically.
+  </li>
+  <li>
+    <strong>Use Batch Run for recurring multi-template jobs.</strong>
+    Set up all your configs once, then every run is: open Batch Run → browse to source →
+    Run Selected. Avoids opening the mapper form at all.
+  </li>
+  <li>
+    <strong>Keep the Presets sheet tidy.</strong>
+    Remove outdated values (old process IDs, retired org codes). The Presets sheet is shared
+    across all configs — stale values clutter every STATIC dropdown.
+  </li>
+  <li>
+    <strong>Use the {GROUP} token in the file name pattern</strong> when running
+    "One file per group value". Without it, all files would have the same name and only
+    the last one (or versioned copies) would survive.
+  </li>
+  <li>
+    <strong>Archive the Log monthly.</strong>
+    A large Log slows down the Send Email file picker (it scans every SAVED row).
+    Archive at the end of each month cycle.
+  </li>
+  <li>
+    <strong>Fill in B16–B19 on the Run sheet once and leave them.</strong>
+    The email settings are permanent — you only need to update them if recipients change.
+    The body tokens ({DATE}, {FILES}) are replaced fresh on every send.
+  </li>
+</ol>
+
+<hr>
+
+<!-- 15 -->
+<h2>15 &nbsp; Common Mistakes &amp; Troubleshooting</h2>
+
+<table>
+  <tr>
+    <th>Symptom</th>
+    <th>Likely cause</th>
+    <th>Fix</th>
+  </tr>
+  <tr>
+    <td>Template columns don't appear in the mapping grid</td>
+    <td>Scan Template was not clicked after selecting the template</td>
+    <td>Click <strong>Scan Template</strong></td>
+  </tr>
+  <tr>
+    <td>Source column dropdowns are empty</td>
+    <td>Scan Source was not clicked after selecting the source file</td>
+    <td>Browse to the source file and click <strong>Scan Source</strong></td>
+  </tr>
+  <tr>
+    <td>Output file has 0 rows</td>
+    <td>Filter is too restrictive — no rows matched the selected values</td>
+    <td>Check the Filter/Group section. Try "Not blank" or clear the filter</td>
+  </tr>
+  <tr>
+    <td>TRANSACTION_TYPE shows UPDATE for all rows including new items</td>
+    <td>COND source column check column may be wrong, or the source uses spaces/dashes as "no value"</td>
+    <td>Confirm the correct check column is selected. Norm handles dashes automatically — no extra action needed if Norm is ticked.</td>
+  </tr>
+  <tr>
+    <td>ITEM_NUMBER has dashes stripped from it</td>
+    <td>Norm is ticked on ITEM_NUMBER</td>
+    <td>Untick Norm for ITEM_NUMBER. Norm should only be used where dirty data is expected.</td>
+  </tr>
+  <tr>
+    <td>Email picker is empty (no files listed)</td>
+    <td>No SAVED rows in the Log — no runs have been completed yet</td>
+    <td>Run a config first, or use <strong>Add File…</strong> to manually add files to attach</td>
+  </tr>
+  <tr>
+    <td>Send Email shows no To: address in the preview</td>
+    <td>Cell B16 on the Run sheet is blank</td>
+    <td>Fill in B16. You can also add/edit the address in Outlook after the draft opens.</td>
+  </tr>
+  <tr>
+    <td>Batch Run uses the wrong output folder</td>
+    <td>Each config has its own saved folder; the override is empty</td>
+    <td>Browse to the desired folder in the <em>Output Folder (overrides saved config)</em> field in the Batch Run form</td>
+  </tr>
+  <tr>
+    <td>File already exists — old version was overwritten</td>
+    <td>This cannot happen — TFT auto-versions files</td>
+    <td>Check for <code>_V1</code>, <code>_V2</code> suffixed files in the output folder</td>
+  </tr>
+  <tr>
+    <td>Log Archive confirmation appeared but I clicked No — nothing happened</td>
+    <td>No is the default on the confirmation dialog (intentional)</td>
+    <td>Click <strong>Log Archive</strong> again and click <strong>Yes</strong> this time</td>
+  </tr>
+</table>
+
+<hr>
+
+<p style="color:#595959; font-size:9.5pt; text-align:center; margin-top:30px;">
+  Template Filler Tool &nbsp;|&nbsp; Internal Use &nbsp;|&nbsp; March 2026<br>
+  To report issues or request enhancements, contact the macro maintainer.
+</p>
+
+</body>
+</html>

@@ -1,0 +1,2106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Wire Payment Review — User Manual</title>
+<style>
+  body {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11pt;
+    color: #1a1a1a;
+    max-width: 960px;
+    margin: 40px auto;
+    line-height: 1.6;
+  }
+  h1 {
+    font-size: 22pt;
+    color: #1F4E79;
+    border-bottom: 3px solid #1F4E79;
+    padding-bottom: 6px;
+    margin-top: 0;
+  }
+  h2 {
+    font-size: 15pt;
+    color: #2E75B6;
+    border-bottom: 1.5px solid #BDD7EE;
+    padding-bottom: 4px;
+    margin-top: 32px;
+  }
+  h3 {
+    font-size: 12pt;
+    color: #1F4E79;
+    margin-top: 22px;
+    margin-bottom: 6px;
+  }
+  h4 {
+    font-size: 11pt;
+    color: #2E75B6;
+    margin-top: 14px;
+    margin-bottom: 4px;
+  }
+  p { margin: 6px 0 10px 0; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 12px 0;
+    font-size: 10.5pt;
+  }
+  th {
+    background-color: #2E75B6;
+    color: white;
+    padding: 7px 10px;
+    text-align: left;
+    font-weight: bold;
+  }
+  td {
+    padding: 6px 10px;
+    border: 1px solid #BDD7EE;
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background-color: #EBF3FB; }
+  .tip {
+    background-color: #E2EFDA;
+    border-left: 4px solid #70AD47;
+    padding: 8px 14px;
+    margin: 10px 0;
+    border-radius: 2px;
+  }
+  .warning {
+    background-color: #FFF2CC;
+    border-left: 4px solid #FFC000;
+    padding: 8px 14px;
+    margin: 10px 0;
+    border-radius: 2px;
+  }
+  .note {
+    background-color: #DEEAF1;
+    border-left: 4px solid #2E75B6;
+    padding: 8px 14px;
+    margin: 10px 0;
+    border-radius: 2px;
+  }
+  .danger {
+    background-color: #FCE4D6;
+    border-left: 4px solid #C00000;
+    padding: 8px 14px;
+    margin: 10px 0;
+    border-radius: 2px;
+  }
+  code {
+    background-color: #F2F2F2;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 10pt;
+    padding: 1px 4px;
+    border-radius: 2px;
+    color: #C00000;
+  }
+  ul, ol { margin: 6px 0 10px 0; padding-left: 26px; }
+  li { margin-bottom: 5px; }
+  .toc {
+    background-color: #F7FBFF;
+    border: 1px solid #BDD7EE;
+    padding: 14px 24px;
+    margin: 20px 0;
+    border-radius: 4px;
+  }
+  .toc h2 {
+    border: none;
+    margin-top: 0;
+    font-size: 13pt;
+  }
+  .toc ol { margin: 4px 0; }
+  .toc li { margin-bottom: 3px; color: #2E75B6; }
+  .toc a { color: #2E75B6; text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  .subtitle {
+    color: #595959;
+    font-size: 12pt;
+    margin-top: -6px;
+    margin-bottom: 24px;
+  }
+  .section-intro {
+    color: #595959;
+    font-style: italic;
+    margin-bottom: 12px;
+  }
+  .step-table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+  .step-table td { border: 1px solid #BDD7EE; padding: 8px 12px; vertical-align: top; }
+  .step-num {
+    background-color: #1F4E79;
+    color: white;
+    font-weight: bold;
+    font-size: 12pt;
+    width: 36px;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .step-body { background-color: #F5F9FD; }
+  .btn-label {
+    display: inline-block;
+    background-color: #1F4E79;
+    color: white;
+    font-weight: bold;
+    padding: 2px 9px;
+    font-size: 10pt;
+    border-radius: 2px;
+  }
+  .tab-label {
+    display: inline-block;
+    background-color: #D6E4F0;
+    color: #1F4E79;
+    font-weight: bold;
+    padding: 1px 7px;
+    font-size: 10pt;
+    border-radius: 2px;
+  }
+  .tag {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 3px;
+    font-size: 9.5pt;
+    font-weight: bold;
+    margin-right: 2px;
+  }
+  .tag-rbc    { background-color: #DEEAF1; color: #1F4E79; }
+  .tag-us     { background-color: #E2EFDA; color: #375623; }
+  .tag-match  { background-color: #FFF2CC; color: #7F5B00; }
+  .tag-acct   { background-color: #FCE4D6; color: #C00000; }
+  .tag-inact  { background-color: #F2DCDB; color: #843C0C; }
+  .mn-exact   { color: #375623; font-weight: bold; }
+  .mn-fuzzy   { color: #7F5B00; font-weight: bold; }
+  .mn-none    { color: #C00000; font-weight: bold; }
+  hr { border: none; border-top: 1px solid #BDD7EE; margin: 32px 0; }
+</style>
+</head>
+<body>
+
+<h1>Wire Payment Review</h1>
+<p class="subtitle">User Manual &amp; Job Aid &nbsp;|&nbsp; Version 1.0 &nbsp;|&nbsp; March 2026</p>
+
+<!-- ============================================================ -->
+<!-- TABLE OF CONTENTS -->
+<!-- ============================================================ -->
+<div class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#s1">What is the Wire Payment Review Tool?</a></li>
+    <li><a href="#s2">Prerequisites — What You Need Before Running</a></li>
+    <li><a href="#s3">Quick Start — Typical Workflow</a></li>
+    <li><a href="#s4">First-Time Setup</a></li>
+    <li><a href="#s5">The Run Sheet — Buttons and Configuration Cells</a></li>
+    <li><a href="#s6">Phase 1 — Data Import Wizard</a></li>
+    <li><a href="#s7">Phase 2 — Wire Review Wizard</a></li>
+    <li><a href="#s8">Step 1: Extract — How It Works</a></li>
+    <li><a href="#s9">Step 2: Rebuild Registry — How It Works</a></li>
+    <li><a href="#s10">Step 3: Fuzzy Match — How It Works</a></li>
+    <li><a href="#s11">Step 4: Account Review — How It Works</a></li>
+    <li><a href="#s12">Step 5: Inactive Check — How It Works</a></li>
+    <li><a href="#s13">Understanding the Output Sheets</a></li>
+    <li><a href="#s14">Archiving Results</a></li>
+    <li><a href="#s15">Resetting the Workbook</a></li>
+    <li><a href="#s16">Step Independence — What to Re-Run and When</a></li>
+    <li><a href="#s17">Common Scenarios</a></li>
+    <li><a href="#s18">Troubleshooting</a></li>
+    <li><a href="#s19">Glossary</a></li>
+  </ol>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 1 -->
+<!-- ============================================================ -->
+<h2 id="s1">1 &nbsp; What is the Wire Payment Review Tool?</h2>
+
+<p>
+  The <strong>Wire Payment Review (WPR)</strong> tool is a macro-enabled Excel workbook that
+  automates the quality-review process for outgoing wire payment batches. Each batch arrives
+  as a bank-formatted template file — one format for RBC, a different format for US Bank —
+  containing payment instructions that include vendor names, bank account numbers, SWIFT codes,
+  and operating-unit identifiers. Before a batch can be approved and submitted, a reviewer must
+  verify three things:
+</p>
+<ol>
+  <li>That each payment is associated with a recognised Oracle supplier number.</li>
+  <li>That the bank account number on the payment instruction matches a known account in the
+      Oracle bank account registry for that supplier.</li>
+  <li>That none of the payees are inactive (deactivated) suppliers in the Oracle system.</li>
+</ol>
+<p>
+  Without automated tooling, these checks are performed row by row against the Oracle bank
+  account register — a process that is time-consuming, error-prone, and difficult to document
+  consistently. The WPR tool replaces that manual process with a structured, repeatable
+  workflow driven by a single button.
+</p>
+
+<h3>What the tool does, step by step</h3>
+<table>
+  <tr>
+    <th style="width:22%">Step</th>
+    <th>What happens</th>
+    <th style="width:28%">Output</th>
+  </tr>
+  <tr>
+    <td><strong>Import</strong></td>
+    <td>Raw bank template files and the Oracle bank account registry are loaded into
+        dedicated tabs inside the workbook.</td>
+    <td>Populated input tabs</td>
+  </tr>
+  <tr>
+    <td><strong>Extract</strong></td>
+    <td>Raw template data is parsed, cleaned, and re-structured into a standardised
+        reviewer-friendly layout. Multi-line cells, embedded commas, and format
+        variations are handled automatically.</td>
+    <td><span class="tab-label">RBC_Extract</span> &nbsp; <span class="tab-label">US_Extract</span></td>
+  </tr>
+  <tr>
+    <td><strong>Rebuild Registry</strong></td>
+    <td>The external Oracle bank account file is read, deduplicated, and filtered
+        to the operating units of interest, producing a compact lookup table.</td>
+    <td><span class="tab-label">Account_List_Unique</span></td>
+  </tr>
+  <tr>
+    <td><strong>Fuzzy Match</strong></td>
+    <td>Each vendor name on the extract is matched against the Oracle account
+        registry using a Levenshtein-distance similarity algorithm. Exact, near-exact,
+        and best-candidate matches are resolved and written back to the extract sheet.</td>
+    <td>Supplier Num, Match Score, Notes columns on extract tab</td>
+  </tr>
+  <tr>
+    <td><strong>Account Review</strong></td>
+    <td>For each matched supplier, all known Oracle bank accounts are listed and the
+        payment's account number is compared against them using exact-string, exact-digit,
+        and approximate-suffix matching.</td>
+    <td>Oracle Bank Accounts, Match, Comments columns on extract tab</td>
+  </tr>
+  <tr>
+    <td><strong>Inactive Check</strong></td>
+    <td>Each vendor name on the extract is compared against a list of deactivated Oracle
+        suppliers. Vendors whose names score above the similarity threshold are flagged
+        with the supplier number and the date of deactivation.</td>
+    <td>Inactive columns on extract tab</td>
+  </tr>
+  <tr>
+    <td><strong>Archive</strong></td>
+    <td>A clean, macro-free copy of all output sheets is saved to the archive folder
+        with a standardised filename, ready to distribute to the reviewer.</td>
+    <td>Timestamped .xlsx file in archive folder</td>
+  </tr>
+</table>
+
+<div class="note">
+  <strong>Who is this for?</strong><br>
+  <strong>Payment processor / senior reviewer</strong> — configures the Run sheet settings,
+  imports source files, runs the review pipeline, and distributes the archived output.<br>
+  <strong>Junior reviewer / approver</strong> — receives the archived <code>.xlsx</code>
+  file, opens the extract tabs, and performs the sign-off review against the automated
+  flags and notes.
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 2 -->
+<!-- ============================================================ -->
+<h2 id="s2">2 &nbsp; Prerequisites — What You Need Before Running</h2>
+
+<p class="section-intro">
+  Confirm that your environment and input files meet the requirements below before running
+  any step. Attempting to run a step without the required inputs will produce a descriptive
+  error message rather than silently writing incorrect data, but it is faster to check in advance.
+</p>
+
+<h3>2.1 &nbsp; Excel version and macro security</h3>
+
+<h4>Supported versions</h4>
+<p>
+  The WPR tool is compatible with Excel 2016, 2019, 2021, and Microsoft 365 on Windows.
+  It is not compatible with Excel for Mac (the file dialog and certain Windows API calls
+  are Windows-only). Excel Online (browser) is not supported — macros do not run there.
+</p>
+
+<h4>Enabling macros</h4>
+<p>
+  When the workbook is opened, Excel displays a yellow security bar below the ribbon reading
+  <em>"SECURITY WARNING — Macros have been disabled."</em> Click <strong>Enable Content</strong>.
+  Without this, no buttons will function. If the bar does not appear, macros may have been
+  silently blocked by Group Policy — contact your IT support team.
+</p>
+
+<h4>Adding a Trusted Location (recommended)</h4>
+<p>
+  To avoid the Enable Content prompt on every open, add the folder containing the workbook
+  to Excel's Trusted Locations: <strong>File &gt; Options &gt; Trust Center &gt; Trust Center
+  Settings &gt; Trusted Locations &gt; Add new location</strong>. Only do this for a folder
+  you control. Once trusted, the workbook opens with macros enabled automatically.
+</p>
+
+<hr>
+
+<h3>2.2 &nbsp; Input file 1 — Bank wire template</h3>
+
+<h4>What it is</h4>
+<p>
+  The wire template file is the batch payment instruction file produced by the bank or the
+  payments system. The tool supports two template formats:
+</p>
+<table>
+  <tr>
+    <th>Template type</th>
+    <th>Description</th>
+    <th>Expected layout</th>
+  </tr>
+  <tr>
+    <td><span class="tag tag-rbc">RBC</span></td>
+    <td>RBC bank wire export. Column headers may appear in rows 1, 2, or 3 depending on
+        the export version.</td>
+    <td>One payment per row. Required headers: VENDOR, DESCRIPTION, BANK, TRANSIT,
+        CREDIT BANK, CREDIT VENDOR NAME, SWIFT, TEMPLATE NAME, DEBIT ACCOUNT.</td>
+  </tr>
+  <tr>
+    <td><span class="tag tag-us">US</span></td>
+    <td>US Bank wire template. Vertical label-value format — column A contains field labels,
+        column B contains values. Multiple payment blocks are stacked top-to-bottom, each
+        starting with a <em>Template ID</em> label.</td>
+    <td>Column A = label, column B = value. Blocks separated by blank rows.
+        Required label: <em>Template ID</em> (marks the start of each payment record).</td>
+  </tr>
+</table>
+
+<h4>File format</h4>
+<p>
+  Both template types can be in any of the following formats: <code>.xlsx</code>, <code>.xls</code>,
+  <code>.csv</code>, or <code>.txt</code>. The file must be closed before importing — Excel
+  cannot read a workbook that is open in another window or another Excel session.
+</p>
+
+<h4>HSBC template</h4>
+<p>
+  HSBC is listed in the Import Wizard (button 3) but the processing pipeline is not yet
+  implemented. The data import step will place the file contents on the
+  <span class="tab-label">HSBC_Wire_Temp</span> tab, but the Extract, Fuzzy Match, and Account
+  Review steps will not process that tab until the HSBC pipeline is built in a future release.
+</p>
+
+<hr>
+
+<h3>2.3 &nbsp; Input file 2 — Oracle bank account registry</h3>
+
+<h4>What it is</h4>
+<p>
+  The Oracle bank account registry is an export from Oracle of all active bank accounts
+  associated with vendors in the operating units you process. It is used to:
+</p>
+<ul>
+  <li>Resolve vendor names to Oracle supplier numbers (via Fuzzy Match).</li>
+  <li>Provide a list of all valid bank accounts per supplier (via Account Review).</li>
+</ul>
+
+<h4>Where it is referenced</h4>
+<p>
+  The registry file is <em>not</em> imported via a file dialog. Its location is configured
+  directly on the <span class="tab-label">Run</span> sheet:
+</p>
+<table>
+  <tr><th>Cell</th><th>What to enter</th><th>Example</th></tr>
+  <tr><td><code>K2</code></td><td>Folder path where the registry file is stored</td>
+      <td><code>\\server\shares\AP\OracleExports</code></td></tr>
+  <tr><td><code>K3</code></td><td>File name of the registry file (including extension)</td>
+      <td><code>Oracle_Bank_Accounts_Mar2026.xlsx</code></td></tr>
+  <tr><td><code>K4</code></td><td>Comma-separated list of operating unit (OU) codes to include</td>
+      <td><code>115, 213, 310</code></td></tr>
+</table>
+
+<div class="tip">
+  <strong>OU filter (K4).</strong> The registry file typically contains accounts for all
+  operating units in the organisation. Entering a comma-separated list of OU codes in K4
+  restricts the imported data to only the OUs relevant to your batch. This makes the Fuzzy
+  Match and Account Review steps significantly faster and reduces false matches from
+  other business units. Enter the three-digit OU codes exactly as they appear in the data.
+  Leave K4 blank to import all OUs with no filtering.
+</div>
+
+<h4>How often it needs updating</h4>
+<p>
+  The Oracle registry changes infrequently — typically after each quarterly account
+  maintenance cycle. Once the registry has been loaded for the quarter, it does not need
+  to be reloaded for every daily batch. Re-run the <strong>Rebuild Registry</strong> step
+  only when the underlying Oracle file has been refreshed. See
+  <a href="#s16">Section 16 — Step Independence</a> for a full decision table.
+</p>
+
+<hr>
+
+<h3>2.4 &nbsp; Input file 3 — Inactive vendor list (optional)</h3>
+
+<h4>What it is</h4>
+<p>
+  The inactive vendor list is an Oracle report of all suppliers that have been deactivated,
+  together with their deactivation dates. This file is used by the Inactive Check step to
+  flag any payments destined for vendors that are no longer active in Oracle.
+</p>
+
+<h4>Expected format</h4>
+<p>
+  The file must contain at minimum three columns with recognisable headers:
+  <em>Vendor Name</em> (or <code>VENDOR_NAME</code>, <code>Supplier Name</code>),
+  <em>Vendor Number</em> (or <code>VENDOR_NUMBER</code>, <code>Supplier Number</code>), and
+  <em>Vendor Inactive Date</em> (or <code>VENDOR INACTIVE DATE</code>, <code>Inactive Date</code>).
+  Column names are matched case-insensitively and several common synonym forms are recognised
+  automatically.
+</p>
+
+<h4>Title row handling</h4>
+<p>
+  Many Oracle inactive vendor reports are formatted with a large merged title cell in row 1
+  (for example, <em>"Oracle AP Inactive Suppliers — Exported 14-Mar-2026"</em>) above the
+  actual column headers in row 2. The Import Wizard automatically detects and deletes this
+  title row after import. You do not need to remove it from the source file first.
+</p>
+
+<h4>When to update</h4>
+<p>
+  Import a new inactive vendor list whenever Oracle issues an updated deactivation report —
+  typically quarterly. Once imported, the <span class="tab-label">Inactive_List_Unique</span>
+  tab persists across daily runs until explicitly overwritten by a new import.
+</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 3 -->
+<!-- ============================================================ -->
+<h2 id="s3">3 &nbsp; Quick Start — Typical Workflow</h2>
+
+<p class="section-intro">
+  A complete first-run from empty workbook to archived output takes approximately 15 minutes
+  for a standard batch. Subsequent daily runs with existing registry data take under
+  5 minutes.
+</p>
+
+<h3>First run of the quarter</h3>
+<table class="step-table">
+  <tr>
+    <td class="step-num">1</td>
+    <td class="step-body">
+      <strong>Open the workbook.</strong> Click <strong>Enable Content</strong> on the yellow
+      macro security bar if prompted. Navigate to the <span class="tab-label">Run</span> sheet.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">2</td>
+    <td class="step-body">
+      <strong>Fill in the K column configuration cells.</strong> At minimum, enter the registry
+      path (K2), registry filename (K3), OU filter (K4), archive path (K5), operating unit
+      code (K6), and bank name (K7). See <a href="#s5">Section 5</a> for a full description
+      of each cell.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">3</td>
+    <td class="step-body">
+      <strong>Import the wire template file(s).</strong> Click
+      <span class="btn-label">Import Data</span> on the Run sheet. The Import Wizard opens.
+      Select button <strong>1 (US)</strong> or <strong>2 (RBC)</strong>, browse to the
+      template file, and confirm the import. Import both if your batch includes both
+      template types. See <a href="#s6">Section 6</a>.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">4</td>
+    <td class="step-body">
+      <strong>Import the inactive vendor list (optional).</strong> If performing an Inactive
+      Check this run, click <span class="btn-label">Import Data</span> again and select
+      button <strong>5 (Inactive Vendor List)</strong>. Browse to the Oracle inactive
+      vendors file and confirm.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">5</td>
+    <td class="step-body">
+      <strong>Click</strong> <span class="btn-label">Wire Review</span>. The Wire Review
+      Wizard opens. In the top section, tick the template(s) you imported (RBC, US, or both).
+      In the bottom section, tick all steps: Extract, Rebuild Registry, Fuzzy Match, Account
+      Review, and (if desired) Inactive Check. Click <strong>Run</strong>.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">6</td>
+    <td class="step-body">
+      <strong>Wait for processing to complete.</strong> A progress bar appears during the
+      Fuzzy Match step. For a typical batch of 200–500 rows against a registry of 50,000
+      accounts, this takes 1–3 minutes. Do not close the workbook or switch to another Excel
+      window during processing.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">7</td>
+    <td class="step-body">
+      <strong>Review the output.</strong> The wizard returns focus to the Run sheet and
+      displays a completion message. Navigate to <span class="tab-label">RBC_Extract</span>
+      or <span class="tab-label">US_Extract</span> to review the flagged results. See
+      <a href="#s13">Section 13</a> for a full explanation of each output column.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">8</td>
+    <td class="step-body">
+      <strong>Archive and distribute.</strong> Once the first-pass review is complete, click
+      <span class="btn-label">Archive Results</span> on the Run sheet. A macro-free
+      <code>.xlsx</code> copy is saved to your archive folder with a standardised filename.
+      See <a href="#s14">Section 14</a>.
+    </td>
+  </tr>
+</table>
+
+<h3>Subsequent daily runs (registry already built)</h3>
+<table class="step-table">
+  <tr>
+    <td class="step-num">1</td>
+    <td class="step-body">
+      <strong>Import the new wire template file.</strong> Click
+      <span class="btn-label">Import Data</span> and import the new template(s). The
+      existing extract tabs are cleared and replaced automatically.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">2</td>
+    <td class="step-body">
+      <strong>Click</strong> <span class="btn-label">Wire Review</span>. In the wizard,
+      tick the appropriate template(s). In the steps section, tick Extract, Fuzzy Match,
+      and Account Review. Leave <strong>Rebuild Registry unchecked</strong> — the existing
+      registry from the previous run is still valid.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">3</td>
+    <td class="step-body">
+      Review the output and archive as usual.
+    </td>
+  </tr>
+</table>
+
+<div class="tip">
+  <strong>When to tick Rebuild Registry again.</strong> Re-tick Rebuild Registry the first
+  time you run after the quarterly Oracle bank account file has been refreshed, or any time
+  you change the path, filename, or OU filter in cells K2–K4. On all other daily runs,
+  leave it unticked to save processing time.
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 4 -->
+<!-- ============================================================ -->
+<h2 id="s4">4 &nbsp; First-Time Setup</h2>
+
+<p class="section-intro">
+  The WPR workbook ships with all VBA modules installed but requires a one-time setup
+  procedure before the buttons on the Run sheet are connected to the macros.
+</p>
+
+<h3>4.1 &nbsp; Import the UserForms</h3>
+
+<p>
+  The Run sheet buttons depend on two UserForm dialog boxes: <code>frmImportWizard</code>
+  and <code>frmRunWizard</code>. These forms must be imported into the workbook once after
+  it is first received. This is a one-time step per workbook.
+</p>
+
+<table class="step-table">
+  <tr>
+    <td class="step-num">1</td>
+    <td class="step-body">
+      Open the workbook. Click <strong>Enable Content</strong> on the yellow macro security bar.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">2</td>
+    <td class="step-body">
+      Press <strong>Alt + F11</strong> to open the Visual Basic Editor (VBE). The project
+      tree appears on the left side. Look for the project entry corresponding to this workbook.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">3</td>
+    <td class="step-body">
+      In the VBE menu bar, choose <strong>File &gt; Import File…</strong> (or right-click
+      the project in the tree and choose <strong>Import File…</strong>).<br>
+      Navigate to the <code>WireProjectRework\</code> folder.<br>
+      Select <code>frmImportWizard.frm</code> and click <strong>Open</strong>.
+      The companion binary file <code>frmImportWizard.frx</code> is imported automatically.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">4</td>
+    <td class="step-body">
+      Repeat the import for <code>frmRunWizard.frm</code>.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">5</td>
+    <td class="step-body">
+      After importing, confirm that both forms appear under <strong>Forms</strong> in the
+      project tree. Save the workbook (<strong>Ctrl + S</strong>). If prompted to keep the
+      macro-enabled format, choose <strong>Keep Current Format</strong>.
+    </td>
+  </tr>
+</table>
+
+<div class="note">
+  <strong>Alternative: run the auto-setup macro.</strong> If the workbook includes a
+  <code>WPRWizardSetup.SetupAllWizardForms</code> macro, you can run it instead of the
+  manual import above. Press <strong>Alt + F8</strong>, locate
+  <code>SetupAllWizardForms</code> in the list, and click <strong>Run</strong>. This macro
+  creates both forms programmatically and does not require the <code>.frm</code> files to
+  be present on disk.
+</div>
+
+<h3>4.2 &nbsp; Assign macros to buttons on the Run sheet</h3>
+
+<p>
+  The buttons on the Run sheet must be connected to their macros once after the forms are in place.
+</p>
+
+<table>
+  <tr>
+    <th>Button label</th>
+    <th>Macro to assign</th>
+  </tr>
+  <tr>
+    <td>Import Data</td>
+    <td><code>WPR0_DataImportWizard.LaunchDataImportWizard</code></td>
+  </tr>
+  <tr>
+    <td>Wire Review</td>
+    <td><code>WPR8_Orchestrator.RunWireReview</code></td>
+  </tr>
+  <tr>
+    <td>Archive Results</td>
+    <td><code>WPR8_Orchestrator.ArchiveResults</code></td>
+  </tr>
+  <tr>
+    <td>Reset Workbook</td>
+    <td><code>WPR8_Orchestrator.ResetWorkbook</code></td>
+  </tr>
+</table>
+
+<p>
+  To assign a macro to a button: right-click the button shape on the Run sheet and choose
+  <strong>Assign Macro…</strong>. Locate the macro name in the list, select it, and click
+  <strong>OK</strong>. Repeat for each button. Save the workbook when all buttons are assigned.
+</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 5 -->
+<!-- ============================================================ -->
+<h2 id="s5">5 &nbsp; The Run Sheet — Buttons and Configuration Cells</h2>
+
+<h3>5.1 &nbsp; Buttons</h3>
+
+<table>
+  <tr>
+    <th>Button</th>
+    <th>Action</th>
+    <th>When to use</th>
+  </tr>
+  <tr>
+    <td><span class="btn-label">Import Data</span></td>
+    <td>Opens the Data Import Wizard. Guides the user through importing bank template
+        files and reference data into the correct tabs.</td>
+    <td>At the start of each batch, before running the Wire Review.</td>
+  </tr>
+  <tr>
+    <td><span class="btn-label">Wire Review</span></td>
+    <td>Opens the Wire Review Wizard. The user selects which templates and steps to run,
+        then the macro executes the full pipeline.</td>
+    <td>After importing data. The primary processing button.</td>
+  </tr>
+  <tr>
+    <td><span class="btn-label">Archive Results</span></td>
+    <td>Saves a macro-free <code>.xlsx</code> copy of all output sheets to the archive folder
+        configured in K5, with a standardised filename.</td>
+    <td>After completing the review and before distributing the output to reviewers.</td>
+  </tr>
+  <tr>
+    <td><span class="btn-label">Reset Workbook</span></td>
+    <td>Deletes all working and output sheets, and clears all input tabs.
+        Returns the workbook to a blank state.</td>
+    <td>At the start of a new review cycle, or to discard an in-progress run that
+        needs to be restarted from scratch.</td>
+  </tr>
+</table>
+
+<div class="danger">
+  <strong>Reset Workbook is irreversible.</strong> All data on the extract tabs
+  (RBC_Extract, US_Extract), the account registry tabs (Accounts_Numbers_Data,
+  Account_List_Unique), and the inactive vendor tab (Inactive_List_Unique) will be
+  permanently deleted. The raw input tabs (wire templates, Oracle_Account) are also cleared.
+  Only the configuration cells in the K column of the Run sheet are preserved.
+  Do not click Reset Workbook unless you have already archived or no longer need the
+  current run's output.
+</div>
+
+<hr>
+
+<h3>5.2 &nbsp; Configuration cells (column K)</h3>
+
+<p>
+  All runtime settings are stored in the K column of the Run sheet. These values persist
+  between runs — set them once when you first configure the workbook and update only when
+  the underlying files or operating parameters change.
+</p>
+
+<table>
+  <tr>
+    <th>Cell</th>
+    <th>Setting</th>
+    <th>Required</th>
+    <th>Example / Notes</th>
+  </tr>
+  <tr>
+    <td><code>K2</code></td>
+    <td>Registry folder path</td>
+    <td>Yes</td>
+    <td><code>\\server\shares\AP\OracleExports</code><br>
+        The folder where the Oracle bank account file is stored. Network UNC paths
+        are fully supported. Do not include a trailing backslash — the tool adds one
+        automatically.</td>
+  </tr>
+  <tr>
+    <td><code>K3</code></td>
+    <td>Registry file name</td>
+    <td>Yes</td>
+    <td><code>Oracle_Bank_Accounts_Mar2026.xlsx</code><br>
+        The file name (including extension) of the Oracle bank account registry file.
+        This must be updated whenever a new quarterly file is provided.</td>
+  </tr>
+  <tr>
+    <td><code>K4</code></td>
+    <td>OU filter</td>
+    <td>No</td>
+    <td><code>115, 213, 310</code><br>
+        Comma-separated list of three-digit operating unit codes. Only accounts
+        belonging to these OUs will be imported into Account_List_Unique.
+        Leave blank to import all OUs (slower, more matches from unrelated units).</td>
+  </tr>
+  <tr>
+    <td><code>K5</code></td>
+    <td>Archive folder path</td>
+    <td>Yes (for Archive)</td>
+    <td><code>\\server\shares\AP\WireReview\Archive</code><br>
+        The destination folder for archived output files. The folder is created
+        automatically if it does not exist.</td>
+  </tr>
+  <tr>
+    <td><code>K6</code></td>
+    <td>Operating unit code</td>
+    <td>Yes (for Archive)</td>
+    <td><code>US_115</code><br>
+        The operating unit label used in the archive filename and in the OU column
+        of the US extract. Use a consistent naming convention across runs.</td>
+  </tr>
+  <tr>
+    <td><code>K7</code></td>
+    <td>Bank name</td>
+    <td>Yes (for Archive)</td>
+    <td><code>RBC</code> or <code>US_BANK</code> or <code>HSBC</code><br>
+        The bank name segment used in the archive filename. Choose a short, consistent label.</td>
+  </tr>
+  <tr>
+    <td><code>K8</code></td>
+    <td>Template type (optional)</td>
+    <td>No</td>
+    <td><code>INTL_USD</code><br>
+        An optional suffix appended to the archive filename to distinguish between
+        different template variants processed on the same day. Leave blank if not needed.</td>
+  </tr>
+</table>
+
+<div class="tip">
+  <strong>Archive filename format.</strong> The Archive step constructs the filename as:<br>
+  <code>[K6]_[K7]_WIRE_TEMPLATES_REVIEW[_K8]_DDMMMYYYY.xlsx</code><br>
+  Example with K8 blank: <code>US_115_RBC_WIRE_TEMPLATES_REVIEW_25MAR2026.xlsx</code><br>
+  Example with K8 = INTL_USD: <code>US_115_RBC_WIRE_TEMPLATES_REVIEW_INTL_USD_25MAR2026.xlsx</code>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 6 -->
+<!-- ============================================================ -->
+<h2 id="s6">6 &nbsp; Phase 1 — Data Import Wizard</h2>
+
+<p>
+  The Data Import Wizard (<span class="btn-label">Import Data</span>) loads raw data into
+  the workbook's input tabs in preparation for processing. The wizard presents a menu of five
+  data types. Select one type per import cycle; click <strong>Import Another?</strong> after
+  each import to continue loading more types.
+</p>
+
+<h3>6.1 &nbsp; How the Import Wizard works</h3>
+
+<table class="step-table">
+  <tr>
+    <td class="step-num">1</td>
+    <td class="step-body">
+      <strong>The file-type menu appears.</strong> Five labelled buttons are presented, one
+      per data type (see Section 6.2 below). Click the button corresponding to the data you
+      want to import. Click <strong>Cancel</strong> or close the form to exit the wizard
+      without importing.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">2</td>
+    <td class="step-body">
+      <strong>A file browser opens</strong> (for types 1, 2, 3, and 5 — not for type 4).
+      Navigate to the source file, select it, and click <strong>Open</strong>. If you close
+      the browser without selecting a file, the wizard asks whether you want to try again.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">3</td>
+    <td class="step-body">
+      <strong>The file is imported automatically.</strong> The wizard opens the source file
+      in read-only mode, locates the first sheet with data, copies the entire used range to
+      the target tab, then closes the source file. The target tab is created automatically
+      if it does not yet exist in the workbook.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">4</td>
+    <td class="step-body">
+      <strong>A confirmation message reports</strong> the tab name, number of rows imported,
+      and number of columns. Click <strong>OK</strong>, then confirm whether to import another file.
+    </td>
+  </tr>
+</table>
+
+<div class="warning">
+  <strong>Existing data is replaced, not appended.</strong> Every import clears the target
+  tab completely before writing the new data. If you import the same data type twice, the
+  first import is overwritten by the second. This is intentional — each run starts from a
+  clean slate. Do not use the Import Wizard to append records to an existing tab.
+</div>
+
+<hr>
+
+<h3>6.2 &nbsp; Data type reference</h3>
+
+<table>
+  <tr>
+    <th>Button</th>
+    <th>Data type</th>
+    <th>Target tab</th>
+    <th>File dialog?</th>
+    <th>Notes</th>
+  </tr>
+  <tr>
+    <td><strong>1</strong></td>
+    <td>US Wire Template</td>
+    <td><span class="tab-label">US_Wire_Template</span></td>
+    <td>Yes</td>
+    <td>Vertical label-value format. All sheet data is imported as-is. The Extract step
+        interprets the layout.</td>
+  </tr>
+  <tr>
+    <td><strong>2</strong></td>
+    <td>RBC Wire Template</td>
+    <td><span class="tab-label">RBC_Wire_Temp</span></td>
+    <td>Yes</td>
+    <td>Row-per-payment format. Headers may be in rows 1, 2, or 3 — the Extract step scans
+        all three rows to locate them.</td>
+  </tr>
+  <tr>
+    <td><strong>3</strong></td>
+    <td>HSBC Wire Template</td>
+    <td><span class="tab-label">HSBC_Wire_Temp</span></td>
+    <td>Yes</td>
+    <td>Data is imported to the HSBC tab. Processing pipeline not yet implemented —
+        the Extract, Fuzzy Match, and Account Review steps will not run against this tab.</td>
+  </tr>
+  <tr>
+    <td><strong>4</strong></td>
+    <td>Oracle Bank Accounts</td>
+    <td><span class="tab-label">Accounts_Numbers_Data</span> and
+        <span class="tab-label">Account_List_Unique</span></td>
+    <td><strong>No</strong></td>
+    <td>No file browser. The registry path (K2), filename (K3), and OU filter (K4) must
+        be filled on the Run sheet before clicking this button. The macro reads those cells,
+        opens the file from the configured path, and builds both registry tabs in one step.
+        Equivalent to ticking <em>Rebuild Registry</em> in the Wire Review Wizard.</td>
+  </tr>
+  <tr>
+    <td><strong>5</strong></td>
+    <td>Inactive Vendor List</td>
+    <td><span class="tab-label">Inactive_List_Unique</span></td>
+    <td>Yes</td>
+    <td>The source file's merged title row (if present) is automatically deleted after import.
+        The resulting tab contains the raw inactive vendor data — the Inactive Check step
+        deduplicates it further before matching.</td>
+  </tr>
+</table>
+
+<div class="note">
+  <strong>Button 4 — Oracle Bank Accounts has no file browser by design.</strong> This
+  decision eliminates the risk of accidentally loading the wrong file. The configured path
+  in K2/K3 is the single authoritative source. If you need to switch to a different registry
+  file, update K2 and/or K3 first, then click button 4. This creates a clear audit trail:
+  the Run sheet always shows the currently-active registry file.
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 7 -->
+<!-- ============================================================ -->
+<h2 id="s7">7 &nbsp; Phase 2 — Wire Review Wizard</h2>
+
+<p>
+  Clicking <span class="btn-label">Wire Review</span> opens the Wire Review Wizard
+  (<code>frmRunWizard</code>). This form controls which templates are processed and which
+  steps are executed in the pipeline.
+</p>
+
+<h3>7.1 &nbsp; Template section (top)</h3>
+
+<p>
+  Two checkboxes select which bank templates to process in this run:
+</p>
+<table>
+  <tr>
+    <th>Checkbox</th>
+    <th>Template processed</th>
+    <th>Source tab</th>
+    <th>Output tab</th>
+  </tr>
+  <tr>
+    <td><strong>RBC</strong></td>
+    <td>RBC bank wire batch</td>
+    <td><span class="tab-label">RBC_Wire_Temp</span></td>
+    <td><span class="tab-label">RBC_Extract</span></td>
+  </tr>
+  <tr>
+    <td><strong>US</strong></td>
+    <td>US Bank wire batch</td>
+    <td><span class="tab-label">US_Wire_Template</span></td>
+    <td><span class="tab-label">US_Extract</span></td>
+  </tr>
+</table>
+
+<p>
+  At least one template must be selected. Selecting both runs the full pipeline for each
+  template sequentially. HSBC is listed but not yet implemented.
+</p>
+
+<h3>7.2 &nbsp; Steps section (bottom)</h3>
+
+<p>
+  Five checkboxes control which pipeline steps execute. All checkboxes start unchecked —
+  you select only the steps appropriate for this run.
+</p>
+
+<table>
+  <tr>
+    <th>Checkbox</th>
+    <th>Step</th>
+    <th>Runs once or per template?</th>
+    <th>When to tick</th>
+  </tr>
+  <tr>
+    <td><strong>Extract</strong></td>
+    <td>Copy raw wire data to the reviewer tab</td>
+    <td>Per template</td>
+    <td>Every time a new template file has been imported. Skip only if re-running later
+        steps against data that is already on the extract tab.</td>
+  </tr>
+  <tr>
+    <td><strong>Rebuild Registry</strong></td>
+    <td>Read Oracle bank account file and build Account_List_Unique</td>
+    <td>Once (shared)</td>
+    <td>Only when the Oracle bank account file has been updated, or on the first run of
+        the quarter. Leave unticked for all daily runs once the registry is built.</td>
+  </tr>
+  <tr>
+    <td><strong>Fuzzy Match</strong></td>
+    <td>Match vendor names to Oracle supplier numbers</td>
+    <td>Per template</td>
+    <td>Every time the Extract step has been run, or whenever you want updated match
+        results (e.g. after rebuilding the registry).</td>
+  </tr>
+  <tr>
+    <td><strong>Account Review</strong></td>
+    <td>Compare bank account numbers against Oracle registry</td>
+    <td>Per template</td>
+    <td>After Fuzzy Match. Requires Supplier Num column to be populated on the extract tab.
+        Can be re-run independently if corrections are needed.</td>
+  </tr>
+  <tr>
+    <td><strong>Inactive Check</strong></td>
+    <td>Flag vendors that appear on the inactive vendor list</td>
+    <td>Once (runs across all selected templates)</td>
+    <td>When an inactive vendor list has been imported and you want to flag deactivated
+        payees. Only runs if at least one template pipeline produced extract data.</td>
+  </tr>
+</table>
+
+<div class="tip">
+  <strong>Running a single step in isolation.</strong> All checkboxes are independent. If
+  you only need to re-run Account Review (for example, after correcting a Supplier Num value
+  manually), untick all steps except Account Review, then click Run. The macro will run only
+  that step against the existing extract data.
+</div>
+
+<div class="warning">
+  <strong>Running Fuzzy Match without a registry.</strong> If Account_List_Unique is empty
+  and Rebuild Registry is not ticked, Fuzzy Match will display an error and skip. Always
+  ensure a valid registry exists before running Fuzzy Match. If this is the first run of
+  the quarter, tick both Rebuild Registry and Fuzzy Match.
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 8 -->
+<!-- ============================================================ -->
+<h2 id="s8">8 &nbsp; Step 1: Extract — How It Works</h2>
+
+<p class="section-intro">
+  The Extract step reads raw data from the bank template tabs, applies format-specific
+  parsing and cleaning rules, and writes a standardised output to the reviewer extract tab.
+  Each bank template type has a distinct layout, and the Extract step handles both.
+</p>
+
+<h3>8.1 &nbsp; RBC extraction</h3>
+
+<p>
+  The RBC template uses a row-per-payment layout where each payment occupies one row.
+  Column headers are located by name (case-insensitive), and the search scans rows 1 through
+  3 to accommodate different RBC export versions where the header row position varies.
+</p>
+<p>
+  The following cleaning operations are applied during extraction:
+</p>
+<ul>
+  <li><strong>BANK / TRANSIT fields:</strong> embedded commas, quotes, and multi-line cell
+      content are stripped; the first and second digit-only tokens are extracted as BANK
+      and TRANSIT respectively.</li>
+  <li><strong>CREDIT VENDOR NAME / CREDIT BANK:</strong> multi-line cell content is split
+      on commas and newlines; the last meaningful token (not a two-letter country code) is
+      used.</li>
+  <li><strong>SWIFT / TEMPLATE NAME:</strong> the first meaningful token is used.</li>
+  <li><strong>OU code:</strong> extracted from the DEBIT ACCOUNT field — the three-digit
+      numeric suffix that follows the currency code (USD, CAD, EUR, AUD, GBP) in the
+      comma-delimited account string.</li>
+  <li><strong>Leading zeros:</strong> numeric-looking fields (BANK, TRANSIT, Bank Account,
+      SWIFT, OU) are stored as text to preserve leading zeros.</li>
+</ul>
+
+<h4>Output columns on RBC_Extract</h4>
+<table>
+  <tr>
+    <th>Column</th>
+    <th>Header</th>
+    <th>Source</th>
+  </tr>
+  <tr><td>A</td><td>VENDOR</td><td>VENDOR header on RBC_Wire_Temp</td></tr>
+  <tr><td>B</td><td>DESCRIPTION</td><td>DESCRIPTION header</td></tr>
+  <tr><td>C</td><td>BANK</td><td>First digit token from BANK field</td></tr>
+  <tr><td>D</td><td>TRANSIT</td><td>Second digit token from BANK/TRANSIT field</td></tr>
+  <tr><td>E</td><td>Bank Account</td><td>Account number from BANK/TRANSIT combined field</td></tr>
+  <tr><td>F</td><td>CREDIT BANK</td><td>Last meaningful token from CREDIT BANK field</td></tr>
+  <tr><td>G</td><td>CREDIT VENDOR NAME</td><td>Last meaningful token from CREDIT VENDOR NAME field</td></tr>
+  <tr><td>H</td><td>SWIFT</td><td>First meaningful token from SWIFT field</td></tr>
+  <tr><td>I</td><td>TEMPLATE NAME</td><td>First meaningful token from TEMPLATE NAME field</td></tr>
+  <tr><td>J</td><td>OU</td><td>Three-digit OU code from DEBIT ACCOUNT field</td></tr>
+</table>
+
+<hr>
+
+<h3>8.2 &nbsp; US extraction</h3>
+
+<p>
+  The US Bank template uses a vertical label-value format. Each payment is represented as
+  a block of rows in columns A (label) and B (value). A new payment block starts whenever
+  the label <em>Template ID</em> is encountered. The extraction step scans the template
+  top to bottom, grouping rows into payment records.
+</p>
+<p>
+  Label matching is case-insensitive. Labels with trailing colons (e.g. <em>Creditor Name:</em>)
+  or extra spaces are normalised before comparison, so minor formatting variations in the
+  source file are handled automatically.
+</p>
+
+<h4>Output columns on US_Extract</h4>
+<table>
+  <tr>
+    <th>Column</th>
+    <th>Header</th>
+    <th>Source label</th>
+  </tr>
+  <tr><td>A</td><td>Template ID</td><td>Template ID</td></tr>
+  <tr><td>B</td><td>Creditor Agent SWIFT/BIC ID</td><td>Creditor Agent SWIFT/BIC ID</td></tr>
+  <tr><td>C</td><td>Creditor Agent Name</td><td>Creditor Agent Name</td></tr>
+  <tr><td>D</td><td>Creditor Name</td><td>Creditor Name</td></tr>
+  <tr><td>E</td><td>Creditor Agent Account Number</td><td>Creditor Agent Account Number</td></tr>
+  <tr><td>F</td><td>Creditor Account Number</td><td>Creditor Account Number</td></tr>
+  <tr><td>G</td><td>OU</td><td>Filled from Run!K6 (operating unit code)</td></tr>
+</table>
+
+<div class="note">
+  <strong>OU column on US_Extract.</strong> The US template does not contain an OU field.
+  The tool fills column G with the value from Run!K6 for every row. Ensure K6 is set to
+  the correct operating unit code before running the US extraction, as this value is used
+  by the Fuzzy Match step to prioritise OU-filtered candidates.
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 9 -->
+<!-- ============================================================ -->
+<h2 id="s9">9 &nbsp; Step 2: Rebuild Registry — How It Works</h2>
+
+<p>
+  The Rebuild Registry step reads the external Oracle bank account file, filters it to the
+  configured operating units, deduplicates the records, and writes two output tabs.
+</p>
+
+<h3>9.1 &nbsp; What it reads</h3>
+<p>
+  The source file is identified by K2 (folder path) and K3 (filename) on the Run sheet.
+  The OU filter in K4 is applied during load — only records whose operating unit code
+  matches one of the comma-separated entries in K4 are retained. If K4 is blank, all records
+  are imported without filtering.
+</p>
+
+<h3>9.2 &nbsp; What it produces</h3>
+<table>
+  <tr>
+    <th>Tab</th>
+    <th>Contents</th>
+    <th>Used by</th>
+  </tr>
+  <tr>
+    <td><span class="tab-label">Accounts_Numbers_Data</span></td>
+    <td>Full deduplicated registry of all bank accounts for the filtered OUs. Includes
+        vendor number, vendor name, bank account number, BIC/SWIFT, and operating unit.
+        Retains multiple accounts per vendor.</td>
+    <td>Account Review step (to list all Oracle accounts per supplier) and WriteBICs
+        (to populate the Matched BIC column).</td>
+  </tr>
+  <tr>
+    <td><span class="tab-label">Account_List_Unique</span></td>
+    <td>Compressed reference list: one row per unique vendor-number + operating-unit
+        combination, containing the vendor name and vendor number. Inactive accounts
+        are excluded.</td>
+    <td>Fuzzy Match step (to resolve vendor names to supplier numbers).</td>
+  </tr>
+</table>
+
+<div class="tip">
+  <strong>Checking that the registry is fresh.</strong> Navigate to
+  <span class="tab-label">Account_List_Unique</span> and confirm the row count looks
+  reasonable for your OU filter. If the tab is empty or has far fewer rows than expected,
+  verify that K2/K3 point to the correct file and that the OU codes in K4 exactly match
+  those in the Oracle file (e.g. <code>115</code> not <code>OU_115</code>).
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 10 -->
+<!-- ============================================================ -->
+<h2 id="s10">10 &nbsp; Step 3: Fuzzy Match — How It Works</h2>
+
+<p class="section-intro">
+  The Fuzzy Match step resolves each vendor name on the extract tab to an Oracle supplier
+  number by comparing it against the Account_List_Unique reference. It uses a
+  Levenshtein-distance similarity algorithm with OU-bucket prioritisation to produce
+  accurate results even when vendor names contain spelling variations, abbreviations, or
+  punctuation differences.
+</p>
+
+<h3>10.1 &nbsp; Processing phases</h3>
+
+<table>
+  <tr>
+    <th style="width:18%">Phase</th>
+    <th>What happens</th>
+  </tr>
+  <tr>
+    <td><strong>Phase 1 — Pre-clean</strong></td>
+    <td>All vendor names in Account_List_Unique are normalised: converted to uppercase,
+        punctuation stripped, common suffixes removed (Ltd, Inc, Corp, etc.), and tokens
+        sorted alphabetically. This ensures that <em>CAPITA LTD</em> and <em>Ltd, Capita</em>
+        are treated as identical before comparison.</td>
+  </tr>
+  <tr>
+    <td><strong>Phase 2 — Build index</strong></td>
+    <td>Two lookup structures are built in memory: an exact-name hash table (for O(1)
+        lookups when a name is an exact match after normalisation) and an OU-bucket index
+        that groups records by their three-digit OU code.</td>
+  </tr>
+  <tr>
+    <td><strong>Phase 3 — Match per row</strong></td>
+    <td>
+      For each row on the extract tab, the vendor name is normalised and then passed
+      through three matching attempts in order:
+      <ol style="margin-top:6px;">
+        <li><strong>Exact hash lookup:</strong> if the normalised name appears verbatim in
+            the exact-name index, the supplier number is assigned immediately with a score
+            of 1.0. No fuzzy scanning occurs.</li>
+        <li><strong>OU-filtered scan:</strong> all candidates in the same OU bucket are
+            scanned using the Levenshtein algorithm. The highest-scoring candidate above
+            the display threshold (0.60) is retained. A progress update is emitted for each
+            candidate scanned, keeping the progress bar responsive.</li>
+        <li><strong>Global fallback:</strong> if the OU-filtered scan found no candidates
+            (i.e. the extract row's OU does not appear in the registry), the global candidate
+            list is scanned. A DoEvents yield occurs every 200 candidates to prevent the
+            workbook from appearing unresponsive during large scans.</li>
+      </ol>
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Phase 4 — Write back</strong></td>
+    <td>Results are collected in a memory array and written to the extract sheet in a single
+        batch operation for performance. Four columns are appended (or updated if already
+        present).</td>
+  </tr>
+</table>
+
+<h3>10.2 &nbsp; Output columns</h3>
+<table>
+  <tr>
+    <th>Column header</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td><strong>Supplier Num</strong></td>
+    <td>The Oracle supplier number for the best match, if the match score meets or exceeds
+        the accept threshold (0.72). Blank if no match above threshold was found.</td>
+  </tr>
+  <tr>
+    <td><strong>Matched Trading Partner</strong></td>
+    <td>The vendor name from Account_List_Unique that produced the best score, regardless
+        of threshold. Useful for manually verifying near-misses.</td>
+  </tr>
+  <tr>
+    <td><strong>Match Score</strong></td>
+    <td>The Levenshtein similarity score for the best candidate, ranging from 0.0000 (no
+        similarity) to 1.0000 (identical after normalisation). Formatted to four decimal places.</td>
+  </tr>
+  <tr>
+    <td><strong>Notes</strong></td>
+    <td>Free-text notes describing the match outcome. Example values:
+        <ul style="margin-top:4px;">
+          <li><span class="mn-exact">Exact match</span> — normalised strings were identical</li>
+          <li><span class="mn-fuzzy">Best candidate: CAPITA PLC (0.8745)</span> — highest fuzzy score above display threshold</li>
+          <li><span class="mn-none">No match found above threshold</span> — all candidates scored below 0.60</li>
+          <li>Multiple candidates shown if the best score was below the accept threshold (0.72) but above the display threshold (0.60)</li>
+        </ul>
+    </td>
+  </tr>
+</table>
+
+<h3>10.3 &nbsp; Thresholds explained</h3>
+<table>
+  <tr>
+    <th>Threshold</th>
+    <th>Value</th>
+    <th>Effect</th>
+  </tr>
+  <tr>
+    <td>Accept threshold</td>
+    <td>0.72</td>
+    <td>Minimum score to write a Supplier Num. Below this, the Supplier Num column is blank
+        even if a candidate was found. The Matched Trading Partner column still shows the
+        best candidate for manual review.</td>
+  </tr>
+  <tr>
+    <td>Display threshold</td>
+    <td>0.60</td>
+    <td>Minimum score to include a candidate in the Notes column. Candidates below 0.60
+        are not mentioned, as they are too dissimilar to be useful to a reviewer.</td>
+  </tr>
+</table>
+
+<div class="note">
+  <strong>Why the score may be lower than expected.</strong> The match compares
+  <em>normalised</em> names, not the raw names from the template. If the normalised form
+  of your vendor name differs significantly from the normalised Oracle name (e.g. one uses
+  a short form and the other uses a full legal name), the score will be lower than a visual
+  comparison would suggest. In such cases, check the Matched Trading Partner column — even
+  a score below 0.72 may represent the correct supplier, which can then be confirmed and
+  entered manually.
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 11 -->
+<!-- ============================================================ -->
+<h2 id="s11">11 &nbsp; Step 4: Account Review — How It Works</h2>
+
+<p class="section-intro">
+  The Account Review step compares the bank account number on each payment instruction
+  against the Oracle bank accounts registered for that supplier and operating unit. The goal
+  is to confirm that the account being paid is a known, authorised account in the Oracle system.
+</p>
+
+<h3>11.1 &nbsp; What is compared</h3>
+<table>
+  <tr>
+    <th>Template</th>
+    <th>Primary account field</th>
+    <th>Secondary account field</th>
+  </tr>
+  <tr>
+    <td><span class="tag tag-rbc">RBC</span></td>
+    <td>Bank Account (column E of RBC_Extract)</td>
+    <td>TRANSIT (column D) — used as fallback if the primary does not match</td>
+  </tr>
+  <tr>
+    <td><span class="tag tag-us">US</span></td>
+    <td>Creditor Account Number (column F of US_Extract)</td>
+    <td>Creditor Agent Account Number (column E) — used as fallback</td>
+  </tr>
+</table>
+
+<h3>11.2 &nbsp; Matching logic</h3>
+<p>
+  For each row, the engine retrieves all bank accounts from <span class="tab-label">Accounts_Numbers_Data</span>
+  where the Supplier Number and operating unit match the values on the extract row.
+  The primary account field is then compared against each Oracle account using three
+  methods in descending priority:
+</p>
+<ol>
+  <li><strong>Exact string match:</strong> the full account string (including any leading zeros
+      or formatting characters) matches exactly.</li>
+  <li><strong>Exact digits match:</strong> all non-numeric characters are stripped from both
+      the payment account and the Oracle account; the resulting digit strings are compared.</li>
+  <li><strong>Approximate suffix match:</strong> the trailing digits of both strings are compared
+      against a baseline length (16 digits preferred; 12 digits as fallback; configurable
+      minimum). A match is declared if the suffix similarity meets the configured threshold
+      (default 0.70).</li>
+</ol>
+<p>
+  If the primary field does not match any Oracle account via any of the three methods, the
+  secondary field is tried using the same three methods in the same order.
+</p>
+
+<h3>11.3 &nbsp; Output columns</h3>
+<table>
+  <tr>
+    <th>Column header</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td><strong>Oracle Bank Accounts</strong></td>
+    <td>A comma-separated list of all bank account numbers found in Accounts_Numbers_Data
+        for the matched Supplier Number + OU combination. Blank if Supplier Num is empty
+        (i.e. Fuzzy Match found no supplier).</td>
+  </tr>
+  <tr>
+    <td><strong>Match</strong></td>
+    <td>The match verdict:
+        <ul style="margin-top:4px;">
+          <li><code>MATCH</code> — the payment account number matches an Oracle account
+              (exact string, exact digits, or suffix)</li>
+          <li><code>NO MATCH</code> — none of the Oracle accounts match by any method</li>
+          <li><code>NO ORACLE ACCOUNTS</code> — the supplier exists in the registry but
+              has no bank accounts recorded for this OU</li>
+          <li><code>NO SUPPLIER</code> — Supplier Num column is blank (Fuzzy Match did
+              not assign a supplier number)</li>
+        </ul>
+    </td>
+  </tr>
+  <tr>
+    <td><strong>Comments</strong></td>
+    <td>Details of how the match was determined — which field matched (primary or secondary),
+        which matching method was used (exact, digits, suffix), and the Oracle account that
+        was matched. For NO MATCH verdicts, lists the Oracle accounts that were checked.
+        This column provides the evidence needed for sign-off review.</td>
+  </tr>
+</table>
+
+<div class="warning">
+  <strong>NO MATCH does not always mean an error.</strong> Some legitimate payments use account
+  formats that differ from Oracle's stored format (e.g. IBAN vs. BBAN, or with vs. without
+  spaces). If the Comments column shows that Oracle accounts exist but none matched, compare
+  the digit strings manually. A reviewer should confirm whether the account is genuinely
+  unknown or simply stored in a different format.
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 12 -->
+<!-- ============================================================ -->
+<h2 id="s12">12 &nbsp; Step 5: Inactive Check — How It Works</h2>
+
+<p class="section-intro">
+  The Inactive Check step identifies payments addressed to vendors that have been deactivated
+  in Oracle. It runs after all template pipelines have completed, processing all selected
+  templates in a single pass.
+</p>
+
+<h3>12.1 &nbsp; Three sub-steps</h3>
+<table>
+  <tr>
+    <th style="width:30%">Sub-step</th>
+    <th>What happens</th>
+  </tr>
+  <tr>
+    <td><strong>1. Build Inactive_List_Unique</strong></td>
+    <td>The <span class="tab-label">Inactive_Oracle_Account</span> tab (if it exists from
+        a previous raw import) is read and deduplicated by Vendor Number — if a vendor
+        appears multiple times with different deactivation dates, only the most recent date
+        is retained. The result is written to
+        <span class="tab-label">Inactive_List_Unique</span>.<br><br>
+        If <span class="tab-label">Inactive_Oracle_Account</span> does not exist (e.g.
+        you imported the list directly to Inactive_List_Unique via the Import Wizard),
+        this sub-step is silently skipped and the existing Inactive_List_Unique is used as-is.</td>
+  </tr>
+  <tr>
+    <td><strong>2. Fuzzy Match against inactive list</strong></td>
+    <td>Each vendor name on the extract tab is compared against the names in
+        Inactive_List_Unique using the same Levenshtein algorithm as the main Fuzzy Match
+        step, but with a higher similarity threshold (0.86 vs. 0.72). The higher threshold
+        reduces false positives — an inactive vendor match is a serious finding and should
+        only be flagged when there is high confidence in the match.</td>
+  </tr>
+  <tr>
+    <td><strong>3. Stamp inactive dates</strong></td>
+    <td>For each row where an inactive match was found above the threshold, the matched
+        supplier's deactivation date from Inactive_List_Unique is written to a date column
+        on the extract tab.</td>
+  </tr>
+</table>
+
+<h3>12.2 &nbsp; Output columns</h3>
+<p>
+  Three columns are appended to the extract tab for each template processed:
+</p>
+<table>
+  <tr>
+    <th>Column header</th>
+    <th>Contents</th>
+  </tr>
+  <tr>
+    <td><strong>Inactive Supplier Num</strong></td>
+    <td>The Oracle supplier number of the matched inactive vendor, if the similarity
+        score meets the inactive threshold (0.86). Blank otherwise.</td>
+  </tr>
+  <tr>
+    <td><strong>Inactive Name</strong></td>
+    <td>The name of the matched inactive vendor from Inactive_List_Unique.</td>
+  </tr>
+  <tr>
+    <td><strong>Vendor Inactive Date</strong></td>
+    <td>The deactivation date from Inactive_List_Unique for the matched supplier.
+        Populated by sub-step 3 using the Inactive Supplier Num to look up the date.</td>
+  </tr>
+</table>
+
+<h3>12.3 &nbsp; Inactive threshold (0.86)</h3>
+<p>
+  The inactive match threshold is deliberately set higher than the main fuzzy match threshold
+  (0.86 vs. 0.72) because a false inactive-vendor flag on a payment is a significant finding
+  that will trigger a manual hold or investigation. A lower threshold would produce more flags
+  but also more false positives — vendor names that superficially resemble an inactive
+  vendor's name without being the same entity. The 0.86 threshold is calibrated to flag
+  only high-confidence matches. Reviewers should still verify flagged rows before acting.
+</p>
+
+<div class="note">
+  <strong>Inactive Check runs for all selected templates.</strong> If both RBC and US are
+  selected in the Wire Review Wizard and both pipelines produced extract data, the Inactive
+  Check runs against both <span class="tab-label">RBC_Extract</span> and
+  <span class="tab-label">US_Extract</span> in a single pass. A new template can be added
+  to the Inactive Check without code changes — it requires only a one-line addition to the
+  template mapping block in the WPR7_InactiveCheck module.
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 13 -->
+<!-- ============================================================ -->
+<h2 id="s13">13 &nbsp; Understanding the Output Sheets</h2>
+
+<h3>13.1 &nbsp; RBC_Extract — column reference</h3>
+
+<p>
+  After a full pipeline run (Extract + Fuzzy Match + Account Review + Inactive Check),
+  the RBC_Extract tab contains the following columns:
+</p>
+
+<table>
+  <tr>
+    <th>Col</th><th>Header</th><th>Source</th>
+  </tr>
+  <tr><td>A</td><td>VENDOR</td><td>Extract step — raw vendor field from RBC template</td></tr>
+  <tr><td>B</td><td>DESCRIPTION</td><td>Extract step — payment description</td></tr>
+  <tr><td>C</td><td>BANK</td><td>Extract step — bank routing number</td></tr>
+  <tr><td>D</td><td>TRANSIT</td><td>Extract step — transit number</td></tr>
+  <tr><td>E</td><td>Bank Account</td><td>Extract step — payee bank account number</td></tr>
+  <tr><td>F</td><td>CREDIT BANK</td><td>Extract step — receiving bank name</td></tr>
+  <tr><td>G</td><td>CREDIT VENDOR NAME</td><td>Extract step — payee name (used for fuzzy matching)</td></tr>
+  <tr><td>H</td><td>SWIFT</td><td>Extract step — BIC/SWIFT code</td></tr>
+  <tr><td>I</td><td>TEMPLATE NAME</td><td>Extract step — wire template identifier</td></tr>
+  <tr><td>J</td><td>OU</td><td>Extract step — operating unit code</td></tr>
+  <tr><td>K</td><td>Supplier Num</td><td>Fuzzy Match step — Oracle supplier number</td></tr>
+  <tr><td>L</td><td>Matched Trading Partner</td><td>Fuzzy Match step — best-matching Oracle vendor name</td></tr>
+  <tr><td>M</td><td>Match Score</td><td>Fuzzy Match step — Levenshtein similarity score</td></tr>
+  <tr><td>N</td><td>Notes</td><td>Fuzzy Match step — match narrative</td></tr>
+  <tr><td>O</td><td>Matched BIC</td><td>Fuzzy Match step — BIC from Accounts_Numbers_Data for matched supplier</td></tr>
+  <tr><td>P</td><td>Oracle Bank Accounts</td><td>Account Review step — all Oracle accounts for supplier + OU</td></tr>
+  <tr><td>Q</td><td>Match</td><td>Account Review step — MATCH / NO MATCH / NO ORACLE ACCOUNTS / NO SUPPLIER</td></tr>
+  <tr><td>R</td><td>Comments</td><td>Account Review step — match detail narrative</td></tr>
+  <tr><td>S</td><td>Inactive Supplier Num</td><td>Inactive Check step — inactive vendor supplier number (if flagged)</td></tr>
+  <tr><td>T</td><td>Inactive Name</td><td>Inactive Check step — inactive vendor name</td></tr>
+  <tr><td>U</td><td>Vendor Inactive Date</td><td>Inactive Check step — deactivation date</td></tr>
+</table>
+
+<div class="note">
+  <strong>Column letters shift if a step was not run.</strong> If Account Review was not run,
+  the Oracle Bank Accounts / Match / Comments columns will not exist, so Inactive Check
+  columns would shift to P, Q, R. The column positions shown above assume a full pipeline run.
+  The tool always writes to columns identified by header name, not by position, so re-running
+  a subset of steps appends to existing columns rather than creating duplicates.
+</div>
+
+<h3>13.2 &nbsp; US_Extract — column reference</h3>
+
+<table>
+  <tr><th>Col</th><th>Header</th><th>Source</th></tr>
+  <tr><td>A</td><td>Template ID</td><td>Extract step</td></tr>
+  <tr><td>B</td><td>Creditor Agent SWIFT/BIC ID</td><td>Extract step</td></tr>
+  <tr><td>C</td><td>Creditor Agent Name</td><td>Extract step</td></tr>
+  <tr><td>D</td><td>Creditor Name</td><td>Extract step (used for fuzzy matching)</td></tr>
+  <tr><td>E</td><td>Creditor Agent Account Number</td><td>Extract step (secondary account field)</td></tr>
+  <tr><td>F</td><td>Creditor Account Number</td><td>Extract step (primary account field)</td></tr>
+  <tr><td>G</td><td>OU</td><td>Extract step — populated from Run!K6</td></tr>
+  <tr><td>H</td><td>Supplier Num</td><td>Fuzzy Match step</td></tr>
+  <tr><td>I</td><td>Matched Trading Partner</td><td>Fuzzy Match step</td></tr>
+  <tr><td>J</td><td>Match Score</td><td>Fuzzy Match step</td></tr>
+  <tr><td>K</td><td>Notes</td><td>Fuzzy Match step</td></tr>
+  <tr><td>L</td><td>Oracle Bank Accounts</td><td>Account Review step</td></tr>
+  <tr><td>M</td><td>Match</td><td>Account Review step</td></tr>
+  <tr><td>N</td><td>Comments</td><td>Account Review step</td></tr>
+  <tr><td>O</td><td>Inactive Supplier Num</td><td>Inactive Check step</td></tr>
+  <tr><td>P</td><td>Inactive Name</td><td>Inactive Check step</td></tr>
+  <tr><td>Q</td><td>Vendor Inactive Date</td><td>Inactive Check step</td></tr>
+</table>
+
+<h3>13.3 &nbsp; Account_List_Unique — reference sheet</h3>
+<p>
+  This tab contains the deduplicated, active Oracle vendor list used as the lookup source
+  for Fuzzy Match. It is not intended for direct review, but it can be opened to verify
+  that the registry loaded correctly. Expected columns: <code>VENDOR_NAME</code>,
+  <code>VENDOR_NUMBER</code>, <code>OPERATING_UNIT_NAME</code>. Row count should reflect
+  the number of unique vendor + OU combinations in the filtered registry.
+</p>
+
+<h3>13.4 &nbsp; Inactive_List_Unique — reference sheet</h3>
+<p>
+  This tab contains the deduplicated inactive vendor list used by the Inactive Check step.
+  Expected columns: <strong>Supplier Name</strong>, <strong>Supplier Number</strong>,
+  <strong>Vendor Inactive Date</strong>, <strong>Operating Unit Name</strong>.
+  One row per unique supplier number; the most recent deactivation date is retained
+  when a supplier appears multiple times in the source.
+</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 14 -->
+<!-- ============================================================ -->
+<h2 id="s14">14 &nbsp; Archiving Results</h2>
+
+<p>
+  Clicking <span class="btn-label">Archive Results</span> saves a clean, macro-free copy
+  of all output and reference sheets to the configured archive folder.
+</p>
+
+<h3>14.1 &nbsp; What is included</h3>
+<p>
+  Every sheet in the workbook <em>except</em> the Run sheet is copied to the archive file.
+  This includes all extract tabs, registry tabs, and the Log tab. The Run sheet is excluded
+  because it contains macros and configuration cells that are not relevant to the reviewer.
+  The archive file opens with the first extract tab in focus.
+</p>
+
+<h3>14.2 &nbsp; Filename construction</h3>
+<p>
+  The filename is built from the K column configuration cells in the following pattern:
+</p>
+<p style="font-family:Consolas,monospace; background:#F2F2F2; padding:6px 12px; border-radius:2px;">
+  [K6]_[K7]_WIRE_TEMPLATES_REVIEW[_K8]_DDMMMYYYY.xlsx
+</p>
+<table>
+  <tr>
+    <th>K6 (OU code)</th>
+    <th>K7 (Bank)</th>
+    <th>K8 (Type)</th>
+    <th>Date</th>
+    <th>Resulting filename</th>
+  </tr>
+  <tr>
+    <td>US_115</td><td>RBC</td><td>(blank)</td><td>25 Mar 2026</td>
+    <td><code>US_115_RBC_WIRE_TEMPLATES_REVIEW_25MAR2026.xlsx</code></td>
+  </tr>
+  <tr>
+    <td>CA_213</td><td>RBC</td><td>INTL_USD</td><td>25 Mar 2026</td>
+    <td><code>CA_213_RBC_WIRE_TEMPLATES_REVIEW_INTL_USD_25MAR2026.xlsx</code></td>
+  </tr>
+</table>
+
+<h3>14.3 &nbsp; Handling existing files</h3>
+<p>
+  If a file with the same name already exists in the archive folder, the tool prompts you
+  with three options:
+</p>
+<ul>
+  <li><strong>Yes — Overwrite:</strong> the existing file is replaced by the new one.</li>
+  <li><strong>No — Use a different name:</strong> you are prompted to enter an alternative
+      filename. Do not include the <code>.xlsx</code> extension — the tool appends it.</li>
+  <li><strong>Cancel:</strong> the archive operation is aborted. No file is written or
+      modified.</li>
+</ul>
+
+<div class="tip">
+  <strong>Archive folder is created automatically.</strong> If the folder specified in K5
+  does not exist, the tool creates it before saving. The intermediate folder path must be
+  reachable (e.g. the network drive must be connected), but the final subfolder does not
+  need to exist in advance.
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 15 -->
+<!-- ============================================================ -->
+<h2 id="s15">15 &nbsp; Resetting the Workbook</h2>
+
+<p>
+  Clicking <span class="btn-label">Reset Workbook</span> returns the workbook to a blank state
+  by deleting all working sheets and clearing all input tabs. This is equivalent to starting
+  a brand-new review cycle.
+</p>
+
+<h3>15.1 &nbsp; What is deleted</h3>
+<ul>
+  <li><span class="tab-label">RBC_Extract</span></li>
+  <li><span class="tab-label">US_Extract</span></li>
+  <li><span class="tab-label">Accounts_Numbers_Data</span></li>
+  <li><span class="tab-label">Account_List_Unique</span></li>
+  <li><span class="tab-label">Inactive_Oracle_Account</span></li>
+  <li><span class="tab-label">Inactive_List_Unique</span></li>
+  <li><span class="tab-label">Log</span></li>
+  <li>Any other sheets that are not in the protected list below</li>
+</ul>
+
+<h3>15.2 &nbsp; What is preserved</h3>
+<ul>
+  <li><span class="tab-label">Run</span> — configuration cells (K column) are not cleared</li>
+  <li><span class="tab-label">US_Wire_Template</span> — cleared (all cells removed, but tab kept)</li>
+  <li><span class="tab-label">RBC_Wire_Temp</span> — cleared</li>
+  <li><span class="tab-label">HSBC_Wire_Temp</span> — cleared</li>
+  <li><span class="tab-label">Oracle_Account</span> — cleared</li>
+</ul>
+
+<div class="danger">
+  <strong>Reset is permanent.</strong> There is no undo. Ensure you have archived the
+  current run's output (or no longer need it) before clicking Reset Workbook.
+  The K column settings on the Run sheet are not affected by Reset — your registry path,
+  archive path, and OU filter remain in place.
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 16 -->
+<!-- ============================================================ -->
+<h2 id="s16">16 &nbsp; Step Independence — What to Re-Run and When</h2>
+
+<table>
+  <tr>
+    <th>Event</th>
+    <th>Steps to run</th>
+    <th>Steps to skip</th>
+  </tr>
+  <tr>
+    <td>New daily / weekly wire batch (registry unchanged)</td>
+    <td>Import template → Extract → Fuzzy Match → Account Review</td>
+    <td>Rebuild Registry (existing Account_List_Unique is still valid)</td>
+  </tr>
+  <tr>
+    <td>New quarterly Oracle bank account file</td>
+    <td>Update K3, then: Rebuild Registry → Fuzzy Match → Account Review
+        (re-import template + Extract first if the batch also changed)</td>
+    <td>Inactive Check (unless a new inactive file also arrived)</td>
+  </tr>
+  <tr>
+    <td>New quarterly inactive vendor file</td>
+    <td>Import button 5 (Inactive Vendor List) → Inactive Check</td>
+    <td>Rebuild Registry, Extract, Fuzzy Match, Account Review — if the wire batch has not changed</td>
+  </tr>
+  <tr>
+    <td>Supplier Num corrected manually on extract tab</td>
+    <td>Account Review only (re-reads the Supplier Num column)</td>
+    <td>All other steps</td>
+  </tr>
+  <tr>
+    <td>OU filter changed (K4 updated)</td>
+    <td>Rebuild Registry → Fuzzy Match → Account Review</td>
+    <td>Extract (unless the template also changed), Inactive Check (unless inactive file also changed)</td>
+  </tr>
+  <tr>
+    <td>Full reset — all files updated</td>
+    <td>Reset Workbook → Import all sources → Extract → Rebuild Registry → Fuzzy Match → Account Review → Inactive Check</td>
+    <td>Nothing</td>
+  </tr>
+</table>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 17 -->
+<!-- ============================================================ -->
+<h2 id="s17">17 &nbsp; Common Scenarios</h2>
+
+<h3>Scenario A — First run of the quarter with a new Oracle bank account file</h3>
+<p>
+  The quarterly Oracle bank account export has arrived. This is the first wire batch of the
+  new quarter.
+</p>
+<ol>
+  <li>Save the new Oracle file to the configured registry folder (<code>K2</code> path).</li>
+  <li>Update <code>K3</code> on the Run sheet to the new file name.</li>
+  <li>Click <span class="btn-label">Import Data</span> → button <strong>1 (US)</strong> or
+      <strong>2 (RBC)</strong> → select the wire template file → confirm.</li>
+  <li>Click <span class="btn-label">Wire Review</span>. Select the relevant template(s).
+      Tick all five steps: Extract, Rebuild Registry, Fuzzy Match, Account Review, Inactive Check
+      (if an inactive file is available). Click <strong>Run</strong>.</li>
+  <li>Review output. Archive. Distribute.</li>
+</ol>
+
+<hr>
+
+<h3>Scenario B — Daily run, same registry as yesterday</h3>
+<p>
+  A new wire batch has arrived but the Oracle registry has not changed since yesterday's run.
+</p>
+<ol>
+  <li>Click <span class="btn-label">Import Data</span> → import the new template file(s).</li>
+  <li>Click <span class="btn-label">Wire Review</span>. Select the relevant template(s).
+      Tick: Extract, Fuzzy Match, Account Review. Leave Rebuild Registry and Inactive Check
+      <strong>unticked</strong>.</li>
+  <li>Review output. Archive.</li>
+</ol>
+
+<hr>
+
+<h3>Scenario C — Account Review shows NO MATCH for a payment that looks correct</h3>
+<p>
+  The extract shows NO MATCH for a payment where the reviewer is confident the account is
+  legitimate. Common causes:
+</p>
+<ul>
+  <li><strong>Format mismatch:</strong> the payment template stores the account as
+      <code>0012-3456-789</code> but Oracle stores it as <code>0012345678 9</code>. The
+      Comments column will show the Oracle accounts — manually compare the digit strings.</li>
+  <li><strong>Wrong supplier match:</strong> the Fuzzy Match returned an incorrect Supplier Num,
+      so Account Review looked up the wrong supplier's accounts. Check the Matched Trading
+      Partner and Match Score columns. If the supplier number is wrong, correct it manually
+      in the Supplier Num column and re-run Account Review alone.</li>
+  <li><strong>New account not yet in Oracle:</strong> the account was recently created and
+      the Oracle registry predates it. This is a genuine finding — escalate to accounts
+      payable master data for verification.</li>
+  <li><strong>OU mismatch:</strong> the account exists in Oracle but under a different OU
+      than the one on the extract row. Verify the OU value on the extract and compare it
+      against the Oracle registry for that supplier.</li>
+</ul>
+
+<hr>
+
+<h3>Scenario D — Inactive Check flags a vendor that is still active</h3>
+<p>
+  A vendor row on the extract shows an Inactive Supplier Num and Vendor Inactive Date, but
+  the vendor is believed to be active.
+</p>
+<ul>
+  <li>Check the Inactive Name column — it shows the name from the inactive list that was
+      matched. Confirm that this is genuinely the same entity as the payee, or a
+      coincidentally similar name.</li>
+  <li>Check the Match Score in the Inactive Supplier Num column's corresponding row in
+      the Notes column to confirm the score is above 0.86.</li>
+  <li>The inactive list may be out of date — confirm with the Oracle team whether the
+      supplier in the inactive list has since been reactivated. If so, request an updated
+      inactive vendor export and re-run the Inactive Check step alone.</li>
+  <li>If the flag is a false positive (different entity with a similar name), document the
+      reason in the Comments column of the archived file and proceed.</li>
+</ul>
+
+<hr>
+
+<h3>Scenario E — Running RBC and US in the same session</h3>
+<p>
+  A batch includes both an RBC template and a US Bank template, both to be reviewed in the
+  same run.
+</p>
+<ol>
+  <li>Click <span class="btn-label">Import Data</span>. Import the US template (button 1), then
+      click "Import Another" and import the RBC template (button 2).</li>
+  <li>Click <span class="btn-label">Wire Review</span>. Tick both <strong>RBC</strong> and
+      <strong>US</strong> in the template section. Tick all required steps. Click
+      <strong>Run</strong>.</li>
+  <li>The macro processes the RBC pipeline first, then the US pipeline. Rebuild Registry
+      (if ticked) runs once before both pipelines — the same Account_List_Unique is shared.</li>
+  <li>Inactive Check (if ticked) runs once after both pipelines and processes both
+      RBC_Extract and US_Extract.</li>
+  <li>Archive saves both extract tabs in a single file.</li>
+</ol>
+
+<hr>
+
+<h3>Scenario F — Re-running only Account Review after a manual supplier number correction</h3>
+<p>
+  A reviewer has manually corrected a Supplier Num value on the extract tab and now wants
+  Account Review to re-check that row against the corrected supplier.
+</p>
+<ol>
+  <li>Click <span class="btn-label">Wire Review</span>. Select the relevant template(s).</li>
+  <li>In the steps section, tick <strong>Account Review only</strong>. Leave all other
+      checkboxes unticked.</li>
+  <li>Click <strong>Run</strong>. Account Review reads the Supplier Num column as it now
+      stands, including any manual corrections.</li>
+</ol>
+
+<div class="note">
+  Account Review does not validate the format of Supplier Num entries. Any value in that
+  column is used as-is for the Oracle lookup. Ensure that manually entered supplier numbers
+  match the Oracle format exactly (e.g. leading zeros, no extra spaces).
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 18 -->
+<!-- ============================================================ -->
+<h2 id="s18">18 &nbsp; Troubleshooting</h2>
+
+<h3>"Form Not Found" when clicking Wire Review or Import Data</h3>
+<p>
+  <strong>Cause:</strong> <code>frmRunWizard</code> or <code>frmImportWizard</code> has not
+  been imported into the workbook.<br>
+  <strong>Fix:</strong> Open the VBE (Alt + F11). Check under <strong>Forms</strong> in the
+  project tree. If the form is missing, follow the import steps in <a href="#s4">Section 4</a>.
+  Alternatively, run <code>WPRWizardSetup.SetupAllWizardForms</code> via Alt + F8.
+</p>
+
+<hr>
+
+<h3>"Registry path / filename is blank" error when clicking button 4</h3>
+<p>
+  <strong>Cause:</strong> K2 or K3 on the Run sheet is empty.<br>
+  <strong>Fix:</strong> Enter the folder path in K2 and the filename in K3. Verify the path
+  by opening Windows Explorer and navigating to it directly. If on a network share, ensure
+  you are connected to the network before running.
+</p>
+
+<hr>
+
+<h3>"Source file not found" when clicking button 4</h3>
+<p>
+  <strong>Cause:</strong> The path + filename combination in K2 + K3 does not resolve to
+  an existing file.<br>
+  <strong>Fix:</strong> Check for typos in K3 (filename is case-sensitive on some network
+  shares). Verify that the file has not been renamed or moved. Use Windows Explorer to
+  confirm the exact filename including its extension.
+</p>
+
+<hr>
+
+<h3>Account_List_Unique is empty after Rebuild Registry</h3>
+<p>
+  <strong>Cause:</strong> The OU codes in K4 do not match any OU in the Oracle registry
+  file, or K4 contains entries in the wrong format.<br>
+  <strong>Fix:</strong> Open the Oracle registry file directly and find the column that
+  contains the operating unit identifier. Note the exact value (e.g. <code>115</code>
+  not <code>115_US</code>). Update K4 to match. Re-run Rebuild Registry.
+</p>
+
+<hr>
+
+<h3>Fuzzy Match produces no Supplier Num values (all blank)</h3>
+<p>
+  <strong>Cause:</strong> Account_List_Unique is empty (registry not built), or the OU
+  value on the extract rows does not match any OU in the registry and the global fallback
+  scan also found no matches above 0.72.<br>
+  <strong>Fix:</strong>
+</p>
+<ol>
+  <li>Verify Account_List_Unique has data. If empty, run Rebuild Registry first.</li>
+  <li>Check the OU column on the extract tab. RBC_Extract column J and US_Extract column G
+      should contain three-digit OU codes (e.g. <code>115</code>). If these are blank or
+      contain unexpected values, re-check the Extract step's OU source (DEBIT ACCOUNT field
+      for RBC, Run!K6 for US).</li>
+  <li>Review the Notes column — if it reads "No match found above threshold", the names
+      may be too different from Oracle's stored names. Consider whether the correct vendor
+      names are present in the registry, or if the registry needs to be refreshed.</li>
+</ol>
+
+<hr>
+
+<h3>Excel appears to freeze or shows "(Not Responding)" during Fuzzy Match</h3>
+<p>
+  <strong>This is normal for large registry scans and is not an error.</strong> During the
+  global fallback scan, the engine iterates over thousands of candidate names. A progress
+  bar is displayed during this phase. Excel may briefly show "(Not Responding)" in the
+  title bar during intensive inner loops — this is Windows' standard behaviour when an
+  application is busy and occurs even though the macro is running correctly. The workbook
+  will become responsive again once the scan for that row completes (typically within a few
+  seconds). Do not close or force-quit the workbook during this time. The Inactive Check
+  step shows similar behaviour for the same reason.
+</p>
+
+<hr>
+
+<h3>Archive file has incorrect column headers (older column layout)</h3>
+<p>
+  <strong>Cause:</strong> The extract tab still contains output from an older run, and
+  the current run only executed a subset of steps (e.g. Account Review only). The columns
+  written by the skipped steps (e.g. Extract) reflect the previous run's layout.<br>
+  <strong>Fix:</strong> If a clean, consistent output is needed, tick the Extract step
+  (and all subsequent steps) to regenerate the extract tab from scratch before archiving.
+</p>
+
+<hr>
+
+<h3>Progress bar does not appear during Fuzzy Match</h3>
+<p>
+  <strong>Cause:</strong> <code>frmProgress</code> (the progress bar UserForm) has not been
+  imported into the workbook.<br>
+  <strong>Fix:</strong> Open the VBE (Alt + F11). Check under Forms for <code>frmProgress</code>.
+  If missing, import <code>frmProgress.frm</code> from the WireProjectRework folder. See
+  <code>SETUP_INSTRUCTIONS.md</code> for the full import procedure. The Fuzzy Match step
+  runs correctly without the progress form — the absence of the bar is a display issue
+  only and does not affect results.
+</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 19 -->
+<!-- ============================================================ -->
+<h2 id="s19">19 &nbsp; Glossary</h2>
+
+<table>
+  <tr>
+    <th style="width:28%">Term</th>
+    <th>Definition</th>
+  </tr>
+  <tr>
+    <td><strong>Account_List_Unique</strong></td>
+    <td>The deduplicated, active Oracle vendor list built by the Rebuild Registry step.
+        Contains one row per unique vendor number + operating unit combination. Used as
+        the lookup source for Fuzzy Match.</td>
+  </tr>
+  <tr>
+    <td><strong>Accounts_Numbers_Data</strong></td>
+    <td>The full Oracle bank account registry after filtering by OU. Contains multiple
+        rows per vendor (one per bank account). Used by Account Review to list all Oracle
+        accounts for a supplier.</td>
+  </tr>
+  <tr>
+    <td><strong>Archive</strong></td>
+    <td>A macro-free <code>.xlsx</code> copy of the workbook's output tabs, saved to the
+        configured archive folder. Intended for distribution to reviewers who do not need
+        the underlying macro workbook.</td>
+  </tr>
+  <tr>
+    <td><strong>BIC / SWIFT</strong></td>
+    <td>Bank Identifier Code — the international standard identifier for a bank branch,
+        used to route international wire payments. Also referred to as a SWIFT code.</td>
+  </tr>
+  <tr>
+    <td><strong>Extract tab</strong></td>
+    <td>A reviewer-facing output sheet (RBC_Extract or US_Extract) that contains the
+        cleaned, structured payment data plus all automated review columns appended by
+        the pipeline steps.</td>
+  </tr>
+  <tr>
+    <td><strong>Fuzzy Match</strong></td>
+    <td>The process of comparing two text strings for similarity using the Levenshtein
+        distance algorithm. A score of 1.0 means the strings are identical after
+        normalisation; 0.0 means completely dissimilar.</td>
+  </tr>
+  <tr>
+    <td><strong>Inactive vendor</strong></td>
+    <td>A supplier that has been deactivated in Oracle. Payments to inactive vendors
+        require special approval or investigation. The Inactive Check step flags rows
+        where the payee name matches an entry in the inactive vendor list above the
+        0.86 similarity threshold.</td>
+  </tr>
+  <tr>
+    <td><strong>Inactive_List_Unique</strong></td>
+    <td>The deduplicated inactive vendor list. One row per unique supplier number,
+        retaining the most recent deactivation date. Used by the Inactive Check step.</td>
+  </tr>
+  <tr>
+    <td><strong>Levenshtein distance</strong></td>
+    <td>A measure of the minimum number of single-character edits (insertions, deletions,
+        substitutions) required to transform one string into another. Converted to a
+        0.0–1.0 similarity score by the tool.</td>
+  </tr>
+  <tr>
+    <td><strong>Match Score</strong></td>
+    <td>A number between 0.0000 and 1.0000 representing how closely a vendor name on
+        the extract matches the best candidate in the Oracle registry. Scores at or above
+        0.72 result in a Supplier Num being assigned; scores at or above 0.60 are shown
+        in the Notes column as candidates.</td>
+  </tr>
+  <tr>
+    <td><strong>OU / Operating Unit</strong></td>
+    <td>A three-digit organisational identifier used in Oracle to segment accounts by
+        business unit or legal entity. Used as a filter when building the registry (K4)
+        and as a key for OU-prioritised fuzzy matching.</td>
+  </tr>
+  <tr>
+    <td><strong>Registry</strong></td>
+    <td>Shorthand for the Oracle bank account registry — the external file identified by
+        K2 and K3 that contains all bank accounts for Oracle vendors. Processed into
+        Account_List_Unique and Accounts_Numbers_Data by the Rebuild Registry step.</td>
+  </tr>
+  <tr>
+    <td><strong>Run sheet</strong></td>
+    <td>The primary control sheet of the WPR workbook. Contains the operational buttons
+        (Import Data, Wire Review, Archive Results, Reset Workbook) and the K column
+        configuration cells.</td>
+  </tr>
+  <tr>
+    <td><strong>Supplier Num</strong></td>
+    <td>The Oracle supplier number assigned to a payee by the Fuzzy Match step. Used
+        by Account Review to look up the corresponding bank accounts in
+        Accounts_Numbers_Data.</td>
+  </tr>
+  <tr>
+    <td><strong>Wire template file</strong></td>
+    <td>The batch payment instruction file produced by the bank or payments system for
+        a given processing run. The WPR tool currently supports RBC and US Bank template
+        formats.</td>
+  </tr>
+</table>
+
+<hr>
+<p style="color:#595959; font-size:10pt; margin-top:32px;">
+  Wire Payment Review User Manual &nbsp;|&nbsp; Version 1.0 &nbsp;|&nbsp; March 2026
+</p>
+
+</body>
+</html>

@@ -1,0 +1,2371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Vendor Normalization Engine — User Manual</title>
+<style>
+  body {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11pt;
+    color: #1a1a1a;
+    max-width: 960px;
+    margin: 40px auto;
+    line-height: 1.6;
+  }
+  h1 {
+    font-size: 22pt;
+    color: #1F4E79;
+    border-bottom: 3px solid #1F4E79;
+    padding-bottom: 6px;
+    margin-top: 0;
+  }
+  h2 {
+    font-size: 15pt;
+    color: #2E75B6;
+    border-bottom: 1.5px solid #BDD7EE;
+    padding-bottom: 4px;
+    margin-top: 32px;
+  }
+  h3 {
+    font-size: 12pt;
+    color: #1F4E79;
+    margin-top: 22px;
+    margin-bottom: 6px;
+  }
+  h4 {
+    font-size: 11pt;
+    color: #2E75B6;
+    margin-top: 14px;
+    margin-bottom: 4px;
+  }
+  p { margin: 6px 0 10px 0; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 12px 0;
+    font-size: 10.5pt;
+  }
+  th {
+    background-color: #2E75B6;
+    color: white;
+    padding: 7px 10px;
+    text-align: left;
+    font-weight: bold;
+  }
+  td {
+    padding: 6px 10px;
+    border: 1px solid #BDD7EE;
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background-color: #EBF3FB; }
+  .tip {
+    background-color: #E2EFDA;
+    border-left: 4px solid #70AD47;
+    padding: 8px 14px;
+    margin: 10px 0;
+    border-radius: 2px;
+  }
+  .warning {
+    background-color: #FFF2CC;
+    border-left: 4px solid #FFC000;
+    padding: 8px 14px;
+    margin: 10px 0;
+    border-radius: 2px;
+  }
+  .note {
+    background-color: #DEEAF1;
+    border-left: 4px solid #2E75B6;
+    padding: 8px 14px;
+    margin: 10px 0;
+    border-radius: 2px;
+  }
+  .danger {
+    background-color: #FCE4D6;
+    border-left: 4px solid #C00000;
+    padding: 8px 14px;
+    margin: 10px 0;
+    border-radius: 2px;
+  }
+  code {
+    background-color: #F2F2F2;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 10pt;
+    padding: 1px 4px;
+    border-radius: 2px;
+    color: #C00000;
+  }
+  ul, ol { margin: 6px 0 10px 0; padding-left: 26px; }
+  li { margin-bottom: 5px; }
+  .toc {
+    background-color: #F7FBFF;
+    border: 1px solid #BDD7EE;
+    padding: 14px 24px;
+    margin: 20px 0;
+    border-radius: 4px;
+  }
+  .toc h2 {
+    border: none;
+    margin-top: 0;
+    font-size: 13pt;
+  }
+  .toc ol { margin: 4px 0; }
+  .toc li { margin-bottom: 3px; color: #2E75B6; }
+  .toc a { color: #2E75B6; text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  .subtitle {
+    color: #595959;
+    font-size: 12pt;
+    margin-top: -6px;
+    margin-bottom: 24px;
+  }
+  .section-intro {
+    color: #595959;
+    font-style: italic;
+    margin-bottom: 12px;
+  }
+  /* Step table — numbered procedure steps */
+  .step-table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+  .step-table td { border: 1px solid #BDD7EE; padding: 8px 12px; vertical-align: top; }
+  .step-num {
+    background-color: #1F4E79;
+    color: white;
+    font-weight: bold;
+    font-size: 12pt;
+    width: 36px;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .step-body { background-color: #F5F9FD; }
+  /* Output sheet colour tags */
+  .tag {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 3px;
+    font-size: 9.5pt;
+    font-weight: bold;
+    margin-right: 2px;
+  }
+  .tag-clusters  { background-color: #DEEAF1; color: #1F4E79; }
+  .tag-oracle    { background-color: #E2EFDA; color: #375623; }
+  .tag-inactive  { background-color: #FFF2CC; color: #7F5B00; }
+  .tag-matched   { background-color: #FCE4D6; color: #C00000; }
+  .tag-review    { background-color: #E2EFDA; color: #375623; border: 1px solid #70AD47; }
+  .tag-summary   { background-color: #1F4E79; color: white; }
+  /* Match-note colour indicators */
+  .mn-exact    { color: #375623; font-weight: bold; }
+  .mn-inactive { color: #7F5B00; font-weight: bold; }
+  .mn-none     { color: #C00000; font-weight: bold; }
+  hr { border: none; border-top: 1px solid #BDD7EE; margin: 32px 0; }
+  .cluster-example {
+    background-color: #F7FBFF;
+    border: 1px solid #BDD7EE;
+    border-radius: 4px;
+    padding: 10px 16px;
+    margin: 10px 0;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 10pt;
+  }
+  .cluster-example .cid { color: #1F4E79; font-weight: bold; }
+  .cluster-example .rep { color: #375623; }
+  .cluster-example .var { color: #595959; margin-left: 20px; }
+</style>
+</head>
+<body>
+
+<h1>Vendor Normalization Engine</h1>
+<p class="subtitle">User Manual &amp; Job Aid &nbsp;|&nbsp; Version 1.0 &nbsp;|&nbsp; March 2026</p>
+
+<!-- ============================================================ -->
+<!-- TABLE OF CONTENTS -->
+<!-- ============================================================ -->
+<div class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#s1">What is the Vendor Normalization Engine?</a></li>
+    <li><a href="#s2">Prerequisites — What You Need Before Running</a></li>
+    <li><a href="#s3">Quick Start — Typical Workflow</a></li>
+    <li><a href="#s4">First-Time Setup (SetupWorkbook)</a></li>
+    <li><a href="#s5">The Config Sheet — All Settings Explained</a></li>
+    <li><a href="#s6">The Run Sheet — Button Reference</a></li>
+    <li><a href="#s7">Step 1 — Name Clustering (How It Works)</a></li>
+    <li><a href="#s8">Step 2 — Oracle Reduce</a></li>
+    <li><a href="#s9">Step 2b — Inactive Vendor Reduce (Optional)</a></li>
+    <li><a href="#s10">Step 3 — Vendor Match</a></li>
+    <li><a href="#s11">Understanding the Output Sheets</a></li>
+    <li><a href="#s12">The VN_Review Sheet — Daily Analyst Workspace</a></li>
+    <li><a href="#s13">Archiving Results for the Junior Analyst</a></li>
+    <li><a href="#s14">The Archive Workbook — Summary Tab</a></li>
+    <li><a href="#s15">Cancelling a Run in Progress</a></li>
+    <li><a href="#s16">The Log Sheet</a></li>
+    <li><a href="#s17">Algorithm Reference — For Advanced Users</a></li>
+    <li><a href="#s18">Troubleshooting &amp; Common Scenarios</a></li>
+    <li><a href="#s19">Glossary</a></li>
+  </ol>
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 1 -->
+<!-- ============================================================ -->
+<h2 id="s1">1 &nbsp; What is the Vendor Normalization Engine?</h2>
+
+<p>
+  The <strong>Vendor Normalization Engine (VNE)</strong> is an Excel macro workbook that identifies
+  duplicate and near-duplicate names within any large list, groups those names into similarity
+  clusters, and cross-references each cluster against a system extract to surface matching
+  identifiers and flag unrecognised entries. The result is a structured, colour-coded review
+  package ready for analyst sign-off.
+</p>
+<p>
+  The tool was built with Accounts Payable supplier lists as the primary use case, but it is not
+  limited to that context. Any dataset that provides a <strong>name column</strong> and a
+  corresponding <strong>identifier column</strong> can serve as both the source list and the
+  reference extract. Practical applications include:
+</p>
+<ul>
+  <li><strong>AP supplier names</strong> — group near-duplicate vendor names and match to Oracle vendor numbers</li>
+  <li><strong>Manufacturer names</strong> — detect inconsistent manufacturer entries and reconcile against a manufacturer code reference</li>
+  <li><strong>Customer names</strong> — identify duplicate customer records and cross-reference against a customer ID extract</li>
+  <li><strong>Item descriptions</strong> — cluster similar item or material descriptions and match to an item master</li>
+  <li><strong>GL account descriptions</strong> — detect naming inconsistencies across a chart of accounts</li>
+</ul>
+<p>
+  The reference extract (Oracle or otherwise) is connected via two configurable column headers
+  on the Config sheet — one for the name column and one for the identifier column. No column
+  names are hard-coded in the matching logic. The labels <em>Vendor Number</em> and
+  <em>Vendor Name</em> that appear throughout the output sheets are the tool's internal
+  terminology for the <em>identifier</em> and <em>name</em> roles respectively, regardless of
+  what those columns are called in your source data.
+</p>
+<p>
+  In a large organisation, names accumulate over time with inconsistent spelling, punctuation,
+  capitalisation, and abbreviations. A single supplier such as <em>Capita</em> may appear as
+  <em>CAPITA PLC</em>, <em>Capita Ltd</em>, <em>CAPITA LIMITED</em>, and <em>Capita,</em>
+  (with a trailing comma), all referring to the same entity. Without automated grouping, an
+  analyst must identify these variants manually row by row — a process that is both
+  time-consuming and error-prone at scale.
+</p>
+<p>
+  The VNE automates this by scoring every pair of names for similarity, merging similar names
+  into <em>clusters</em>, and then attempting to match each cluster to a record in the reference
+  extract. The final output is a colour-coded, collapsible worksheet that an analyst can work
+  through systematically to confirm whether clustered names represent the same entity, flag
+  potential duplicates, and verify system identifiers.
+</p>
+
+<div class="note">
+  <strong>Who is this for?</strong><br>
+  <strong>Senior analyst / processor</strong> — configures the source and reference files, runs
+  the macro, interprets the high-level results, and determines whether the output is ready to
+  hand off.<br>
+  <strong>Junior analyst</strong> — receives the archived workbook, opens the <em>VN_Review</em>
+  tab, and performs the granular row-by-row verification against the system of record.
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 2 -->
+<!-- ============================================================ -->
+<h2 id="s2">2 &nbsp; Prerequisites — What You Need Before Running</h2>
+
+<p class="section-intro">
+  Before running any step, confirm that your Excel environment is ready and that you have
+  the required input files available in an acceptable format. This section covers every
+  prerequisite in detail, including what each file must contain, where it can be stored,
+  and how to handle common variations in file structure.
+</p>
+
+<h3>2.1 &nbsp; Excel version and macro security</h3>
+
+<h4>Supported Excel versions</h4>
+<p>
+  The VNE is compatible with Excel 2016, 2019, 2021, and Microsoft 365 on Windows.
+  It is not compatible with Excel for Mac (the FileDialog folder picker and certain
+  charting methods used by the Archive module are Windows-only). Excel Online (browser)
+  is not supported — macros do not run in the browser version.
+</p>
+
+<h4>Enabling macros when you open the workbook</h4>
+<p>
+  When you open the <code>.xlsm</code> file, Excel displays a yellow security bar below the
+  ribbon that reads <em>"SECURITY WARNING — Macros have been disabled."</em> Click
+  <strong>Enable Content</strong> on that bar. Without this, no buttons or macros will
+  function. You will need to click Enable Content each time you open the file unless you
+  add the file's folder to Excel's Trusted Locations (see below).
+</p>
+
+<h4>Adding a Trusted Location (recommended for regular use)</h4>
+<p>
+  If the workbook is stored in a location you control (local drive or a specific network
+  share), you can prevent the security prompt from appearing on every open:
+</p>
+<ol>
+  <li>In Excel, go to <strong>File &gt; Options &gt; Trust Center &gt; Trust Center Settings</strong>.</li>
+  <li>Click <strong>Trusted Locations</strong>, then <strong>Add new location</strong>.</li>
+  <li>Browse to the folder where the VNE workbook is stored. Tick
+      <em>"Subfolders of this location are also trusted"</em> if you want the whole folder
+      tree to be trusted.</li>
+  <li>Click <strong>OK</strong> and restart Excel. The workbook will now open with macros
+      enabled automatically.</li>
+</ol>
+
+<div class="warning">
+  <strong>Only trust locations you control.</strong> Do not add a network share as a Trusted
+  Location unless you are certain that no one else can place files there. Trusted Locations
+  bypass all macro security warnings for any file opened from that path.
+</div>
+
+<h4>If the Developer tab is not visible</h4>
+<p>
+  The Developer tab is needed to assign macros to buttons after running SetupWorkbook.
+  To show it: <strong>File &gt; Options &gt; Customise Ribbon</strong> → tick
+  <strong>Developer</strong> in the right-hand list → click <strong>OK</strong>.
+</p>
+
+<hr>
+
+<h3>2.2 &nbsp; Input file 1 — Name Source (required for Step 1)</h3>
+
+<h4>What it is</h4>
+<p>
+  The Name Source is any file that contains the raw list of names you want to cluster and
+  analyse. In an AP context this is typically a daily or weekly transaction extract, a vendor
+  master export, or a purchase order line-item dump. In other contexts it might be a
+  manufacturer directory, a customer list, or an item description export.
+</p>
+
+<h4>Minimum requirements</h4>
+<ul>
+  <li>At least one column containing names. The column can have any header — you specify
+      the header (or column position) on the Config sheet.</li>
+  <li>A single header row. The engine reads row 1 as headers and all subsequent rows as
+      data. If your file has no header row, use a column letter or number instead of a
+      header name in <code>C7</code> (e.g. enter <code>A</code> to use column A).</li>
+  <li>The file must be closed before running Step 1. Excel cannot read a file that is
+      locked open by another application or another Excel instance.</li>
+</ul>
+
+<h4>Supported formats</h4>
+<table>
+  <tr><th>Format</th><th>Extension</th><th>Notes</th></tr>
+  <tr>
+    <td>Excel Workbook</td><td><code>.xlsx</code></td>
+    <td>Standard format. Recommended.</td>
+  </tr>
+  <tr>
+    <td>Excel Macro-Enabled</td><td><code>.xlsm</code></td>
+    <td>Accepted. Macros in the source file are not executed.</td>
+  </tr>
+  <tr>
+    <td>Excel 97–2003</td><td><code>.xls</code></td>
+    <td>Accepted. May be slower to open for large files.</td>
+  </tr>
+  <tr>
+    <td>CSV (comma-separated)</td><td><code>.csv</code></td>
+    <td>Accepted. Opened in text mode to preserve leading zeros. All columns
+        treated as text — no automatic date or number conversion.</td>
+  </tr>
+</table>
+
+<h4>File stored on a network drive</h4>
+<p>
+  Network paths are fully supported. Enter the UNC path in the Config sheet, e.g.
+  <code>\\server\shares\AP\Daily</code>. The machine running the VNE must have read
+  access to that path. If the path requires authentication, ensure you are connected to
+  the network share before running the macro.
+</p>
+
+<h4>File name changes daily</h4>
+<p>
+  Many AP extracts are named with a date stamp, e.g. <code>AP_Extract_14MAR2026.xlsx</code>,
+  <code>AP_Extract_15MAR2026.xlsx</code>. You must update <code>C5</code> on the Config
+  sheet each day to reflect the new file name, or use the <strong>Open Wizard</strong>
+  button to re-browse to the new file. The folder path in <code>C4</code> only needs
+  to be set once if the file always lands in the same folder.
+</p>
+
+<h4>Source data in this workbook</h4>
+<p>
+  If you paste your name list directly into a sheet inside the VNE workbook, you can
+  skip the external file entirely. Leave <code>C4</code> and <code>C5</code> blank.
+  Enter the sheet tab name in <code>C6</code> (or leave <code>C6</code> blank to
+  auto-detect by column header). The engine will read from that sheet without opening
+  any external file.
+</p>
+
+<div class="tip">
+  <strong>Tip — what makes a clean Name Source.</strong> The engine handles mixed case,
+  leading/trailing spaces, and punctuation variations automatically during normalisation.
+  You do not need to clean the source before running. However, if your source contains
+  many blank rows or entirely non-name entries (e.g. account codes mixed in with vendor
+  names), consider filtering those out first so they do not inflate the cluster count
+  with irrelevant single-entry clusters.
+</div>
+
+<hr>
+
+<h3>2.3 &nbsp; Input file 2 — Reference Extract (required for Step 2)</h3>
+
+<h4>What it is</h4>
+<p>
+  The Reference Extract is the system-of-record file used to look up an official identifier
+  for each name cluster. In an AP context this is the Oracle vendor master export. In other
+  contexts it might be a manufacturer code list, a customer master export, or an item master
+  — any file that pairs a name with a system identifier.
+</p>
+
+<h4>Minimum requirements</h4>
+<ul>
+  <li>An <strong>identifier column</strong> — the system ID (vendor number, item code,
+      customer ID, etc.). Any column header or position. Configured via <code>C13</code>.</li>
+  <li>A <strong>name column</strong> — the official name in the system that will be compared
+      against the clustered names from the source. Any column header or position. Configured
+      via <code>C14</code>.</li>
+  <li>A single header row. If the file has no header row, use column letters or numbers in
+      <code>C13</code>/<code>C14</code>.</li>
+  <li>The file must be closed before running Step 2.</li>
+</ul>
+
+<h4>Column header examples by use case</h4>
+<table>
+  <tr>
+    <th>Use case</th>
+    <th>Identifier column (C13)</th>
+    <th>Name column (C14)</th>
+  </tr>
+  <tr><td>AP supplier list</td><td><code>VENDOR_NUMBER</code></td><td><code>VENDOR_NAME</code></td></tr>
+  <tr><td>Manufacturer directory</td><td><code>MFR_CODE</code></td><td><code>MANUFACTURER_NAME</code></td></tr>
+  <tr><td>Customer master</td><td><code>CUSTOMER_ID</code></td><td><code>CUSTOMER_NAME</code></td></tr>
+  <tr><td>Item master</td><td><code>ITEM_NUMBER</code></td><td><code>ITEM_DESCRIPTION</code></td></tr>
+  <tr><td>No header row (column B = ID, column C = Name)</td><td><code>B</code></td><td><code>C</code></td></tr>
+</table>
+
+<h4>File size considerations</h4>
+<p>
+  The Reference Extract can be very large — Oracle vendor master exports of 500,000+ rows
+  are common and are handled without issue. Step 2 reads the entire file into memory and
+  deduplicates it, so the primary constraint is available RAM. On a machine with 8 GB RAM,
+  files up to approximately 1 million rows process without difficulty. For files above that
+  size, ensure no other large applications are running concurrently.
+</p>
+
+<h4>Duplicate rows in the Reference Extract</h4>
+<p>
+  The extract almost certainly contains duplicate identifier + name combinations (one row
+  per transaction or account line is typical). This is expected — Step 2 exists precisely
+  to deduplicate the extract before Step 3 uses it. You do not need to pre-clean or
+  deduplicate the reference file.
+</p>
+
+<hr>
+
+<h3>2.4 &nbsp; Input file 3 — Inactive / Deactivated Records (optional, Step 2b)</h3>
+
+<h4>What it is</h4>
+<p>
+  The Inactive file is a secondary reference that lists records that have been deactivated
+  or retired in the system, along with the date of deactivation. In AP this is the Oracle
+  inactive vendors report. This file is entirely optional — if you do not have one, or do
+  not need inactive matching, leave <code>C29</code> blank and Step 2b will be skipped
+  automatically.
+</p>
+
+<h4>Minimum requirements (if used)</h4>
+<ul>
+  <li>A <strong>name column</strong> — the name of the deactivated entity. Configured via
+      <code>C31</code>.</li>
+  <li>An <strong>identifier column</strong> — the system ID of the deactivated entity.
+      Configured via <code>C32</code>.</li>
+  <li>A <strong>date column</strong> — the date the record was deactivated. Configured via
+      <code>C33</code>. The date value is preserved as-is in the output (no reformatting).</li>
+</ul>
+
+<h4>Merged title row handling</h4>
+<p>
+  Some Oracle inactive vendor reports are formatted with a large merged title cell in row 1
+  (e.g. <em>"Oracle AP Inactive Suppliers — Exported 14-Mar-2026"</em>) and the actual
+  column headers in row 2. The engine detects this automatically: if row 1 does not contain
+  recognisable column headers, it advances to row 2 before scanning. You do not need to
+  manually delete the title row from the file before running.
+</p>
+
+<h4>When to run Step 2b</h4>
+<p>
+  Step 2b only needs to be re-run when a new inactive vendors file arrives. In most
+  organisations this is quarterly, coinciding with the full Oracle extract refresh.
+  Once <em>Inactive_Unique</em> exists in the workbook, it remains available for all
+  subsequent Step 3 runs until it is overwritten by a new Step 2b run.
+</p>
+
+<hr>
+
+<h3>2.5 &nbsp; Step independence — what needs re-running and when</h3>
+
+<table>
+  <tr>
+    <th>Trigger event</th>
+    <th>Steps to re-run</th>
+    <th>Steps to skip</th>
+  </tr>
+  <tr>
+    <td>New daily / weekly name source batch</td>
+    <td>Step 1, Step 3 (or use <strong>Quick Rerun</strong>)</td>
+    <td>Steps 2 and 2b — reference data is unchanged</td>
+  </tr>
+  <tr>
+    <td>New quarterly Oracle extract</td>
+    <td>Step 2, then Step 3 (and Step 1 if the name source also changed)</td>
+    <td>Step 2b if the inactive file has not changed</td>
+  </tr>
+  <tr>
+    <td>New quarterly inactive vendors file</td>
+    <td>Step 2b, then Step 3</td>
+    <td>Steps 1 and 2 if unchanged</td>
+  </tr>
+  <tr>
+    <td>Changed a Config setting (threshold, window, column header)</td>
+    <td>Re-run the affected step and all downstream steps</td>
+    <td>Unaffected upstream steps</td>
+  </tr>
+  <tr>
+    <td>Full refresh (all files updated)</td>
+    <td>All steps in order: 2 → 2b → 1 → 3 (or use <strong>Run All</strong>)</td>
+    <td>Nothing</td>
+  </tr>
+</table>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 3 -->
+<!-- ============================================================ -->
+<h2 id="s3">3 &nbsp; Quick Start — Typical Workflow</h2>
+<p class="section-intro">
+  First-time configuration takes approximately 10 minutes. Every subsequent daily run takes
+  a single click via <em>Quick Rerun</em>.
+</p>
+
+<table class="step-table">
+  <tr>
+    <td class="step-num">1</td>
+    <td class="step-body">
+      <strong>Open the workbook.</strong> Go to the <em>Run</em> sheet. If the Run and Config
+      sheets do not yet exist, click <strong>Setup Workbook</strong> in Developer &gt; Macros,
+      or see <a href="#s4">Section 4</a>.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">2</td>
+    <td class="step-body">
+      <strong>Fill in the Config sheet.</strong> At minimum, provide: vendor name column header,
+      Oracle vendor number column header, Oracle vendor name column header. Point each section
+      to the correct source file. See <a href="#s5">Section 5</a> for every field.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">3</td>
+    <td class="step-body">
+      <strong>Run Step 2 — Oracle Reduce.</strong> This is a one-time (quarterly) step that
+      reads the Oracle extract and produces the <em>Oracle_Unique</em> reference sheet.
+      Click <em>Step 2 — Oracle Reduce</em> on the Run sheet.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">4</td>
+    <td class="step-body">
+      <strong>(Optional) Run Step 2b — Inactive Vendor Reduce.</strong> If an inactive vendors
+      file is configured, click <em>Step 2b — Inactive Vendor Reduce</em>. This produces the
+      <em>Inactive_Unique</em> reference sheet.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">5</td>
+    <td class="step-body">
+      <strong>Run Step 1 — Name Clustering.</strong> This reads the daily vendor name source
+      and groups similar names. Click <em>Step 1 — Name Clustering</em> on the Run sheet.
+      A progress bar will appear. For large datasets this step may take several minutes.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">6</td>
+    <td class="step-body">
+      <strong>Run Step 3 — Vendor Match.</strong> This matches each cluster to Oracle vendor
+      numbers and produces both <em>VN_Matched</em> and <em>VN_Review</em>.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">7</td>
+    <td class="step-body">
+      <strong>Review the results.</strong> Open <em>VN_Review</em>. Each cluster appears as a
+      bold summary row with variant detail rows collapsed underneath. Click <strong>+</strong>
+      to expand a cluster and inspect the spelling variants and their Oracle match status.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">8</td>
+    <td class="step-body">
+      <strong>Archive and hand off.</strong> When the first-pass review is complete and the
+      data looks ready for the junior analyst, click <strong>Archive Results</strong> on the
+      Run sheet. The engine exports a clean, macro-free <code>.xlsx</code> workbook to the
+      folder of your choice. See <a href="#s13">Section 13</a>.
+    </td>
+  </tr>
+</table>
+
+<div class="tip">
+  <strong>Tip — subsequent daily runs.</strong> Once Steps 2 and 2b have been run for the
+  current quarter, you only need to repeat Steps 1 and 3 each day. Click
+  <strong>Quick Rerun</strong> on the Run sheet — it runs both steps back-to-back using the
+  settings already saved on the Config sheet, with no form to fill in.
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 4 -->
+<!-- ============================================================ -->
+<h2 id="s4">4 &nbsp; First-Time Setup (SetupWorkbook)</h2>
+
+<p class="section-intro">
+  The VNE workbook ships as a macro-enabled file (<code>.xlsm</code>) containing all the
+  VBA modules but none of the working sheets. The first time you open it, the
+  <em>Run</em>, <em>Config</em>, and <em>Log</em> sheets do not yet exist. A one-time
+  setup procedure creates those sheets, populates all default labels and values, and
+  prepares the workbook for use. This takes approximately two minutes.
+</p>
+
+<h3>4.1 &nbsp; Run SetupWorkbook</h3>
+
+<table class="step-table">
+  <tr>
+    <td class="step-num">1</td>
+    <td class="step-body">
+      Open the <code>.xlsm</code> file. Click <strong>Enable Content</strong> on the
+      yellow security bar if prompted (see Section 2.1).
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">2</td>
+    <td class="step-body">
+      Press <strong>Alt + F8</strong> to open the Macro dialog.<br>
+      Alternatively: go to <strong>Developer &gt; Code &gt; Macros</strong>.<br>
+      <em>If you do not see the Developer tab, go to File &gt; Options &gt; Customise Ribbon
+      and tick Developer.</em>
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">3</td>
+    <td class="step-body">
+      In the macro list, locate and select <strong>VNE3_Setup.SetupWorkbook</strong>.<br>
+      If the list is long, type <code>Setup</code> in the search box at the top to filter it.
+      Click <strong>Run</strong>.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">4</td>
+    <td class="step-body">
+      The macro runs silently for a few seconds, then displays a confirmation message:<br>
+      <em>"Workbook set up. Run sheet → assign macros to buttons. Config sheet → fill in
+      column C. Log sheet → run history is written here automatically."</em><br>
+      Click <strong>OK</strong>.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">5</td>
+    <td class="step-body">
+      Three new sheet tabs will now be visible at the bottom of the workbook:
+      <strong>Run</strong> (amber tab), <strong>Config</strong> (light-blue tab), and
+      <strong>Log</strong>. Navigate to the <em>Run</em> sheet to continue.
+    </td>
+  </tr>
+</table>
+
+<div class="note">
+  <strong>Safe to re-run at any time.</strong> SetupWorkbook checks each cell before
+  writing — it only writes a default value if the cell is currently blank. Any value you
+  have already typed in column C of the Config sheet is preserved. You can safely re-run
+  SetupWorkbook after a VBA module update to refresh labels and add any newly added
+  Config rows without losing your settings.
+</div>
+
+<hr>
+
+<h3>4.2 &nbsp; Assign macros to buttons on the Run sheet</h3>
+
+<p>
+  SetupWorkbook creates nine button shapes on the Run sheet and writes the target macro
+  name next to each one (column D). The buttons are not yet connected to the macros —
+  you must assign them manually once. This is a one-time step per workbook.
+</p>
+
+<table class="step-table">
+  <tr>
+    <td class="step-num">1</td>
+    <td class="step-body">
+      On the <em>Run</em> sheet, <strong>right-click</strong> the first button shape.
+      A context menu appears. Choose <strong>Assign Macro…</strong>
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">2</td>
+    <td class="step-body">
+      In the Assign Macro dialog, locate the macro name shown in column D next to that button.
+      Click it in the list, then click <strong>OK</strong>. The button is now linked.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">3</td>
+    <td class="step-body">
+      Repeat for each button. The full assignment table is:
+      <table style="margin-top:8px; font-size:10pt;">
+        <tr><th>Button label</th><th>Macro to assign</th></tr>
+        <tr><td>Open Wizard</td><td><code>VNE7_Orchestrator.ShowForm</code></td></tr>
+        <tr><td>Quick Rerun (use saved settings)</td><td><code>VNE7_Orchestrator.QuickRerun</code></td></tr>
+        <tr><td>Step 1 — Name Clustering</td><td><code>VNE7_Orchestrator.RunStep1_Cluster</code></td></tr>
+        <tr><td>Step 2 — Oracle Reduce</td><td><code>VNE7_Orchestrator.RunStep2_OracleReduce</code></td></tr>
+        <tr><td>Step 2b — Inactive Vendor Reduce</td><td><code>VNE7_Orchestrator.RunStep2b_InactiveReduce</code></td></tr>
+        <tr><td>Step 3 — Vendor Match</td><td><code>VNE7_Orchestrator.RunStep3_Match</code></td></tr>
+        <tr><td>Run All (Steps 1 + 2 + 2b + 3)</td><td><code>VNE7_Orchestrator.RunAll</code></td></tr>
+        <tr><td>Setup Workbook</td><td><code>VNE3_Setup.SetupWorkbook</code></td></tr>
+        <tr><td>Archive Results</td><td><code>VNE9_Archive.RunArchive</code></td></tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">4</td>
+    <td class="step-body">
+      Save the workbook (<strong>Ctrl + S</strong>). Button assignments are saved with
+      the file.
+    </td>
+  </tr>
+</table>
+
+<div class="tip">
+  <strong>Tip — testing a button.</strong> After assigning, click any button once with the
+  left mouse button (not right-click). The macro will run. For the Setup Workbook button,
+  clicking it will re-run SetupWorkbook — this is safe and will just refresh labels.
+  For step buttons (Step 1, Step 2, etc.), you will see a confirmation prompt before
+  anything is processed.
+</div>
+
+<div class="warning">
+  <strong>If a button does nothing when clicked:</strong> right-click it and check Assign
+  Macro — if the assigned macro name shows <em>"[macro name] (not found)"</em>, the module
+  has not been imported into the workbook. Verify that all VBA modules
+  (<code>VNE1_Config.bas</code> through <code>VNE9_Archive.bas</code>) are present in the
+  VBA Editor (Alt + F11, check the left-hand Project tree).
+</div>
+
+<hr>
+
+<h3>4.3 &nbsp; Save the workbook in macro-enabled format</h3>
+
+<p>
+  The workbook must be saved as <code>.xlsm</code> (Excel Macro-Enabled Workbook) to
+  retain the VBA modules and button assignments. If you save it as <code>.xlsx</code>,
+  Excel will strip out all macros.
+</p>
+<p>
+  To confirm the file type: check the title bar — it should show the file name ending in
+  <code>.xlsm</code>. If you see a <em>"Some features may be lost"</em> warning when saving,
+  choose <strong>Keep Current Format</strong> (not <em>Use Office Open XML Format</em>).
+</p>
+
+<hr>
+
+<h3>4.4 &nbsp; What SetupWorkbook creates</h3>
+
+<table>
+  <tr>
+    <th>Sheet</th>
+    <th>Tab colour</th>
+    <th>Purpose</th>
+    <th>User edits?</th>
+  </tr>
+  <tr>
+    <td><strong>Run</strong></td>
+    <td>Amber</td>
+    <td>Nine button shapes, each labelled with its function and the corresponding macro name.
+        This is the primary operating screen — all day-to-day interactions happen here.</td>
+    <td>No — do not add data to this sheet. Button labels are refreshed by SetupWorkbook.</td>
+  </tr>
+  <tr>
+    <td><strong>Config</strong></td>
+    <td>Light blue</td>
+    <td>All user-configurable settings. Column B = label (read-only), column C = your value,
+        column D = hint / default. Every path, file name, column header, threshold, and
+        archive setting lives here.</td>
+    <td><strong>Yes — this is the only sheet you should edit.</strong> All settings are
+        entered in column C.</td>
+  </tr>
+  <tr>
+    <td><strong>Log</strong></td>
+    <td>Default</td>
+    <td>Timestamped record of every macro run — module name, outcome, row counts, file
+        paths. Written automatically.</td>
+    <td>No — written by the macros. You may read it and filter it but should not edit it.</td>
+  </tr>
+</table>
+
+<p>
+  The output sheets (<em>VN_Clusters</em>, <em>Oracle_Unique</em>, <em>Inactive_Unique</em>,
+  <em>VN_Matched</em>, <em>VN_Review</em>) do not exist yet after setup. They are created
+  automatically the first time each corresponding step is run.
+</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 5 -->
+<!-- ============================================================ -->
+<h2 id="s5">5 &nbsp; The Config Sheet — All Settings Explained</h2>
+
+<p class="section-intro">
+  All user-configurable settings are stored on the <em>Config</em> sheet in
+  <strong>column C</strong>. Column B contains the read-only label and column D the hint or
+  default reminder. No settings exist anywhere else in the workbook — the Config sheet is
+  the single point of configuration. If you need to change a path, column header, threshold,
+  or archive setting at any point, this is the only place to edit it.
+</p>
+
+<div class="note">
+  <strong>How to read the Config sheet layout.</strong> Each setting has three columns:
+  <ul style="margin-top:4px;">
+    <li><strong>Column B</strong> — read-only label (do not edit)</li>
+    <li><strong>Column C</strong> — your value (the only column you type in)</li>
+    <li><strong>Column D</strong> — hint text explaining the field and showing the default
+        where applicable</li>
+  </ul>
+  Section headers (amber rows) divide the settings into logical groups.
+  Blue-tinted rows between groups are padding only.
+</div>
+
+<hr>
+
+<h3>5.1 &nbsp; Vendor Name Source — rows 4–7 &nbsp; <small>(Step 1 input)</small></h3>
+
+<p>
+  This section tells the engine where to find the raw list of names to be clustered.
+  This is the only input consumed by Step 1.
+</p>
+
+<h4>C4 — Vendor Source Path</h4>
+<p>
+  The folder path containing the source file. Examples:
+</p>
+<ul>
+  <li><code>C:\AP\Daily Extracts</code> — local drive</li>
+  <li><code>\\fileserver\AP\Extracts</code> — UNC network path</li>
+  <li><code>D:\Projects\VNE\Input</code> — alternate local drive</li>
+</ul>
+<p>
+  <strong>Leave blank</strong> if the source data is on a sheet inside this workbook
+  (no external file is needed).
+  Do not include a trailing backslash — the engine appends one automatically.
+</p>
+
+<h4>C5 — Vendor Source File Name</h4>
+<p>
+  The exact file name including extension. Examples:
+</p>
+<ul>
+  <li><code>AP_Extract_14MAR2026.xlsx</code></li>
+  <li><code>Vendor_List_Q1_2026.csv</code></li>
+  <li><code>raw_names.xls</code></li>
+</ul>
+<p>
+  <strong>Leave blank</strong> to read from a sheet inside this workbook.
+  If both C4 and C5 are blank, C6 and C7 are used to locate a sheet in this workbook.
+</p>
+<p>
+  If your file name changes with each extract (e.g. date-stamped names), you must update
+  this cell each time a new file arrives. There is no wildcard support — the exact name
+  must be entered.
+</p>
+
+<h4>C6 — Vendor Source Sheet Name</h4>
+<p>
+  The sheet tab name within the file (external or internal). Examples:
+  <code>Sheet1</code>, <code>AP Export</code>, <code>Vendor_Names</code>.
+</p>
+<p>
+  <strong>Leave blank</strong> to auto-detect. When blank, the engine scans all sheets in
+  the file and returns the first sheet whose header row contains the column specified in C7.
+  This is convenient when the sheet name varies between file versions. If your file has only
+  one data sheet, you can reliably leave this blank.
+</p>
+
+<h4>C7 — Vendor Name Column Header <span style="color:#C00000">(Required)</span></h4>
+<p>
+  Identifies which column in your source file contains the names to cluster. Three input
+  formats are accepted:
+</p>
+<table>
+  <tr><th>Format</th><th>Example</th><th>When to use</th></tr>
+  <tr>
+    <td>Header name (text)</td><td><code>VENDOR_NAME</code></td>
+    <td>Your file has a header row and you know the column heading. This is the
+        most reliable option — it works regardless of column position.</td>
+  </tr>
+  <tr>
+    <td>Column letter</td><td><code>C</code></td>
+    <td>Your file has no header row, or you prefer to specify position directly.</td>
+  </tr>
+  <tr>
+    <td>Column number</td><td><code>3</code></td>
+    <td>Same as column letter but numeric. Column A = 1, B = 2, C = 3, etc.</td>
+  </tr>
+</table>
+<p>
+  This cell cannot be left blank — it is the only truly required field for Step 1.
+  If it is blank when Step 1 is run, the engine will display a validation error and stop.
+</p>
+
+<div class="tip">
+  <strong>Header name matching is case-insensitive.</strong> Entering <code>vendor_name</code>,
+  <code>Vendor_Name</code>, or <code>VENDOR_NAME</code> will all work if your column header is
+  <em>VENDOR_NAME</em>.
+</div>
+
+<hr>
+
+<h3>5.2 &nbsp; Reference Extract — rows 10–14 &nbsp; <small>(Step 2 input)</small></h3>
+
+<p>
+  This section tells the engine where to find the system-of-record reference file used to
+  match clusters to official identifiers. In an AP context this is the Oracle vendor master
+  export. In other contexts it may be any file containing an identifier + name pairing.
+</p>
+
+<h4>C10 — Reference File Path</h4>
+<p>
+  Folder path of the reference extract, using the same format as C4. Leave blank if the
+  data is in a sheet inside this workbook. Examples:
+</p>
+<ul>
+  <li><code>C:\Oracle Exports\Q1 2026</code></li>
+  <li><code>\\server\finance\oracle\vendor_master</code></li>
+</ul>
+
+<h4>C11 — Reference File Name</h4>
+<p>
+  Exact file name including extension. Leave blank to read from a sheet in this workbook.
+  The reference extract is typically provided by your Finance or IT team on a quarterly
+  basis — the file name here will need to be updated each quarter.
+</p>
+
+<h4>C12 — Reference Sheet Name</h4>
+<p>
+  Sheet tab name within the file. Leave blank to auto-detect by the column headers specified
+  in C13 and C14. If the file has multiple sheets, leaving this blank will return the first
+  sheet that contains both required column headers.
+</p>
+
+<h4>C13 — Identifier Column &nbsp; <span style="color:#C00000">(Required)</span></h4>
+<p>
+  The column in your reference file that contains the system identifier — the code or number
+  that uniquely identifies each record. This value is carried into the output sheets as
+  <code>VENDOR_NUMBER</code> (the tool's internal label for this role). Examples:
+</p>
+<table>
+  <tr><th>Your column header</th><th>Use case</th></tr>
+  <tr><td><code>VENDOR_NUMBER</code></td><td>Oracle AP vendor master</td></tr>
+  <tr><td><code>SUPPLIER_ID</code></td><td>Alternative Oracle export format</td></tr>
+  <tr><td><code>MFR_CODE</code></td><td>Manufacturer directory</td></tr>
+  <tr><td><code>CUSTOMER_ID</code></td><td>Customer master</td></tr>
+  <tr><td><code>ITEM_NUMBER</code></td><td>Item master</td></tr>
+  <tr><td><code>B</code></td><td>No header row, identifier in column B</td></tr>
+</table>
+
+<div class="warning">
+  <strong>Preserve leading zeros.</strong> If your identifiers are numeric codes with
+  leading zeros (e.g. <code>00123456</code>), use a <code>.csv</code> source file rather
+  than <code>.xlsx</code> for the reference extract. The engine opens CSV files in text mode,
+  which prevents Excel from stripping leading zeros. Alternatively, ensure the identifier
+  column in your <code>.xlsx</code> file is formatted as Text before saving.
+</div>
+
+<h4>C14 — Name Column &nbsp; <span style="color:#C00000">(Required)</span></h4>
+<p>
+  The column in your reference file containing the official name associated with each
+  identifier. This is the value that Step 3 normalises and compares against the clustered
+  names from Step 1. The column is labelled <code>VENDOR_NAME</code> in the output sheets.
+</p>
+<p>
+  Enter the exact header name, a column letter, or a column number — same three formats as
+  C7. A header name is recommended for reliability.
+</p>
+<p>
+  <strong>The name in this column does not need to be a perfect match</strong> to the names
+  in your source list — the engine normalises both sides (strips suffixes, punctuation,
+  case) before comparing. However, the more the source names resemble the reference names
+  after normalisation, the higher the match rate will be.
+</p>
+
+<hr>
+
+<h3>5.3 &nbsp; Output Sheet Names — rows 17–20</h3>
+
+<p>
+  By default, the four output sheets are named <code>VN_Clusters</code>,
+  <code>Oracle_Unique</code>, <code>VN_Matched</code>, and <code>Inactive_Unique</code>.
+  If your organisation has a naming convention or you are running the VNE for a specific
+  project and want descriptive tab names, you can override the defaults here.
+</p>
+
+<table>
+  <tr>
+    <th>Cell</th>
+    <th>Output sheet</th>
+    <th>Default</th>
+    <th>When you might override</th>
+  </tr>
+  <tr>
+    <td><code>C17</code></td>
+    <td>Step 1 clusters output</td>
+    <td><code>VN_Clusters</code></td>
+    <td>Running VNE for manufacturers: rename to <code>MFR_Clusters</code></td>
+  </tr>
+  <tr>
+    <td><code>C18</code></td>
+    <td>Step 2 reference unique output</td>
+    <td><code>Oracle_Unique</code></td>
+    <td>Non-Oracle source: rename to <code>Ref_Unique</code> or <code>MFR_Master</code></td>
+  </tr>
+  <tr>
+    <td><code>C19</code></td>
+    <td>Step 3 full match output</td>
+    <td><code>VN_Matched</code></td>
+    <td>Rename to <code>MFR_Matched</code> for clarity in a manufacturer context</td>
+  </tr>
+  <tr>
+    <td><code>C20</code></td>
+    <td>Step 2b inactive unique output</td>
+    <td><code>Inactive_Unique</code></td>
+    <td>Rename to <code>Retired_Items</code> or <code>Discontinued_MFR</code></td>
+  </tr>
+</table>
+
+<div class="note">
+  <strong>Leave blank to use defaults.</strong> If any cell in this section is blank,
+  the engine uses the default name shown in column D. Defaults are pre-filled by
+  SetupWorkbook but can be cleared if you prefer to use custom names.
+  If you rename an output sheet after it has been created, update the corresponding
+  Config cell to match — otherwise the engine will create a new sheet with the default
+  name and leave the old one orphaned.
+</div>
+
+<hr>
+
+<h3>5.4 &nbsp; Algorithm Tuning — rows 23–25</h3>
+
+<p>
+  These three settings control the clustering algorithm's sensitivity and speed. The defaults
+  were calibrated against real AP data and are appropriate for most use cases. Do not change
+  them unless you have a specific reason and have validated the effect on a test dataset.
+</p>
+
+<h4>C23 — Cluster Similarity Threshold &nbsp; (default: <code>0.85</code>)</h4>
+<p>
+  Two names must score at or above this value to be merged into the same cluster. The scale
+  runs from 0 (completely different) to 1 (identical). In practice:
+</p>
+<table>
+  <tr><th>Value</th><th>Behaviour</th><th>Risk</th></tr>
+  <tr>
+    <td><code>0.90 – 1.00</code></td>
+    <td>Very conservative. Only near-identical names cluster together (e.g. same name with
+        one letter difference). Most spelling variations will land in separate clusters.</td>
+    <td>High miss rate — obvious variants not grouped.</td>
+  </tr>
+  <tr>
+    <td><code>0.85</code> (default)</td>
+    <td>Balanced. Handles capitalisation, punctuation, common suffixes, and minor spelling
+        differences. Most vendor name variations encountered in AP practice cluster correctly.</td>
+    <td>Occasional false positives in densely similar name spaces.</td>
+  </tr>
+  <tr>
+    <td><code>0.75 – 0.84</code></td>
+    <td>More aggressive. Catches more distant variants (e.g. abbreviations, missing words).
+        Some unrelated names with similar character sequences may be incorrectly grouped.</td>
+    <td>False positive rate rises noticeably below 0.80.</td>
+  </tr>
+  <tr>
+    <td><code>Below 0.75</code></td>
+    <td>Very aggressive. Clusters will be large and likely to contain unrelated names.
+        Not recommended for production use.</td>
+    <td>High false positive rate. Results unreliable.</td>
+  </tr>
+</table>
+<p>
+  <strong>When to consider a lower threshold:</strong> if your source data uses extreme
+  abbreviations (e.g. <em>ATLS GRHMN</em> instead of <em>ATLAS GRAHAM</em>), or names
+  that are always shortened in transactions, a threshold of 0.80–0.82 may produce better
+  results. Test on a small known dataset first.
+</p>
+<p>
+  <strong>When to consider a higher threshold:</strong> if your dataset contains many
+  legitimate vendor names that are genuinely similar to each other (e.g. a directory of
+  related companies such as <em>Smith Engineering</em> and <em>Smith Consulting</em>), a
+  threshold of 0.87–0.90 may reduce false merges.
+</p>
+
+<h4>C24 — Match Similarity Threshold &nbsp; (default: <code>0.82</code>)</h4>
+<p>
+  This field is reserved for future use. Step 3 currently performs exact matching only
+  (after normalisation) — it does not perform fuzzy matching against the reference extract.
+  The value here has no effect on current results. It is retained in the Config sheet to
+  support a planned future enhancement that will add a fuzzy fallback pass for names with
+  no exact match. Leave it at the default.
+</p>
+
+<h4>C25 — Clustering Window Size &nbsp; (default: <code>150</code>)</h4>
+<p>
+  The sliding window controls how many adjacent names are compared against each entry in
+  the sorted list. A larger window catches more distant variant pairs but increases
+  processing time significantly (approximately proportional to window² × unique name count).
+</p>
+<table>
+  <tr><th>Dataset size (unique names)</th><th>Recommended window</th><th>Approx. Step 1 time</th></tr>
+  <tr><td>Up to 5,000</td><td><code>150</code> (default)</td><td>2–5 minutes</td></tr>
+  <tr><td>5,000 – 15,000</td><td><code>150</code></td><td>5–15 minutes</td></tr>
+  <tr><td>15,000 – 30,000</td><td><code>100</code></td><td>10–20 minutes</td></tr>
+  <tr><td>30,000 – 60,000</td><td><code>75</code></td><td>15–30 minutes</td></tr>
+  <tr><td>Above 60,000</td><td><code>50</code></td><td>20–45 minutes</td></tr>
+</table>
+<p>
+  Reducing the window means the engine will only compare each name against the
+  nearest N names in sorted order. Names that are similar but alphabetically distant
+  may not be caught. In practice, most genuine near-duplicate vendor name variants
+  are alphabetically close (e.g. <em>Capita</em> variants all start with C), so
+  even a window of 75 captures the majority of true clusters.
+</p>
+
+<div class="warning">
+  <strong>Do not change algorithm settings mid-run.</strong> If you change the threshold
+  or window and then run only Step 1 without re-running Step 3, the output sheets will be
+  inconsistent — clusters will be based on the new settings but the match results will be
+  based on the old clusters. Always re-run Step 3 (or both steps via Quick Rerun) after
+  changing any algorithm setting.
+</div>
+
+<hr>
+
+<h3>5.5 &nbsp; Inactive / Deactivated Records — rows 28–33 &nbsp; <small>(Step 2b input)</small></h3>
+
+<p>
+  This entire section is optional. If you do not have an inactive records file, or do not
+  need to distinguish between active and inactive matches, leave all six cells blank.
+  The engine will skip Step 2b automatically and the <em>Inactive_Unique</em> sheet will
+  not be created. The <code>MATCH_NOTE</code> column in output will contain only
+  <em>"exact match"</em> or <em>"no match found"</em>.
+</p>
+
+<h4>C28 — Inactive File Path</h4>
+<p>
+  Folder path of the inactive records file. Same format as C4. Leave blank if the file
+  is a sheet in this workbook.
+</p>
+
+<h4>C29 — Inactive File Name &nbsp; <span style="color:#595959">(leave blank to skip Step 2b)</span></h4>
+<p>
+  Exact file name including extension. <strong>This is the master switch for Step 2b.</strong>
+  If this cell is blank, the engine ignores all other settings in this section and skips
+  Step 2b entirely — whether you run it individually, via Run All, or via Quick Rerun.
+  You do not need to configure or clear the other cells in this section to suppress Step 2b;
+  simply leaving C29 blank is sufficient.
+</p>
+
+<h4>C30 — Inactive Sheet Name</h4>
+<p>
+  Sheet tab name within the inactive file. Leave blank to default to the first sheet.
+  The engine automatically detects merged title rows in row 1 — if row 1 appears to be
+  a report header rather than column headers, it advances to row 2 before scanning.
+  You do not need to modify the file before running.
+</p>
+
+<h4>C31 — Inactive Name Column &nbsp; <span style="color:#C00000">(Required if C29 is filled)</span></h4>
+<p>
+  The column containing the name of the deactivated entity. Header name, column letter,
+  or column number. Examples: <code>Vendor Name</code>, <code>SUPPLIER_NAME</code>,
+  <code>B</code>, <code>2</code>.
+</p>
+
+<h4>C32 — Inactive Identifier Column &nbsp; <span style="color:#C00000">(Required if C29 is filled)</span></h4>
+<p>
+  The column containing the system identifier of the deactivated entity. Header name,
+  column letter, or number. Examples: <code>Vendor Number</code>, <code>SUPPLIER_ID</code>.
+</p>
+
+<h4>C33 — Inactive Date Column &nbsp; <span style="color:#C00000">(Required if C29 is filled)</span></h4>
+<p>
+  The column containing the date the record was deactivated. Header name, column letter, or
+  number. Examples: <code>Vendor Inactive Date</code>, <code>INACTIVE_DATE</code>,
+  <code>Deactivation Date</code>.
+</p>
+<p>
+  The date value is read as-is and stored without reformatting. It appears in the
+  <code>VENDOR_INACTIVE_DATE</code> column of <em>Inactive_Unique</em>, <em>VN_Matched</em>,
+  and <em>VN_Review</em>, giving the analyst visibility of when the entity was retired.
+</p>
+
+<hr>
+
+<h3>5.6 &nbsp; Review Highlight Thresholds — rows 36–37</h3>
+
+<p>
+  These two settings control the colour-coding applied to summary rows in the
+  <em>VN_Review</em> sheet. They let you tune the visual priority system to your
+  dataset's characteristics.
+</p>
+
+<h4>C36 — Minimum distinct identifiers to flag &nbsp; (default: <code>2</code>)</h4>
+<p>
+  A cluster's summary row in <em>VN_Review</em> is highlighted (amber) when the cluster
+  contains this many or more distinct system identifiers matched across its variants.
+  A cluster with two different vendor numbers for what appears to be the same supplier
+  is a potential duplicate supplier setup and warrants review.
+</p>
+<p>
+  <strong>Setting this to 1</strong> would highlight every cluster that has any match at
+  all — producing too much noise in most datasets. The default of 2 means you only see
+  amber rows when there is a genuine multi-ID situation.
+</p>
+<p>
+  <strong>Raising this value</strong> (e.g. to 3) means only clusters with three or more
+  distinct IDs receive a highlight. Useful if your dataset legitimately contains a large
+  number of single-company groups that have two Oracle records for different legal entities.
+</p>
+
+<h4>C37 — Red escalation if total occurrences ≥ &nbsp; (default: <code>7</code>)</h4>
+<p>
+  Within already-amber clusters (those meeting the C36 threshold), the highlight is
+  escalated to red if the total occurrence count across all variants in the cluster is
+  at or above this value. Red rows in <em>VN_Review</em> represent the highest-risk items
+  — high-volume, multi-ID clusters with many transactions potentially split across
+  duplicate system records.
+</p>
+<p>
+  <strong>Lowering this value</strong> produces more red rows — more items are treated as
+  high priority. Useful for datasets with a high proportion of low-volume transactions,
+  where even 3–4 occurrences indicates a recurrent issue.
+</p>
+<p>
+  <strong>Raising this value</strong> restricts red rows to only the highest-volume clusters.
+  Useful when the dataset is very large and you want the analyst to focus exclusively on the
+  very top items.
+</p>
+
+<hr>
+
+<h3>5.7 &nbsp; Archive Settings — rows 40–41</h3>
+
+<p>
+  These two settings provide defaults for the Archive dialog that appears when you click
+  <strong>Archive Results</strong> on the Run sheet. They can be changed directly in the
+  dialog at archive time — updating them there also saves the new values back to these cells
+  automatically, so they become the new default for the next run.
+</p>
+
+<h4>C40 — Archive Save Folder</h4>
+<p>
+  Default folder path where archive files are saved. Examples:
+</p>
+<ul>
+  <li><code>C:\AP\Review Archives</code></li>
+  <li><code>\\server\AP\VNE Archives\2026</code></li>
+</ul>
+<p>
+  If the specified folder does not exist when Archive Results is run, the macro will attempt
+  to create it. If it cannot (e.g. no write permission to the network path), you will receive
+  an error and be prompted to choose a different location.
+  Leave blank to be prompted with an empty path in the Archive dialog each time — you will
+  then need to type or browse to the destination manually on every archive run.
+</p>
+
+<h4>C41 — Archive Base File Name</h4>
+<p>
+  The base name used to construct the archive file name. The macro appends the run date
+  and a version suffix automatically:
+</p>
+<p style="margin-left:20px; font-family:Consolas, monospace; font-size:10pt;">
+  <em>BaseName</em><strong>_DD_MMM_YYYY</strong>.xlsx<br>
+  <em>BaseName</em><strong>_DD_MMM_YYYY_V2</strong>.xlsx &nbsp; (if V1 already exists)
+</p>
+<p>
+  Choose a base name that identifies the dataset and context. Examples:
+</p>
+<table>
+  <tr><th>Context</th><th>Suggested base name</th><th>Resulting file name</th></tr>
+  <tr>
+    <td>AP supplier review</td>
+    <td><code>VNE_Review</code></td>
+    <td><code>VNE_Review_14_MAR_2026.xlsx</code></td>
+  </tr>
+  <tr>
+    <td>Quarterly full refresh</td>
+    <td><code>VNE_Q1_2026</code></td>
+    <td><code>VNE_Q1_2026_14_MAR_2026.xlsx</code></td>
+  </tr>
+  <tr>
+    <td>Specific operating unit</td>
+    <td><code>VNE_EMEA_Suppliers</code></td>
+    <td><code>VNE_EMEA_Suppliers_14_MAR_2026.xlsx</code></td>
+  </tr>
+  <tr>
+    <td>Manufacturer review project</td>
+    <td><code>MFR_NormReview</code></td>
+    <td><code>MFR_NormReview_14_MAR_2026.xlsx</code></td>
+  </tr>
+</table>
+<p>
+  Avoid characters that are not valid in Windows file names: <code>\ / : * ? " &lt; &gt; |</code>.
+  Spaces are permitted but underscores are recommended for compatibility with systems that
+  do not handle spaces in file paths.
+</p>
+
+<hr>
+
+<h3>5.8 &nbsp; Config sheet — minimum viable configuration</h3>
+
+<p>
+  For users who want to get running as quickly as possible, the following three cells are
+  the absolute minimum required before Step 1 and Step 3 can execute:
+</p>
+<table>
+  <tr>
+    <th>Cell</th>
+    <th>What to enter</th>
+    <th>Why it's required</th>
+  </tr>
+  <tr>
+    <td><code>C7</code></td>
+    <td>Header of the name column in your source file</td>
+    <td>Step 1 cannot identify which column to read without this.</td>
+  </tr>
+  <tr>
+    <td><code>C13</code></td>
+    <td>Header of the identifier column in your reference file</td>
+    <td>Step 2 cannot build <em>Oracle_Unique</em> without this.</td>
+  </tr>
+  <tr>
+    <td><code>C14</code></td>
+    <td>Header of the name column in your reference file</td>
+    <td>Step 2 cannot build <em>Oracle_Unique</em> without this.</td>
+  </tr>
+</table>
+<p>
+  All path fields (C4, C5, C10, C11) can be left blank if your source data is already
+  on sheets inside this workbook. All other settings have functional defaults and do not
+  need to be populated before your first run.
+</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 6 -->
+<!-- ============================================================ -->
+<h2 id="s6">6 &nbsp; The Run Sheet — Button Reference</h2>
+
+<p class="section-intro">
+  The Run sheet is the primary entry point. Every macro function is accessible from here.
+  Column B shows the button label, column C the description, and column D the macro being called.
+</p>
+
+<table>
+  <tr>
+    <th>Button</th>
+    <th>What it does</th>
+    <th>When to use it</th>
+  </tr>
+  <tr>
+    <td><strong>Open Wizard</strong></td>
+    <td>Opens the configuration wizard form (<em>frmVNE</em>). Allows you to browse to source
+        files, map column headers, choose which steps to run, and save the settings to the
+        Config sheet — all from a single guided dialog.</td>
+    <td>First time setup, or when source files have changed and you need to update mappings.</td>
+  </tr>
+  <tr>
+    <td><strong>Quick Rerun</strong></td>
+    <td>Runs Steps 1 and 3 (Clustering + Match) back-to-back immediately, reading all settings
+        from the Config sheet. No form is displayed.</td>
+    <td>Daily re-run with a new vendor name batch when Oracle data has not changed.</td>
+  </tr>
+  <tr>
+    <td><strong>Step 1 — Name Clustering</strong></td>
+    <td>Runs the clustering algorithm only. Reads the vendor name source, groups similar names,
+        and writes <em>VN_Clusters</em>.</td>
+    <td>When you need to re-cluster after the vendor name file changes, without re-running the
+        match (e.g. to check clustering quality before committing a full run).</td>
+  </tr>
+  <tr>
+    <td><strong>Step 2 — Oracle Reduce</strong></td>
+    <td>Reads the Oracle extract, deduplicates at the Vendor Number + Vendor Name level, and
+        writes <em>Oracle_Unique</em>.</td>
+    <td>When a new quarterly Oracle extract arrives.</td>
+  </tr>
+  <tr>
+    <td><strong>Step 2b — Inactive Vendor Reduce</strong></td>
+    <td>Reads the Inactive Vendors file and writes <em>Inactive_Unique</em>. Skipped
+        automatically if no inactive file is configured.</td>
+    <td>When a new quarterly inactive vendors report arrives.</td>
+  </tr>
+  <tr>
+    <td><strong>Step 3 — Vendor Match</strong></td>
+    <td>Matches each cluster against <em>Oracle_Unique</em> (active vendors) and then against
+        <em>Inactive_Unique</em> (if available). Writes <em>VN_Matched</em> and
+        <em>VN_Review</em>.</td>
+    <td>After clustering is complete, to produce the final review sheets.</td>
+  </tr>
+  <tr>
+    <td><strong>Run All (Steps 1 + 2 + 2b + 3)</strong></td>
+    <td>Runs all four steps in sequence with a confirmation prompt. Step 2b is skipped if not
+        configured. This is equivalent to clicking each step button in order.</td>
+    <td>Full refresh when both the vendor name source and Oracle data have changed.</td>
+  </tr>
+  <tr>
+    <td><strong>Setup Workbook</strong></td>
+    <td>Re-creates or refreshes the Run, Config, and Log sheets. Safe to re-run at any time.</td>
+    <td>First-time setup, or after importing the macro modules into a new workbook.</td>
+  </tr>
+  <tr>
+    <td><strong>Archive Results</strong></td>
+    <td>Exports all output sheets (plus a Summary tab) to a clean, macro-free
+        <code>.xlsx</code> file for handoff to the junior analyst.</td>
+    <td>When the first-pass review is complete and the data is ready to hand off.</td>
+  </tr>
+</table>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 7 -->
+<!-- ============================================================ -->
+<h2 id="s7">7 &nbsp; Step 1 — Name Clustering (How It Works)</h2>
+
+<h3>What this step produces</h3>
+<p>
+  Step 1 reads the vendor name source, groups similar names into numbered clusters, and writes
+  the results to the <span class="tag tag-clusters">VN_Clusters</span> sheet.
+</p>
+
+<h3>Columns in VN_Clusters</h3>
+<table>
+  <tr>
+    <th>Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code>CLUSTER_ID</code></td>
+    <td>An integer that uniquely identifies a group of similar names. All rows sharing the same
+        CLUSTER_ID were determined to be similar enough to represent the same vendor.</td>
+  </tr>
+  <tr>
+    <td><code>VENDOR_NAME</code></td>
+    <td>The original vendor name as it appeared in the source file, with no modification.</td>
+  </tr>
+  <tr>
+    <td><code>OCCURRENCE_COUNT</code></td>
+    <td>How many times this exact name appeared in the source file.</td>
+  </tr>
+  <tr>
+    <td><code>RANK</code></td>
+    <td>Rank within the cluster by occurrence count. Rank 1 = most frequent name in the cluster,
+        which is used as the cluster's representative name in downstream sheets.</td>
+  </tr>
+  <tr>
+    <td><code>CLUSTER_SIZE</code></td>
+    <td>Total number of distinct name variants in this cluster (same value on every row of
+        the cluster). A CLUSTER_SIZE of 1 means the name appeared in only one form —
+        no duplicates were detected.</td>
+  </tr>
+</table>
+
+<h3>How the algorithm groups names</h3>
+<p>
+  The engine uses a <strong>sorted sliding-window union-find</strong> approach:
+</p>
+<ol>
+  <li>All unique vendor names are cleaned and normalised (case, punctuation, common suffixes
+      such as <em>Ltd</em>, <em>Inc</em>, <em>LLC</em> removed).</li>
+  <li>Names are sorted alphabetically. This ensures that similar names end up adjacent
+      in the sorted list, making the sliding window effective.</li>
+  <li>For each name, the engine compares it against the next <em>N</em> names in the sorted
+      list (the window). <em>N</em> defaults to 150 and is configurable.</li>
+  <li>Each pair of names is scored using a combined similarity metric (Levenshtein distance
+      and a token-sort comparison). Pairs scoring at or above the threshold (default 0.85)
+      are merged into the same cluster.</li>
+  <li>This pass is performed <strong>twice</strong> — once sorted by cleaned name, once sorted
+      by a token-sorted key. The second pass catches reordered names such as
+      <em>EATON CHAR-LYNN</em> vs <em>CHAR-LYNN EATON</em> that may be far apart alphabetically
+      but close in token-sorted order.</li>
+  <li>A <strong>complete-linkage guard</strong> prevents chain-explosion: before merging
+      two names, the engine also verifies that their respective cluster roots score above
+      the threshold. This prevents a large catch-all cluster from forming simply because
+      <em>A ~ B</em> and <em>B ~ C</em>, when A and C are completely unrelated.</li>
+</ol>
+
+<h3>Example cluster output</h3>
+<div class="cluster-example">
+  <div><span class="cid">CLUSTER_ID 316</span> &nbsp;—&nbsp; CLUSTER_SIZE 12</div>
+  <div class="rep">&nbsp;&nbsp;ATLAS GRAHAM &nbsp;&nbsp;(RANK 1, occ: 4148)</div>
+  <div class="var">ATLAS GRAHAM LTD</div>
+  <div class="var">Atlas Graham</div>
+  <div class="var">ATLAS GRAHAM LIMITED</div>
+  <div class="var">atlas graham</div>
+  <div class="var">ATLAS-GRAHAM</div>
+  <div class="var">Atlas Graham Ltd.</div>
+  <div style="margin-left:20px; color:#999">... 6 more variants</div>
+</div>
+
+<div class="note">
+  <strong>Single-name clusters are expected.</strong> A large number of CLUSTER_SIZE 1 entries
+  is normal — it means those vendor names appear in only one consistent form and have no detected
+  near-duplicates. The review work focuses on clusters with CLUSTER_SIZE &gt; 1.
+</div>
+
+<h3>Processing time</h3>
+<p>
+  For a dataset of approximately 5,000 unique names with the default window of 150, Step 1
+  typically completes in 3–8 minutes depending on hardware. The progress bar shows elapsed
+  time and percentage completion. The bar resets to 0% between the two clustering passes —
+  this is normal behaviour.
+</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 8 -->
+<!-- ============================================================ -->
+<h2 id="s8">8 &nbsp; Step 2 — Oracle Reduce</h2>
+
+<h3>What this step produces</h3>
+<p>
+  Step 2 reads the Oracle vendor master extract and collapses it to one row per unique
+  Vendor Number + Vendor Name combination, writing the result to the
+  <span class="tag tag-oracle">Oracle_Unique</span> sheet.
+</p>
+
+<h3>Why deduplication is needed</h3>
+<p>
+  The raw Oracle extract typically contains one row per transaction or account line, meaning
+  the same Vendor Number + Vendor Name pair may appear thousands of times. Step 3's matching
+  logic requires a clean, non-redundant reference list. Step 2 reduces a file that might
+  contain 500,000 rows to a manageable list of perhaps 50,000–60,000 unique vendor records.
+</p>
+
+<h3>Columns in Oracle_Unique</h3>
+<table>
+  <tr>
+    <th>Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code>VENDOR_NUMBER</code></td>
+    <td>The Oracle vendor number as it appeared in the source file. Leading zeros are preserved.</td>
+  </tr>
+  <tr>
+    <td><code>VENDOR_NAME</code></td>
+    <td>The Oracle vendor name associated with this vendor number in the extract.</td>
+  </tr>
+  <tr>
+    <td><code>OCCURRENCE_COUNT</code></td>
+    <td>How many times this Vendor Number + Vendor Name combination appeared in the
+        source extract.</td>
+  </tr>
+</table>
+
+<div class="tip">
+  <strong>Tip — this step is quarterly.</strong> Once <em>Oracle_Unique</em> has been produced
+  from the current Oracle extract, you do not need to re-run Step 2 until the next Oracle
+  extract arrives. Repeated daily runs only need Steps 1 and 3.
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 9 -->
+<!-- ============================================================ -->
+<h2 id="s9">9 &nbsp; Step 2b — Inactive Vendor Reduce (Optional)</h2>
+
+<h3>What this step produces</h3>
+<p>
+  Step 2b reads the Inactive Vendors file (a separate Oracle report listing deactivated vendors)
+  and writes one row per unique Vendor Number + Vendor Name pair to the
+  <span class="tag tag-inactive">Inactive_Unique</span> sheet.
+</p>
+
+<h3>Skipping Step 2b</h3>
+<p>
+  If cell <code>C29</code> (Inactive File Name) on the Config sheet is blank, Step 2b is
+  automatically skipped — both when run individually and when triggered by <em>Run All</em>.
+  The <em>VN_Matched</em> and <em>VN_Review</em> sheets produced by Step 3 will omit the
+  inactive-vendor matching phase (Phase B), and the <code>VENDOR_INACTIVE_DATE</code>
+  column will be blank for all rows.
+</p>
+
+<h3>Merged title row handling</h3>
+<p>
+  Some Oracle inactive vendor reports have a merged title row in row 1, with actual column
+  headers in row 2. The engine detects this automatically — if row 1 appears to be a single
+  merged cell or does not contain recognisable header values, it advances to row 2 before
+  scanning for headers.
+</p>
+
+<h3>Columns in Inactive_Unique</h3>
+<table>
+  <tr>
+    <th>Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code>VENDOR_NUMBER</code></td>
+    <td>Oracle vendor number.</td>
+  </tr>
+  <tr>
+    <td><code>VENDOR_NAME</code></td>
+    <td>Vendor name as it appears in the inactive report.</td>
+  </tr>
+  <tr>
+    <td><code>VENDOR_INACTIVE_DATE</code></td>
+    <td>The date on which the vendor was deactivated in Oracle.</td>
+  </tr>
+</table>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 10 -->
+<!-- ============================================================ -->
+<h2 id="s10">10 &nbsp; Step 3 — Vendor Match</h2>
+
+<h3>What this step produces</h3>
+<p>
+  Step 3 takes every cluster from <em>VN_Clusters</em> and attempts to find a matching Oracle
+  vendor record for each name variant within the cluster. It writes two output sheets:
+</p>
+<ul>
+  <li><span class="tag tag-matched">VN_Matched</span> — full results, one row per name variant</li>
+  <li><span class="tag tag-review">VN_Review</span> — summarised and grouped view for the analyst</li>
+</ul>
+
+<h3>Matching logic — two phases</h3>
+<p>
+  For each name variant within a cluster, the engine attempts to find a match in two phases:
+</p>
+<ol>
+  <li>
+    <strong>Phase A — Active Oracle match.</strong> The cleaned form of the name variant is
+    compared against every cleaned name in <em>Oracle_Unique</em>. An exact match (after
+    normalisation) assigns the Oracle vendor number and sets
+    <span class="mn-exact">MATCH_NOTE = "exact match"</span>.
+  </li>
+  <li>
+    <strong>Phase B — Inactive vendor match.</strong> If Phase A finds no active Oracle match,
+    the engine checks <em>Inactive_Unique</em> (if available). A match there sets
+    <span class="mn-inactive">MATCH_NOTE = "inactive vendor"</span> and includes the inactive
+    date. This outcome signals that the vendor exists in Oracle but has been deactivated —
+    the AP team should verify whether payments are still being processed.
+  </li>
+  <li>
+    If neither phase finds a match, the row is written with
+    <span class="mn-none">MATCH_NOTE = "no match found"</span>. This typically indicates a
+    new vendor not yet set up in Oracle, or a name variant with too many differences to
+    match after normalisation (such as a severe abbreviation or typing error).
+  </li>
+</ol>
+
+<div class="warning">
+  <strong>Step 3 requires Oracle_Unique to exist.</strong> If Step 2 has not been run since
+  the workbook was last set up, Step 3 will fail or produce incomplete results. Always run
+  Step 2 at least once per Oracle extract cycle before running Step 3.
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 11 -->
+<!-- ============================================================ -->
+<h2 id="s11">11 &nbsp; Understanding the Output Sheets</h2>
+
+<h3>VN_Clusters — raw cluster data</h3>
+<p>
+  Produced by Step 1. One row per unique vendor name variant. AutoFilter enabled.
+  Use this sheet to verify clustering quality — filter by CLUSTER_SIZE &gt; 1 to see
+  all multi-variant groups, or filter by a specific CLUSTER_ID to see all variants
+  in one cluster.
+</p>
+
+<h3>Oracle_Unique — active vendor reference</h3>
+<p>
+  Produced by Step 2. One row per unique Vendor Number + Vendor Name pair in Oracle.
+  AutoFilter enabled. Use this as a reference when cross-checking vendor numbers in
+  the review process.
+</p>
+
+<h3>Inactive_Unique — inactive vendor reference</h3>
+<p>
+  Produced by Step 2b. One row per unique inactive Vendor Number + Vendor Name pair.
+  AutoFilter enabled. Columns: <code>VENDOR_NUMBER</code>, <code>VENDOR_NAME</code>,
+  <code>VENDOR_INACTIVE_DATE</code>.
+</p>
+
+<h3>VN_Matched — full match results</h3>
+<p>
+  Produced by Step 3. One row per name variant × Oracle match combination. This is the
+  flat, unformatted version of the results — it contains every row including variants
+  with no Oracle match. AutoFilter enabled.
+</p>
+<table>
+  <tr>
+    <th>Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code>CLUSTER_ID</code></td>
+    <td>Cluster number from Step 1.</td>
+  </tr>
+  <tr>
+    <td><code>CLUSTER_REP_NAME</code></td>
+    <td>The most-frequently-occurring name in the cluster (Rank 1 from VN_Clusters).</td>
+  </tr>
+  <tr>
+    <td><code>CLUSTER_TOTAL_COUNT</code></td>
+    <td>Total occurrence count across all name variants in the cluster.</td>
+  </tr>
+  <tr>
+    <td><code>VENDOR_NUMBER</code></td>
+    <td>Oracle vendor number found by Phase A or B. Blank if no match.</td>
+  </tr>
+  <tr>
+    <td><code>ORACLE_VENDOR_NAME</code></td>
+    <td>The vendor name as it appears in Oracle_Unique or Inactive_Unique. Blank if no match.</td>
+  </tr>
+  <tr>
+    <td><code>MATCH_NOTE</code></td>
+    <td>
+      <span class="mn-exact">exact match</span> — active Oracle vendor found<br>
+      <span class="mn-inactive">inactive vendor</span> — found in Inactive_Unique only<br>
+      <span class="mn-none">no match found</span> — not found in either reference
+    </td>
+  </tr>
+  <tr>
+    <td><code>VENDOR_INACTIVE_DATE</code></td>
+    <td>Inactive date from Inactive_Unique. Populated only for "inactive vendor" rows.</td>
+  </tr>
+</table>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 12 -->
+<!-- ============================================================ -->
+<h2 id="s12">12 &nbsp; The VN_Review Sheet — Daily Analyst Workspace</h2>
+
+<p>
+  <span class="tag tag-review">VN_Review</span> is the primary working sheet for the AP analyst.
+  It shows only multi-member clusters (CLUSTER_SIZE &gt; 1) — single-name clusters are excluded
+  as they require no review. It presents results in a collapsed, grouped view that allows the
+  analyst to triage quickly at the cluster level and then drill into individual variants as needed.
+</p>
+
+<h3>Row structure</h3>
+<p>
+  Each cluster is represented by two types of rows:
+</p>
+<ul>
+  <li>
+    <strong>Summary row</strong> (bold, always visible): shows the CLUSTER_ID,
+    representative name, and total occurrence count for the cluster. This row is visible
+    even when the cluster is collapsed, giving the analyst enough information to decide
+    whether to expand and review the cluster in detail.
+  </li>
+  <li>
+    <strong>Detail rows</strong> (grouped, collapsed by default): one row per name variant,
+    showing the specific Oracle match result for that variant (vendor number, Oracle name,
+    MATCH_NOTE, inactive date). Expand by clicking the <strong>+</strong> button on the
+    left margin, or by pressing <strong>Alt + Shift + =</strong>.
+  </li>
+</ul>
+
+<h3>Colour coding</h3>
+<table>
+  <tr>
+    <th>Colour</th>
+    <th>Meaning</th>
+  </tr>
+  <tr>
+    <td>White / alternating blue — summary rows</td>
+    <td>Standard multi-variant cluster. Contains spelling variants but no flags have been
+        triggered.</td>
+  </tr>
+  <tr>
+    <td>Amber / yellow — summary row</td>
+    <td>The cluster has 2 or more distinct Oracle vendor numbers (configurable via
+        <code>C36</code>). This signals that what may be one real-world vendor is recorded
+        under multiple Oracle IDs — a potential duplicate vendor setup.</td>
+  </tr>
+  <tr>
+    <td>Red — summary row</td>
+    <td>The cluster is amber-flagged AND the total occurrence count is at or above the
+        high-volume threshold (default 7, configurable via <code>C37</code>). These are
+        high-priority clusters for immediate review.</td>
+  </tr>
+  <tr>
+    <td>Gray — detail rows</td>
+    <td>Standard variant rows within a cluster.</td>
+  </tr>
+</table>
+
+<h3>How an analyst works through VN_Review</h3>
+<ol>
+  <li>
+    <strong>Start with the red rows.</strong> These are high-volume clusters with multiple
+    Oracle vendor numbers — they carry the highest risk of duplicate payments.
+    Click <strong>+</strong> to expand and verify whether the variants represent the same
+    legal entity.
+  </li>
+  <li>
+    <strong>Work through amber rows next.</strong> Multiple vendor numbers within one cluster
+    may be legitimate (e.g. separate operating divisions) or may indicate a data entry error.
+    Confirm with the AP team or vendor master.
+  </li>
+  <li>
+    <strong>Review "no match found" variants.</strong> Filter the MATCH_NOTE column for
+    <em>no match found</em>. These names did not match any active or inactive Oracle record
+    after normalisation. Possible causes: new vendor not yet set up, abbreviation too extreme,
+    or a typo so severe that the normalisation did not resolve it.
+  </li>
+  <li>
+    <strong>Flag "inactive vendor" rows for AP team verification.</strong> If a name variant
+    matches an inactive Oracle record, payment may still be processing against a deactivated
+    vendor. The VENDOR_INACTIVE_DATE column shows when the vendor was deactivated.
+  </li>
+</ol>
+
+<div class="note">
+  <strong>AutoFilter is enabled</strong> on VN_Review. You can filter by MATCH_NOTE, CLUSTER_ID,
+  or any other column. Note that filtering will hide grouped rows — collapse all groups before
+  applying a filter for best results. Use <strong>Data &gt; Group &gt; Show Detail</strong> or
+  press <strong>Alt + Shift + =</strong> to restore groups after filtering.
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 13 -->
+<!-- ============================================================ -->
+<h2 id="s13">13 &nbsp; Archiving Results for the Junior Analyst</h2>
+
+<p>
+  When the first-pass review on <em>VN_Review</em> is complete and the data is ready for
+  granular verification by the junior analyst, use the <strong>Archive Results</strong> button
+  to export a clean handoff package.
+</p>
+
+<h3>What the archive contains</h3>
+<p>
+  The archive is a standard Excel <code>.xlsx</code> workbook with no macros. It contains:
+</p>
+<ul>
+  <li>A <strong>Summary</strong> tab (first position) — see <a href="#s14">Section 14</a></li>
+  <li><strong>VN_Review</strong> (second position) — the collapsed analyst workspace</li>
+  <li><strong>VN_Clusters</strong> — raw cluster data</li>
+  <li><strong>Oracle_Unique</strong> — active vendor reference</li>
+  <li><strong>Inactive_Unique</strong> — inactive vendor reference (if Step 2b was run)</li>
+  <li><strong>VN_Matched</strong> — full flat match results</li>
+</ul>
+<p>
+  The <em>Run</em>, <em>Config</em>, and <em>Log</em> sheets are excluded — the junior analyst
+  does not need configuration data or the macro infrastructure.
+</p>
+
+<h3>Archive procedure</h3>
+
+<table class="step-table">
+  <tr>
+    <td class="step-num">1</td>
+    <td class="step-body">
+      Click <strong>Archive Results</strong> on the Run sheet.
+      If <em>VN_Review</em> does not exist (Steps 1 and 3 have not been run), the macro will
+      display an error and stop.
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">2</td>
+    <td class="step-body">
+      The <strong>Archive dialog</strong> opens, pre-filled with the save folder and base file
+      name from the Config sheet (<code>C40</code>/<code>C41</code>).
+      <ul>
+        <li><strong>Save to folder</strong> — type a path directly or click <em>Browse</em>
+            to use a folder picker.</li>
+        <li><strong>Base file name</strong> — the name without date suffix, e.g.
+            <code>VNE_Review</code>.</li>
+        <li>The <strong>File preview</strong> at the bottom of the dialog shows the exact
+            file name that will be created, updated as you type. If the file already exists,
+            the preview notes that a version suffix will be appended.</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td class="step-num">3</td>
+    <td class="step-body">
+      Click <strong>Archive</strong>. The macro copies the output sheets, builds the Summary
+      tab, and saves the file. A confirmation message shows the full path of the saved file.
+    </td>
+  </tr>
+</table>
+
+<h3>File naming</h3>
+<p>
+  The archive file name is constructed as follows:
+</p>
+<p style="margin-left:20px; font-family: Consolas, monospace; font-size: 10pt;">
+  <em>BaseName</em><strong>_DD_MMM_YYYY</strong>.xlsx
+</p>
+<p>
+  For example: <code>VNE_Review_14_MAR_2026.xlsx</code>
+</p>
+<p>
+  If that file already exists in the chosen folder, a version suffix is appended automatically:
+</p>
+<p style="margin-left:20px; font-family: Consolas, monospace; font-size: 10pt;">
+  VNE_Review_14_MAR_2026<strong>_V1</strong>.xlsx<br>
+  VNE_Review_14_MAR_2026<strong>_V2</strong>.xlsx &nbsp; (if V1 also exists)
+</p>
+<p>
+  Your chosen folder and base name are saved back to the Config sheet for use as the default
+  in the next archive run.
+</p>
+
+<div class="tip">
+  <strong>Tip — folder creation.</strong> If the specified save folder does not exist, the
+  macro will attempt to create it automatically. If the folder cannot be created (e.g. due
+  to network permissions), the macro will display an error and stop before any file is written.
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 14 -->
+<!-- ============================================================ -->
+<h2 id="s14">14 &nbsp; The Archive Workbook — Summary Tab</h2>
+
+<p>
+  The <strong>Summary</strong> tab is generated automatically and placed as the first sheet in
+  the archive workbook. It is designed to give the junior analyst an immediate orientation to
+  the dataset they are about to review, without requiring them to open any other tab first.
+</p>
+
+<h3>Summary tab content</h3>
+
+<h4>Cluster Analysis</h4>
+<p>A statistics block covering:</p>
+<ul>
+  <li>Total vendor names processed from the source file</li>
+  <li>Total clusters identified</li>
+  <li>Single-name clusters (unique vendors with no detected variants)</li>
+  <li>Multi-variant clusters (2+ spelling variations — the primary review area)</li>
+  <li>Large clusters (size ≥ threshold — high-priority items)</li>
+</ul>
+
+<h4>Oracle Match Summary</h4>
+<ul>
+  <li>Total active Oracle unique vendors in reference</li>
+  <li>Inactive vendor records loaded (if Step 2b was run)</li>
+  <li>Total rows in VN_Matched, broken down by MATCH_NOTE value</li>
+</ul>
+
+<h4>What to Expect in This Workbook</h4>
+<p>
+  A guide section explaining each tab the analyst will encounter, with a plain-language
+  description of its content and purpose.
+</p>
+
+<h4>Top Clusters by Variant Count</h4>
+<p>
+  A table listing the 10 clusters with the most distinct name variants. Each CLUSTER_ID
+  in this table is a <strong>hyperlink</strong> — clicking it navigates directly to that
+  cluster's summary row in the <em>VN_Review</em> tab, allowing the analyst to jump straight
+  to the highest-complexity items.
+</p>
+<p>
+  Clusters that meet the amber threshold are highlighted in amber. Rows in the table that
+  also meet the red threshold are highlighted in amber (the full red treatment is on
+  VN_Review itself).
+</p>
+
+<h4>Charts</h4>
+<p>Three charts are generated automatically:</p>
+<ul>
+  <li>
+    <strong>Top 10 Clusters by Variant Count</strong> — horizontal bar chart showing the
+    10 largest clusters ranked by the number of distinct name variants.
+  </li>
+  <li>
+    <strong>Oracle Match Status</strong> — pie chart breaking down the VN_Matched rows by
+    MATCH_NOTE value (exact match / inactive vendor / no match found). A large "no match"
+    slice warrants investigation into whether Oracle vendor setup is complete.
+  </li>
+  <li>
+    <strong>Cluster Size Distribution</strong> — column chart showing how many clusters fall
+    into each size band (Size 1, Size 2, Size 3–4, Size 5–6, Size 7–9, Size 10+). A healthy
+    dataset has the vast majority of clusters at Size 1, with a small tail of larger clusters.
+  </li>
+</ul>
+<p>
+  A <strong>chart data area</strong> (columns H–I on the Summary sheet) contains the raw
+  numbers behind each chart in tabular form. The CLUSTER_ID values in this table are also
+  hyperlinked to VN_Review.
+</p>
+
+<div class="note">
+  <strong>The Summary tab is read-only context.</strong> The junior analyst should not edit
+  this tab. Its purpose is orientation, not data entry. All review work is done on the
+  VN_Review tab.
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 15 -->
+<!-- ============================================================ -->
+<h2 id="s15">15 &nbsp; Cancelling a Run in Progress</h2>
+
+<p>
+  While any step is running, the progress bar form displays a <strong>Cancel</strong> button.
+  Clicking it sets an internal abort flag. The engine checks this flag at the end of each
+  step — the current step will complete normally, and the engine will stop before starting
+  the next step.
+</p>
+
+<div class="warning">
+  <strong>Cancel completes the current step before stopping.</strong> For Step 1 (Name
+  Clustering), which may take several minutes, pressing Cancel will not interrupt the current
+  clustering pass immediately. The stop will occur after the current pass finishes. If you
+  need to stop immediately, close the workbook and reopen it without saving.
+</div>
+
+<p>
+  If a run is cancelled mid-way through a multi-step sequence (e.g. Quick Rerun cancels after
+  Step 1 completes but before Step 3), the <em>VN_Clusters</em> sheet will have been updated
+  with fresh Step 1 results, but <em>VN_Matched</em> and <em>VN_Review</em> will still reflect
+  the previous run. Re-run Step 3 individually to bring those sheets up to date.
+</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 16 -->
+<!-- ============================================================ -->
+<h2 id="s16">16 &nbsp; The Log Sheet</h2>
+
+<p>
+  The <em>Log</em> sheet records a timestamped entry for every macro run. It is written
+  automatically and does not require any action from the user.
+</p>
+
+<table>
+  <tr>
+    <th>Column</th>
+    <th>Content</th>
+  </tr>
+  <tr>
+    <td><code>Timestamp</code></td>
+    <td>Date and time the entry was written.</td>
+  </tr>
+  <tr>
+    <td><code>Source</code></td>
+    <td>The module that wrote the entry (e.g. <code>VNE5_NameCluster</code>,
+        <code>VNE9_Archive</code>).</td>
+  </tr>
+  <tr>
+    <td><code>Message</code></td>
+    <td>A summary of the outcome, e.g. <em>OK: 4604 clusters, 5434 rows processed</em>,
+        or an error description if the step failed.</td>
+  </tr>
+</table>
+
+<div class="tip">
+  <strong>Use the Log sheet for auditing.</strong> The Log provides a record of when each
+  step was run, what source file was read, and how many records were processed. This is useful
+  when reconciling discrepancies between archive versions or confirming which Oracle extract
+  was used for a given review cycle.
+</div>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 17 -->
+<!-- ============================================================ -->
+<h2 id="s17">17 &nbsp; Algorithm Reference — For Advanced Users</h2>
+
+<p class="section-intro">
+  This section describes the internal mechanics of the clustering algorithm for users who
+  need to interpret unusual results or adjust configuration parameters.
+</p>
+
+<h3>Name normalisation (CleanVendorName)</h3>
+<p>
+  Before any comparison, each vendor name is normalised:
+</p>
+<ol>
+  <li>Convert to uppercase.</li>
+  <li>Strip common legal suffixes (<em>LTD</em>, <em>LIMITED</em>, <em>INC</em>, <em>LLC</em>,
+      <em>PLC</em>, <em>CORP</em>, <em>CORPORATION</em>, <em>CO</em>, and others).</li>
+  <li>Remove all punctuation except internal spaces.</li>
+  <li>Collapse multiple spaces to a single space and trim.</li>
+</ol>
+<p>
+  <em>CAPITA PLC</em>, <em>Capita Ltd</em>, and <em>CAPITA LIMITED</em> all normalise to
+  <code>CAPITA</code> and therefore match exactly in Step 3.
+</p>
+
+<h3>Similarity scoring (ScorePair)</h3>
+<p>
+  The score between two normalised names is computed as follows:
+</p>
+<ol>
+  <li>
+    <strong>Common suffix token stripping.</strong> Tokens that appear at the end of both names
+    (e.g. both names end in <em>DRILLING SUPPLY</em>) are stripped before scoring. This prevents
+    a high score for names that share only a generic industry suffix, ensuring the discriminating
+    prefix receives full weight.
+  </li>
+  <li>
+    <strong>Levenshtein similarity.</strong> A standard edit-distance similarity score
+    normalised to the range 0–1, where 1 = identical and 0 = no characters in common.
+  </li>
+  <li>
+    <strong>Prefix boost.</strong> If one name is a prefix of the other (e.g. <em>ATLAS</em>
+    vs <em>ATLAS GRAHAM</em>), the score receives a small upward adjustment. This boost applies
+    to genuine prefix matches only — it does not apply when the shared portion occurs in the
+    middle or end of both names.
+  </li>
+  <li>
+    <strong>Final score.</strong> The higher of the Levenshtein similarity and the
+    prefix-boosted score is used. Names scoring ≥ 0.85 (default) are candidates for merging.
+  </li>
+</ol>
+
+<h3>Complete-linkage guard</h3>
+<p>
+  Without this guard, a chain of transitively similar names can collapse into a single enormous
+  cluster: if <em>A ~ B</em> and <em>B ~ C</em> but <em>A</em> and <em>C</em> are unrelated,
+  all three would merge. The VNE prevents this by requiring that the <em>cluster roots</em>
+  (the representative names of each cluster being merged) also score above threshold.
+  Two single-name entries are always allowed to merge — the guard only applies when
+  at least one side is already a multi-member cluster.
+</p>
+
+<h3>Scenario: why a pair did not cluster</h3>
+<p>
+  If you believe two names should be in the same cluster but are not, possible causes are:
+</p>
+<ul>
+  <li>The normalised forms score below 0.85. Try lowering <code>C23</code> to 0.80 and
+      re-running Step 1 — but validate that this does not create false merges elsewhere.</li>
+  <li>The names are far apart in sorted order and fell outside the sliding window. Try increasing
+      the window size in <code>C25</code>.</li>
+  <li>The complete-linkage guard blocked the merge because the names' current cluster roots
+      score below threshold. This is by design — it means accepting the merge would introduce
+      a chain-explosion risk.</li>
+</ul>
+
+<h3>Scenario: why a cluster is too large / contains unrelated names</h3>
+<p>
+  If a single cluster contains names that appear unrelated, possible causes are:
+</p>
+<ul>
+  <li>The threshold is too low for the data. Consider raising <code>C23</code> to 0.87 or 0.90.</li>
+  <li>The names share a common generic word after suffix stripping (e.g. all names in the
+      cluster contain the word <em>SERVICES</em>). Review whether the suffix stripping list
+      should include that word for this dataset.</li>
+  <li>Window size is too large, introducing comparisons between names that are semantically
+      unrelated but coincidentally similar in character sequence.</li>
+</ul>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 18 -->
+<!-- ============================================================ -->
+<h2 id="s18">18 &nbsp; Troubleshooting &amp; Common Scenarios</h2>
+
+<h3>Error: "The VN_Review sheet was not found"</h3>
+<p>
+  You clicked <em>Archive Results</em> but Step 3 has not been run yet.
+  Run Step 3 (or Quick Rerun) before archiving.
+</p>
+
+<h3>Error: "Config sheet not found — run SetupWorkbook first"</h3>
+<p>
+  The workbook has not been set up. Press <strong>Alt + F8</strong>, select
+  <code>VNE3_Setup.SetupWorkbook</code>, and run it.
+</p>
+
+<h3>Error: "Vendor Name Column Header is required"</h3>
+<p>
+  Cell <code>C7</code> on the Config sheet is blank. Enter the exact column header of the
+  vendor name column in your source file (e.g. <code>VENDOR_NAME</code>) and try again.
+</p>
+
+<h3>Error: "File not found" when running a step</h3>
+<p>
+  The file path and/or file name on the Config sheet does not point to an existing file.
+  Verify that the folder and file name are correct, that the file is not currently open in
+  another Excel instance, and that you have read access to the network location.
+</p>
+
+<h3>The progress bar jumps to 100% and then resets to 0%</h3>
+<p>
+  This is normal behaviour during Step 1. The clustering algorithm runs two passes over the
+  data (Pass A and Pass B). The progress bar completes 0→100% for each pass. The brief reset
+  between passes is intentional — it indicates that the first pass completed successfully and
+  the second pass has started.
+</p>
+
+<h3>Step 1 takes a very long time</h3>
+<p>
+  Processing time for Step 1 scales with the number of unique vendor names × the window size.
+  For datasets above 10,000 unique names, consider reducing the window size from 150 to 75 in
+  <code>C25</code>. This reduces recall (some distant variant pairs may not be caught) but
+  significantly reduces processing time. For very large datasets (&gt;30,000 unique names),
+  reduce to 50.
+</p>
+
+<h3>VN_Review shows no rows at all</h3>
+<p>
+  Step 3 filters VN_Review to show only clusters with CLUSTER_SIZE &gt; 1. If every name in
+  the source file is unique (no repeated or similar vendor names), all clusters will have
+  size 1 and VN_Review will be empty. Check VN_Clusters to confirm whether any multi-member
+  clusters were produced.
+</p>
+
+<h3>All rows in VN_Review show "no match found"</h3>
+<p>
+  This typically means Oracle_Unique was produced from a different Oracle extract than the
+  vendor name source — the vendor names in the source do not correspond to any active Oracle
+  records in the current Oracle extract. Verify that Steps 2 and 3 are reading from the
+  correct files and that the column headers are mapped correctly.
+</p>
+
+<h3>The archive file name contains the wrong date</h3>
+<p>
+  The date in the archive file name is the date and time the archive macro was run —
+  not the date of the underlying data. If you need the data date in the file name, edit
+  the base file name in the Archive dialog to include it manually, e.g.
+  <code>VNE_Review_Q1_2026</code>.
+</p>
+
+<h3>Cluster IDs differ between runs on the same data</h3>
+<p>
+  CLUSTER_ID values are assigned sequentially in the order clusters are first encountered
+  during output writing. They are not stable identifiers — the same group of vendor names
+  may receive a different CLUSTER_ID in a subsequent run if the sort order or grouping
+  changes. Do not use CLUSTER_ID as a persistent key in external systems.
+</p>
+
+<h3>A vendor that should be inactive is showing as "exact match" (active)</h3>
+<p>
+  If a vendor has been deactivated in Oracle but the current <em>Oracle_Unique</em> sheet
+  was produced before the deactivation (i.e. Step 2 was last run before the vendor was
+  deactivated), the vendor will still appear as active in the reference data.
+  Re-run Step 2 with the latest Oracle extract to resolve this.
+</p>
+
+<hr>
+
+<!-- ============================================================ -->
+<!-- SECTION 19 -->
+<!-- ============================================================ -->
+<h2 id="s19">19 &nbsp; Glossary</h2>
+
+<table>
+  <tr>
+    <th>Term</th>
+    <th>Definition</th>
+  </tr>
+  <tr>
+    <td><strong>Cluster</strong></td>
+    <td>A group of vendor name variants that the algorithm has determined are similar enough
+        to represent the same real-world vendor. Identified by a CLUSTER_ID.</td>
+  </tr>
+  <tr>
+    <td><strong>Cluster size</strong></td>
+    <td>The number of distinct name variants in a cluster. CLUSTER_SIZE = 1 means only one
+        spelling was found; CLUSTER_SIZE = 12 means twelve different spellings were grouped
+        together.</td>
+  </tr>
+  <tr>
+    <td><strong>Representative name</strong></td>
+    <td>The name variant within a cluster with the highest occurrence count (RANK = 1).
+        Used as the cluster label in VN_Matched and VN_Review.</td>
+  </tr>
+  <tr>
+    <td><strong>Exact match</strong></td>
+    <td>A vendor name variant whose normalised form matched a record in Oracle_Unique exactly.
+        Displayed in MATCH_NOTE as "exact match".</td>
+  </tr>
+  <tr>
+    <td><strong>Inactive vendor</strong></td>
+    <td>A vendor name variant that matched a record in Inactive_Unique but not in Oracle_Unique.
+        The vendor exists in Oracle but has been deactivated.</td>
+  </tr>
+  <tr>
+    <td><strong>No match found</strong></td>
+    <td>A vendor name variant that did not match any record in Oracle_Unique or Inactive_Unique
+        after normalisation. May indicate a new vendor, a severe abbreviation, or a data
+        entry error.</td>
+  </tr>
+  <tr>
+    <td><strong>Complete-linkage guard</strong></td>
+    <td>An internal safeguard that prevents the clustering algorithm from forming extremely
+        large catch-all clusters by requiring that cluster roots (not just leaf members) also
+        score above the similarity threshold before a merge is permitted.</td>
+  </tr>
+  <tr>
+    <td><strong>Sliding window</strong></td>
+    <td>The technique used in Step 1 to limit the number of pair comparisons. Only names
+        within a window of N adjacent entries in the sorted list are compared, rather than
+        every possible pair (which would be computationally prohibitive).</td>
+  </tr>
+  <tr>
+    <td><strong>Oracle extract</strong></td>
+    <td>A full export of the Oracle vendor master, typically produced quarterly by the
+        Finance or IT team. Used in Step 2 to build Oracle_Unique.</td>
+  </tr>
+  <tr>
+    <td><strong>Inactive vendors file</strong></td>
+    <td>A separate Oracle report listing vendors with a deactivation date. Used in Step 2b
+        to build Inactive_Unique.</td>
+  </tr>
+  <tr>
+    <td><strong>Archive workbook</strong></td>
+    <td>The macro-free <code>.xlsx</code> file produced by the Archive Results function.
+        Intended for distribution to the junior analyst for granular review and manual
+        verification against Oracle.</td>
+  </tr>
+  <tr>
+    <td><strong>Quick Rerun</strong></td>
+    <td>A single-click entry point that runs Steps 1 and 3 back-to-back using the settings
+        already saved on the Config sheet. No form is displayed.</td>
+  </tr>
+  <tr>
+    <td><strong>Token-sort key</strong></td>
+    <td>A form of the vendor name where the individual words (tokens) have been sorted
+        alphabetically before being re-joined. Used in Pass B of the clustering algorithm
+        to catch names whose words appear in different orders.</td>
+  </tr>
+</table>
+
+<hr>
+<p style="color:#999; font-size:9pt; text-align:center;">
+  Vendor Normalization Engine &nbsp;|&nbsp; Job Aid v1.0 &nbsp;|&nbsp; March 2026 &nbsp;|&nbsp;
+  For internal use only |&nbsp; To report issues or request enhancements, contact Darek Krawczynski.
+</p>
+
+</body>
+</html>
