@@ -3,163 +3,966 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YTCodes — Excel Automation & Data Processing</title>
-<meta name="description" content="Custom Excel VBA and Python tools that replace manual spreadsheet work. Data cleanup, record matching, automated file generation, email automation.">
+<title>YTCodes — Data Automation Tools</title>
+<meta name="description" content="Custom automation tools for data cleanup, normalization, template generation, and validation. Built in Excel VBA and Python. Flat rate. Fast turnaround.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
-    --bg: #0a0e1a; --bg2: #0f1424; --bg-card: #141a2e;
-    --accent: #00e5c3; --accent2: #00b4d8;
-    --accent-glow: rgba(0,229,195,0.15); --accent-glow2: rgba(0,229,195,0.06);
-    --text: #c8d6e5; --text-bright: #edf2f7; --text-muted: #6b7fa3;
-    --border: rgba(0,229,195,0.08); --border-hover: rgba(0,229,195,0.25);
-    --grid-color: rgba(0,229,195,0.03);
-    --body-font: 'Outfit', system-ui, sans-serif;
-    --mono: 'Space Mono', monospace;
+    --bg:           #070b14;
+    --bg-card:      #0f1528;
+    --bg-card2:     #131929;
+    --accent:       #00e5c3;
+    --accent2:      #00b4d8;
+    --accent-dim:   rgba(0,229,195,0.12);
+    --accent-faint: rgba(0,229,195,0.05);
+    --text:         #c8d6e5;
+    --text-bright:  #edf2f7;
+    --text-muted:   #6b7fa3;
+    --border:       rgba(0,229,195,0.08);
+    --border-hover: rgba(0,229,195,0.28);
+    --grid-color:   rgba(0,229,195,0.022);
+    --body-font:    'Outfit', system-ui, sans-serif;
+    --mono:         'Space Mono', monospace;
+    --r:            10px;
+    --nav-h:        60px;
   }
   html { scroll-behavior: smooth; }
-  body { font-family: var(--body-font); background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
-  body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; z-index: 0; }
-  .orb { position: fixed; border-radius: 50%; filter: blur(80px); pointer-events: none; z-index: 0; }
-  .orb-1 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(0,229,195,0.07), transparent 70%); top: -100px; right: -100px; animation: orbFloat 20s ease-in-out infinite; }
-  .orb-2 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(0,180,216,0.05), transparent 70%); bottom: 20%; left: -80px; animation: orbFloat 25s ease-in-out infinite reverse; }
-  @keyframes orbFloat { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(30px,-20px); } }
-  .page-wrap { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; padding: 0 28px; }
+  body {
+    font-family: var(--body-font);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(var(--grid-color) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .orb-1 {
+    width: 480px; height: 480px;
+    background: radial-gradient(circle, rgba(0,229,195,0.06), transparent 70%);
+    top: -160px; right: -140px;
+    animation: orbFloat 22s ease-in-out infinite;
+  }
+  .orb-2 {
+    width: 380px; height: 380px;
+    background: radial-gradient(circle, rgba(0,180,216,0.05), transparent 70%);
+    bottom: 8%; left: -110px;
+    animation: orbFloat 28s ease-in-out infinite reverse;
+  }
+  .orb-3 {
+    width: 280px; height: 280px;
+    background: radial-gradient(circle, rgba(123,97,255,0.04), transparent 70%);
+    top: 45%; right: 12%;
+    animation: orbFloat 18s ease-in-out 5s infinite;
+  }
+  @keyframes orbFloat {
+    0%, 100% { transform: translate(0, 0); }
+    33%       { transform: translate(18px, -28px); }
+    66%       { transform: translate(-14px, 14px); }
+  }
 
-  header { padding: 80px 0 56px; }
-  .logo-line { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
-  .logo-mark { width: 36px; height: 36px; border: 2px solid var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 20px rgba(0,229,195,0.15), inset 0 0 12px rgba(0,229,195,0.05); }
-  .logo-mark::after { content: '>'; font-family: var(--mono); font-size: 16px; font-weight: 700; color: var(--accent); animation: blink 1.2s step-end infinite; }
+  /* ── Layout ─────────────────────────────────────── */
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* ── Nav ─────────────────────────────────────────── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: var(--nav-h);
+    background: rgba(7,11,20,0.88);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 28px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .logo-mark {
+    width: 30px; height: 30px;
+    border: 1.5px solid var(--accent);
+    border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 14px rgba(0,229,195,0.12);
+  }
+  .logo-mark::after {
+    content: '>';
+    font-family: var(--mono);
+    font-size: 13px; font-weight: 700;
+    color: var(--accent);
+    animation: blink 1.2s step-end infinite;
+  }
   @keyframes blink { 50% { opacity: 0; } }
-  .logo-text { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--accent); letter-spacing: 1px; }
+  .logo-text {
+    font-family: var(--mono);
+    font-size: 13px; font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 1px;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    text-decoration: none;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: var(--accent); }
 
-  h1 { font-size: clamp(32px,6vw,48px); font-weight: 700; line-height: 1.1; color: var(--text-bright); margin-bottom: 20px; letter-spacing: -0.5px; }
-  h1 .highlight { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-  .hero-sub { font-size: 17px; color: var(--text-muted); max-width: 520px; font-weight: 300; line-height: 1.7; }
+  /* ── Hero ────────────────────────────────────────── */
+  header { padding: 80px 0 68px; }
+  .yt-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 14px;
+    margin-bottom: 28px;
+    letter-spacing: 0.8px;
+  }
+  .yt-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 6px var(--accent);
+    animation: pulse 2.2s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-  .divider { height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0.15; }
-  section { padding: 56px 0; }
-  .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
-  .section-num { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--accent); background: var(--accent-glow); border: 1px solid rgba(0,229,195,0.15); padding: 4px 10px; border-radius: 4px; letter-spacing: 1px; }
-  .section-title { font-family: var(--mono); font-size: 11px; font-weight: 400; text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); }
+  h1 {
+    font-size: clamp(34px, 6.5vw, 56px);
+    font-weight: 700;
+    line-height: 1.06;
+    color: var(--text-bright);
+    margin-bottom: 22px;
+    letter-spacing: -0.5px;
+  }
+  .hl {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: 17px;
+    color: var(--text-muted);
+    max-width: 540px;
+    font-weight: 300;
+    line-height: 1.78;
+    margin-bottom: 40px;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .stat { display: flex; flex-direction: column; gap: 3px; }
+  .stat-val {
+    font-family: var(--mono);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.4px;
+  }
 
-  .cap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .cap-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 28px 24px; position: relative; overflow: hidden; transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s; }
-  .cap-card:hover { border-color: var(--border-hover); box-shadow: 0 0 30px var(--accent-glow2), inset 0 1px 0 rgba(0,229,195,0.08); transform: translateY(-2px); }
-  .cap-card::before { content: ''; position: absolute; top: 0; left: 0; width: 40px; height: 40px; border-top: 2px solid var(--accent); border-left: 2px solid var(--accent); border-radius: 10px 0 0 0; opacity: 0.3; transition: opacity 0.3s; }
-  .cap-card:hover::before { opacity: 0.7; }
-  .cap-icon { font-size: 24px; margin-bottom: 16px; display: block; }
-  .cap-card h3 { font-size: 15px; font-weight: 600; color: var(--text-bright); margin-bottom: 8px; }
-  .cap-card p { font-size: 13px; color: var(--text-muted); line-height: 1.6; font-weight: 300; }
+  /* ── Divider ─────────────────────────────────────── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,229,195,0.14), transparent);
+  }
 
+  /* ── Sections ────────────────────────────────────── */
+  section { padding: 62px 0; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+  .section-num {
+    font-family: var(--mono);
+    font-size: 11px; font-weight: 700;
+    color: var(--accent);
+    background: var(--accent-dim);
+    border: 1px solid rgba(0,229,195,0.15);
+    padding: 4px 10px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+  }
+  .section-title {
+    font-family: var(--mono);
+    font-size: 11px; font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    color: var(--text-muted);
+  }
+
+  /* ── Filter Tabs ─────────────────────────────────── */
+  .filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .f-tab {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.8px;
+    color: var(--text-muted);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 7px 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    outline: none;
+  }
+  .f-tab:hover { color: var(--text); border-color: rgba(0,229,195,0.2); }
+  .f-tab.active {
+    color: var(--accent);
+    border-color: rgba(0,229,195,0.35);
+    background: var(--accent-dim);
+  }
+
+  /* ── Tool Grid ───────────────────────────────────── */
+  .tool-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .tool-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 26px 24px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.22s;
+    /* remove default button styles if used as button */
+    text-align: left;
+    color: inherit;
+    font-family: inherit;
+  }
+  .tool-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 44px; height: 44px;
+    border-top: 2px solid var(--accent);
+    border-left: 2px solid var(--accent);
+    border-radius: var(--r) 0 0 0;
+    opacity: 0.22;
+    transition: opacity 0.3s;
+  }
+  .tool-card:hover {
+    border-color: var(--border-hover);
+    box-shadow: 0 0 38px var(--accent-faint);
+    transform: translateY(-2px);
+  }
+  .tool-card:hover::before { opacity: 0.6; }
+  .tool-card.open {
+    border-color: rgba(0,229,195,0.32);
+    box-shadow: 0 0 42px var(--accent-dim);
+  }
+  .tool-card.open::before { opacity: 0.75; }
+  .tool-card.hidden { display: none; }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .card-code {
+    font-family: var(--mono);
+    font-size: 10px; font-weight: 700;
+    color: var(--accent);
+    background: var(--accent-dim);
+    border: 1px solid rgba(0,229,195,0.2);
+    padding: 3px 9px;
+    border-radius: 4px;
+    letter-spacing: 1.5px;
+  }
+  .card-status {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 3px 9px;
+    border-radius: 4px;
+    border: 1px solid;
+    letter-spacing: 0.5px;
+  }
+  .card-status.live  { color: var(--accent); border-color: rgba(0,229,195,0.22); background: var(--accent-dim); }
+  .card-status.dev   { color: #f0a500;       border-color: rgba(240,165,0,0.28); background: rgba(240,165,0,0.07); }
+
+  .card-icon {
+    font-size: 26px;
+    margin-bottom: 12px;
+    display: block;
+    line-height: 1;
+  }
+  .card-name {
+    font-size: 16px; font-weight: 600;
+    color: var(--text-bright);
+    margin-bottom: 5px;
+  }
+  .card-tagline {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-bottom: 12px;
+    opacity: 0.8;
+    letter-spacing: 0.3px;
+  }
+  .card-summary {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.65;
+    font-weight: 300;
+  }
+  .card-cats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 14px;
+  }
+  .cat-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+  .expand-cue {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    opacity: 0.55;
+    transition: opacity 0.2s;
+    pointer-events: none;
+    letter-spacing: 0.3px;
+  }
+  .expand-cue .arr {
+    display: inline-block;
+    font-size: 13px;
+    transition: transform 0.32s ease;
+  }
+  .tool-card:hover .expand-cue { opacity: 0.9; }
+  .tool-card.open .expand-cue { opacity: 1; }
+  .tool-card.open .expand-cue .arr { transform: rotate(180deg); }
+
+  /* Expandable detail */
+  .card-detail {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.42s ease, opacity 0.32s ease;
+    opacity: 0;
+  }
+  .tool-card.open .card-detail {
+    max-height: 700px;
+    opacity: 1;
+  }
+  .detail-inner {
+    border-top: 1px solid var(--border);
+    margin-top: 20px;
+    padding-top: 20px;
+  }
+  .detail-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.8px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    margin-top: 16px;
+  }
+  .detail-label:first-child { margin-top: 0; }
+  .cap-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .cap-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 300;
+    line-height: 1.55;
+  }
+  .cap-list li::before {
+    content: '›';
+    color: var(--accent);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .detail-use {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.65;
+    font-weight: 300;
+    font-style: italic;
+  }
+  .detail-use strong {
+    color: var(--text);
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  /* ── Stack ───────────────────────────────────────── */
   .tech-wrap { display: flex; flex-wrap: wrap; gap: 10px; }
-  .tech-tag { font-family: var(--mono); font-size: 12px; color: var(--text); background: var(--bg-card); border: 1px solid var(--border); padding: 8px 16px; border-radius: 6px; transition: border-color 0.2s, color 0.2s; cursor: default; }
+  .tech-tag {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: border-color 0.2s, color 0.2s;
+    cursor: default;
+  }
   .tech-tag:hover { border-color: var(--border-hover); color: var(--accent); }
 
-  .timeline { position: relative; padding-left: 40px; }
-  .timeline::before { content: ''; position: absolute; left: 14px; top: 8px; bottom: 8px; width: 1px; background: linear-gradient(180deg, var(--accent), rgba(0,229,195,0.1)); }
+  /* ── Timeline ────────────────────────────────────── */
+  .timeline { position: relative; padding-left: 42px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 14px; top: 8px; bottom: 8px;
+    width: 1px;
+    background: linear-gradient(180deg, var(--accent), rgba(0,229,195,0.06));
+  }
   .tl-step { position: relative; margin-bottom: 32px; }
   .tl-step:last-child { margin-bottom: 0; }
-  .tl-dot { position: absolute; left: -33px; top: 4px; width: 12px; height: 12px; background: var(--bg); border: 2px solid var(--accent); border-radius: 50%; box-shadow: 0 0 10px rgba(0,229,195,0.3); }
-  .tl-step h4 { font-size: 15px; font-weight: 600; color: var(--text-bright); margin-bottom: 4px; }
-  .tl-step p { font-size: 13.5px; color: var(--text-muted); font-weight: 300; max-width: 500px; }
+  .tl-dot {
+    position: absolute;
+    left: -34px; top: 4px;
+    width: 12px; height: 12px;
+    background: var(--bg);
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0,229,195,0.28);
+  }
+  .tl-step h4 { font-size: 15px; font-weight: 600; color: var(--text-bright); margin-bottom: 5px; }
+  .tl-step p  { font-size: 13.5px; color: var(--text-muted); font-weight: 300; max-width: 520px; }
 
-  .callout { background: var(--accent-glow); border: 1px solid rgba(0,229,195,0.15); border-radius: 8px; padding: 20px 24px; margin-top: 36px; display: flex; align-items: center; gap: 14px; }
+  /* ── Callout ─────────────────────────────────────── */
+  .callout {
+    background: var(--accent-dim);
+    border: 1px solid rgba(0,229,195,0.14);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-top: 36px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
   .callout-icon { font-size: 20px; flex-shrink: 0; }
   .callout-text { font-size: 14px; color: var(--accent); font-weight: 500; }
   .callout-text span { display: block; font-size: 12.5px; color: var(--text-muted); font-weight: 300; margin-top: 2px; }
 
-  .contact-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 36px 32px; position: relative; overflow: hidden; }
-  .contact-box::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0.3; }
+  /* ── Contact ─────────────────────────────────────── */
+  .contact-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 36px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-box::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.28;
+  }
   .contact-name { font-size: 22px; font-weight: 700; color: var(--text-bright); margin-bottom: 10px; }
-  .contact-box > p { font-size: 14px; color: var(--text-muted); font-weight: 300; line-height: 1.65; margin-bottom: 24px; max-width: 480px; }
-  .cta-btn { display: inline-block; font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--bg); background: linear-gradient(135deg, var(--accent), var(--accent2)); padding: 12px 28px; border-radius: 6px; text-decoration: none; transition: box-shadow 0.3s, transform 0.2s; letter-spacing: 0.5px; }
-  .cta-btn:hover { box-shadow: 0 0 24px rgba(0,229,195,0.35); transform: translateY(-1px); }
+  .contact-box > p {
+    font-size: 14px; color: var(--text-muted); font-weight: 300;
+    line-height: 1.72; margin-bottom: 24px; max-width: 500px;
+  }
+  .cta-btn {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 13px; font-weight: 700;
+    color: var(--bg);
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    padding: 12px 28px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: box-shadow 0.28s, transform 0.2s;
+    letter-spacing: 0.5px;
+  }
+  .cta-btn:hover { box-shadow: 0 0 28px rgba(0,229,195,0.38); transform: translateY(-1px); }
   .contact-meta { margin-top: 18px; font-size: 13px; color: var(--text-muted); font-weight: 300; }
 
-  footer { padding: 36px 0 52px; text-align: center; }
-  footer p { font-family: var(--mono); font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; }
+  /* ── Footer ──────────────────────────────────────── */
+  footer {
+    padding: 32px 0 52px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+  }
+  footer p { font-family: var(--mono); font-size: 11px; color: var(--text-muted); letter-spacing: 0.4px; }
+  footer span { color: var(--accent); }
 
-  @media (max-width: 600px) {
-    header { padding: 52px 0 40px; }
-    section { padding: 40px 0; }
-    .cap-grid { grid-template-columns: 1fr; }
+  /* ── Scroll-reveal ───────────────────────────────── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── Responsive ──────────────────────────────────── */
+  @media (max-width: 640px) {
+    header { padding: 56px 0 48px; }
+    section { padding: 46px 0; }
+    .tool-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 24px; }
     .contact-box { padding: 24px 20px; }
-    .timeline { padding-left: 32px; }
-    .tl-dot { left: -25px; }
+    .timeline { padding-left: 34px; }
+    .tl-dot { left: -27px; }
+    .nav-links { display: none; }
+    .filter-row { gap: 6px; }
+    .f-tab { font-size: 10px; padding: 6px 12px; }
   }
 
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-  header { animation: fadeUp 0.6s ease-out both; }
-  section:nth-of-type(1) { animation: fadeUp 0.6s ease-out 0.1s both; }
-  section:nth-of-type(2) { animation: fadeUp 0.6s ease-out 0.15s both; }
-  section:nth-of-type(3) { animation: fadeUp 0.6s ease-out 0.2s both; }
-  section:nth-of-type(4) { animation: fadeUp 0.6s ease-out 0.25s both; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  header { animation: fadeUp 0.65s ease-out both; }
 </style>
 </head>
 <body>
+
 <div class="orb orb-1"></div>
 <div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="logo-mark"></div>
+      <span class="logo-text">YTCODES</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#tools">Tools</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#stack">Stack</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
 <div class="page-wrap">
 
+  <!-- HERO -->
   <header>
-    <div class="logo-line">
-      <div class="logo-mark"></div>
-      <div class="logo-text">YTCODES</div>
+    <div class="yt-badge">Y.T. &nbsp;|&nbsp; data courier &nbsp;|&nbsp; signal over noise</div>
+    <h1>The grid doesn't<br>clean itself.<br><span class="hl">I do.</span></h1>
+    <p class="hero-sub">
+      Custom automation tools that turn raw, messy data into clean, structured, delivery-ready output.
+      Excel VBA and Python. Built for any dataset. Flat rate.
+    </p>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-val">5</span>
+        <span class="stat-label">Tools Shipped</span>
+      </div>
+      <div class="stat">
+        <span class="stat-val">9</span>
+        <span class="stat-label">Reusable Modules</span>
+      </div>
+      <div class="stat">
+        <span class="stat-val">&infin;</span>
+        <span class="stat-label">Data Sources</span>
+      </div>
     </div>
-    <h1>Data in.<br><span class="highlight">Answers out.</span></h1>
-    <p class="hero-sub">I build custom tools that turn messy spreadsheets into clean, automated workflows. Excel VBA and Python. Flat rate. Fast turnaround.</p>
   </header>
 
   <div class="divider"></div>
 
-  <section>
-    <div class="section-header">
+  <!-- TOOLS -->
+  <section id="tools">
+    <div class="section-header fade-up">
       <span class="section-num">01</span>
-      <span class="section-title">Capabilities</span>
+      <span class="section-title">The Packages</span>
     </div>
-    <div class="cap-grid">
-      <div class="cap-card">
-        <span class="cap-icon">&#9881;</span>
-        <h3>Data Extraction & Validation</h3>
-        <p>Pull data from messy sources. Auto-detect layouts. Validate every row against your rules. Output clean files ready for the next step.</p>
+
+    <div class="filter-row fade-up">
+      <button class="f-tab active" data-filter="all">All</button>
+      <button class="f-tab" data-filter="cleanup">Data Cleanup</button>
+      <button class="f-tab" data-filter="generation">File Generation</button>
+      <button class="f-tab" data-filter="validation">Validation</button>
+      <button class="f-tab" data-filter="library">Library</button>
+    </div>
+
+    <div class="tool-grid">
+
+      <!-- VNE -->
+      <div class="tool-card fade-up" data-cats="cleanup" tabindex="0" role="button" aria-expanded="false">
+        <div class="card-top">
+          <span class="card-code">VNE</span>
+          <span class="card-status live">Live</span>
+        </div>
+        <span class="card-icon">&#8776;</span>
+        <div class="card-name">Name Normalization Engine</div>
+        <div class="card-tagline">// finds what exact-match can't</div>
+        <p class="card-summary">Scans any large name list, groups near-duplicates into similarity clusters, then cross-references each cluster against a reference extract to surface matches and flag unknowns.</p>
+        <div class="card-cats">
+          <span class="cat-tag">fuzzy match</span>
+          <span class="cat-tag">clustering</span>
+          <span class="cat-tag">deduplication</span>
+        </div>
+        <div class="expand-cue">
+          <span>View details</span>
+          <span class="arr">&#8964;</span>
+        </div>
+        <div class="card-detail">
+          <div class="detail-inner">
+            <div class="detail-label">Capabilities</div>
+            <ul class="cap-list">
+              <li>Levenshtein-based similarity scoring across thousands of rows in seconds</li>
+              <li>Automatic cluster grouping — catches abbreviations, punctuation, casing, typos</li>
+              <li>Cross-reference each cluster against any extract to surface matching IDs</li>
+              <li>Colour-coded analyst review workspace built for fast sign-off</li>
+              <li>Inactive and unrecognized entry flagging</li>
+              <li>Archivable output package with full run log</li>
+            </ul>
+            <div class="detail-label">Works on any name + identifier dataset</div>
+            <p class="detail-use">
+              <strong>Vendor lists &middot; Customer databases &middot; Inventory items &middot; GL accounts &middot; Employee rosters &middot; Manufacturer registers</strong>
+              &mdash; any dataset where names have accumulated inconsistency over time.
+            </p>
+          </div>
+        </div>
       </div>
-      <div class="cap-card">
-        <span class="cap-icon">&#10697;</span>
-        <h3>Record Matching & Deduplication</h3>
-        <p>Fuzzy name matching across systems. Catches abbreviations, typos, and formatting differences that exact lookups miss.</p>
+
+      <!-- TFT -->
+      <div class="tool-card fade-up" data-cats="generation" tabindex="0" role="button" aria-expanded="false">
+        <div class="card-top">
+          <span class="card-code">TFT</span>
+          <span class="card-status live">Live</span>
+        </div>
+        <span class="card-icon">&#8644;</span>
+        <div class="card-name">Template Fill Pipeline</div>
+        <div class="card-tagline">// configure once, run forever</div>
+        <p class="card-summary">Maps columns from any raw data file to any output template. Define the mapping, save it, and every future run produces a correctly formatted output file in a single click.</p>
+        <div class="card-cats">
+          <span class="cat-tag">column mapping</span>
+          <span class="cat-tag">batch output</span>
+          <span class="cat-tag">recurring workflow</span>
+        </div>
+        <div class="expand-cue">
+          <span>View details</span>
+          <span class="arr">&#8964;</span>
+        </div>
+        <div class="card-detail">
+          <div class="detail-inner">
+            <div class="detail-label">Capabilities</div>
+            <ul class="cap-list">
+              <li>7 mapping types: column pass-through, static value, skip, count, lookup, conditional, sum</li>
+              <li>Field normalization — strip characters, reformat, standardize values on output</li>
+              <li>Filter and group source rows before writing output</li>
+              <li>Named config saves: reload any saved mapping and run in seconds</li>
+              <li>Batch mode: execute multiple configs in a single unattended pass</li>
+              <li>Email dispatch with output files attached; routing driven by data values</li>
+              <li>Full run log with row counts and output file paths</li>
+            </ul>
+            <div class="detail-label">Use case</div>
+            <p class="detail-use">
+              Any recurring workflow that transforms a raw export into a specific output layout:
+              <strong>reports, upload files, data migrations, regulatory submissions, distribution packages.</strong>
+            </p>
+          </div>
+        </div>
       </div>
-      <div class="cap-card">
-        <span class="cap-icon">&#9776;</span>
-        <h3>Automated File Generation</h3>
-        <p>Source data to formatted output files in one click. Configurable mappings, conditional logic, auto-naming, and versioning.</p>
+
+      <!-- BPA -->
+      <div class="tool-card fade-up" data-cats="generation" tabindex="0" role="button" aria-expanded="false">
+        <div class="card-top">
+          <span class="card-code">BPA</span>
+          <span class="card-status live">Live</span>
+        </div>
+        <span class="card-icon">&#9889;</span>
+        <div class="card-name">Batch File Generator</div>
+        <div class="card-tagline">// one source, many outputs</div>
+        <p class="card-summary">Reads a source spreadsheet, validates every row, builds a clean review list for sign-off, then generates multiple formatted output files in one click &mdash; auto-named and ready to send.</p>
+        <div class="card-cats">
+          <span class="cat-tag">batch processing</span>
+          <span class="cat-tag">multi-file output</span>
+          <span class="cat-tag">email dispatch</span>
+        </div>
+        <div class="expand-cue">
+          <span>View details</span>
+          <span class="arr">&#8964;</span>
+        </div>
+        <div class="card-detail">
+          <div class="detail-inner">
+            <div class="detail-label">Capabilities</div>
+            <ul class="cap-list">
+              <li>Source data ingestion with automatic layout detection and header scanning</li>
+              <li>Row-level validation against configurable rules before any output is written</li>
+              <li>Clean, editable review list for analyst approval before generation starts</li>
+              <li>Template Mapper: create and save output file configurations for each file type</li>
+              <li>One-click batch generation of multiple distinct output files per run</li>
+              <li>Auto-naming with date stamps, versioning, and configurable patterns</li>
+              <li>Outlook email draft with all output files attached and ready to review</li>
+            </ul>
+            <div class="detail-label">Use case</div>
+            <p class="detail-use">
+              Recurring batch export workflows:
+              <strong>data distribution, multi-file formatted output, upload preparation, any process that takes one input and produces many output files.</strong>
+            </p>
+          </div>
+        </div>
       </div>
-      <div class="cap-card">
-        <span class="cap-icon">&#9993;</span>
-        <h3>Email Automation</h3>
-        <p>Grouped, templated emails from data through Outlook. Auto-routing, attachments, CC management, and full audit logging.</p>
+
+      <!-- WPR -->
+      <div class="tool-card fade-up" data-cats="validation" tabindex="0" role="button" aria-expanded="false">
+        <div class="card-top">
+          <span class="card-code">WPR</span>
+          <span class="card-status live">Live</span>
+        </div>
+        <span class="card-icon">&#9745;</span>
+        <div class="card-name">Batch Validation Pipeline</div>
+        <div class="card-tagline">// five checks, one click</div>
+        <p class="card-summary">Runs a structured multi-step validation pipeline on any incoming data batch. Each step is independent. Outputs a colour-coded review package flagging mismatches, inactive records, and unrecognized entries.</p>
+        <div class="card-cats">
+          <span class="cat-tag">multi-step pipeline</span>
+          <span class="cat-tag">reconciliation</span>
+          <span class="cat-tag">audit trail</span>
+        </div>
+        <div class="expand-cue">
+          <span>View details</span>
+          <span class="arr">&#8964;</span>
+        </div>
+        <div class="card-detail">
+          <div class="detail-inner">
+            <div class="detail-label">The Pipeline</div>
+            <ul class="cap-list">
+              <li><strong>Import:</strong> Load input batches in multiple formats into dedicated tabs</li>
+              <li><strong>Registry Rebuild:</strong> Reconstruct a current reference registry from raw extracts</li>
+              <li><strong>Fuzzy Name Match:</strong> Match batch names to registry, surfacing near-duplicates</li>
+              <li><strong>ID Cross-check:</strong> Verify each record's identifier against the registry</li>
+              <li><strong>Inactive Check:</strong> Flag any records belonging to deactivated entries</li>
+              <li>Steps are independent &mdash; re-run any single step without restarting the pipeline</li>
+              <li>Archivable, colour-coded results package with full run log</li>
+            </ul>
+            <div class="detail-label">Use case</div>
+            <p class="detail-use">
+              Any quality-review workflow over structured batches:
+              <strong>payment review, data reconciliation, record validation against a reference set, import auditing, compliance checks.</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- WCL -->
+      <div class="tool-card fade-up" data-cats="cleanup" tabindex="0" role="button" aria-expanded="false">
+        <div class="card-top">
+          <span class="card-code">WCL</span>
+          <span class="card-status dev">In Dev</span>
+        </div>
+        <span class="card-icon">&#9881;</span>
+        <div class="card-name">Workbook Cleaner</div>
+        <div class="card-tagline">// raw data in, clean data out</div>
+        <p class="card-summary">Ingests raw data files from any source, applies configurable column-level validation rules, eliminates duplicates, and delivers a single analysis-ready master file with a full fix changelog.</p>
+        <div class="card-cats">
+          <span class="cat-tag">data cleaning</span>
+          <span class="cat-tag">deduplication</span>
+          <span class="cat-tag">validation rules</span>
+        </div>
+        <div class="expand-cue">
+          <span>View details</span>
+          <span class="arr">&#8964;</span>
+        </div>
+        <div class="card-detail">
+          <div class="detail-inner">
+            <div class="detail-label">Planned Capabilities</div>
+            <ul class="cap-list">
+              <li>Multi-source ingestion: manual entry, exports, PDF extracts, sheet copies</li>
+              <li>Configurable column-level validation rules: type, range, required field, format</li>
+              <li>Duplicate ID detection and configurable resolution logic</li>
+              <li>Business rule enforcement before any output is written</li>
+              <li>Single analysis-ready master output file</li>
+              <li>Full fix changelog: every correction documented row by row</li>
+              <li>Repeatable &mdash; same rules produce the same clean output every run</li>
+            </ul>
+            <div class="detail-label">Use case</div>
+            <p class="detail-use">
+              Any dataset that has grown organically from multiple sources and needs a thorough, repeatable cleaning pass before
+              <strong>reporting, analysis, or downstream processing.</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- LIB -->
+      <div class="tool-card fade-up" data-cats="library" tabindex="0" role="button" aria-expanded="false">
+        <div class="card-top">
+          <span class="card-code">LIB</span>
+          <span class="card-status live">Live</span>
+        </div>
+        <span class="card-icon">&#9633;</span>
+        <div class="card-name">Shared Utility Library</div>
+        <div class="card-tagline">// the engine under everything</div>
+        <p class="card-summary">Nine battle-tested VBA modules extracted from production tools. Drop them into any new automation project and skip re-writing the same patterns from scratch.</p>
+        <div class="card-cats">
+          <span class="cat-tag">reusable modules</span>
+          <span class="cat-tag">VBA</span>
+          <span class="cat-tag">developer kit</span>
+        </div>
+        <div class="expand-cue">
+          <span>View details</span>
+          <span class="arr">&#8964;</span>
+        </div>
+        <div class="card-detail">
+          <div class="detail-inner">
+            <div class="detail-label">9 Modules</div>
+            <ul class="cap-list">
+              <li><strong>LIB1 &mdash; String Utilities:</strong> cleaning, normalization, path handling</li>
+              <li><strong>LIB2 &mdash; Sheet Utilities:</strong> header finding, sheet safety, Dictionary helpers</li>
+              <li><strong>LIB3 &mdash; Date Utilities:</strong> safe date parsing and formatting</li>
+              <li><strong>LIB4 &mdash; Fuzzy Match:</strong> Levenshtein distance, name similarity scoring</li>
+              <li><strong>LIB5 &mdash; Logging:</strong> safe log-sheet append, 3-col and 9-col models</li>
+              <li><strong>LIB6 &mdash; Progress UI:</strong> user-facing progress bar wrapper skeleton</li>
+              <li><strong>LIB7 &mdash; Numeric Utilities:</strong> safe parsing, rounding, formatting</li>
+              <li><strong>LIB8 &mdash; HTML Utilities:</strong> HTML string generation helpers</li>
+              <li><strong>LIB9 &mdash; Org Code Utilities:</strong> org code parsing and validation</li>
+            </ul>
+            <div class="detail-label">How it works</div>
+            <p class="detail-use">
+              Import only the modules you need into any project. Every function has been used in at least one production tool.
+              <strong>Stop re-inventing the same patterns &mdash; just write the business logic.</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /tool-grid -->
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PROCESS -->
+  <section id="process">
+    <div class="section-header fade-up">
+      <span class="section-num">02</span>
+      <span class="section-title">The Run</span>
+    </div>
+    <div class="timeline fade-up">
+      <div class="tl-step">
+        <div class="tl-dot"></div>
+        <h4>Send the problem</h4>
+        <p>A sample file, a screenshot, or a plain description of what your team is doing by hand. No formal brief needed. If people are copying and pasting it, it can probably be automated.</p>
+      </div>
+      <div class="tl-step">
+        <div class="tl-dot"></div>
+        <h4>Get a clear scope and price</h4>
+        <p>I outline exactly what the tool does, how long it takes, and what it costs. Everything agreed in writing before any work starts. No hourly billing. No scope creep.</p>
+      </div>
+      <div class="tl-step">
+        <div class="tl-dot"></div>
+        <h4>Receive a working tool</h4>
+        <p>Delivered as a self-contained workbook or script with documentation. Your team runs it from day one &mdash; no dependencies to install, no setup friction.</p>
+      </div>
+    </div>
+    <div class="callout fade-up">
+      <span class="callout-icon">&#9889;</span>
+      <div class="callout-text">
+        Flat rate pricing. No hourly billing.
+        <span>Scope and cost locked in writing before work begins.</span>
       </div>
     </div>
   </section>
 
   <div class="divider"></div>
 
-  <section>
-    <div class="section-header">
-      <span class="section-num">02</span>
+  <!-- STACK -->
+  <section id="stack">
+    <div class="section-header fade-up">
+      <span class="section-num">03</span>
       <span class="section-title">Stack</span>
     </div>
-    <div class="tech-wrap">
+    <div class="tech-wrap fade-up">
       <span class="tech-tag">Excel VBA</span>
       <span class="tech-tag">Python</span>
       <span class="tech-tag">SQL</span>
       <span class="tech-tag">Outlook COM</span>
       <span class="tech-tag">Selenium</span>
       <span class="tech-tag">PDF Generation</span>
-      <span class="tech-tag">Data Cleaning</span>
       <span class="tech-tag">Fuzzy Matching</span>
+      <span class="tech-tag">Data Cleaning</span>
       <span class="tech-tag">Web Scraping</span>
       <span class="tech-tag">Flask</span>
     </div>
@@ -167,53 +970,96 @@
 
   <div class="divider"></div>
 
-  <section>
-    <div class="section-header">
-      <span class="section-num">03</span>
-      <span class="section-title">Process</span>
-    </div>
-    <div class="timeline">
-      <div class="tl-step">
-        <div class="tl-dot"></div>
-        <h4>Send me the problem</h4>
-        <p>A sample file, a screenshot, or just a description of the process. No formal brief needed.</p>
-      </div>
-      <div class="tl-step">
-        <div class="tl-dot"></div>
-        <h4>Get a scope and price</h4>
-        <p>I outline what the tool will do, how long it takes, and what it costs. Agreed before work starts.</p>
-      </div>
-      <div class="tl-step">
-        <div class="tl-dot"></div>
-        <h4>Receive a working tool</h4>
-        <p>Delivered as a self-contained workbook or script with documentation. Your team runs it from day one.</p>
-      </div>
-    </div>
-    <div class="callout">
-      <span class="callout-icon">&#9889;</span>
-      <div class="callout-text">
-        Flat rate pricing. No hourly billing.
-        <span>Scope and cost locked before work begins.</span>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <section>
-    <div class="section-header">
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-header fade-up">
       <span class="section-num">04</span>
       <span class="section-title">Contact</span>
     </div>
-    <div class="contact-box">
+    <div class="contact-box fade-up">
       <div class="contact-name">Darek Krawczynski</div>
-      <p>If your team spends hours on repetitive spreadsheet tasks, send me a sample file or describe the process. I will outline what automation would look like and what it would cost.</p>
+      <p>
+        If your team is spending hours on repetitive data work &mdash; cleanup, reformatting, matching, validation &mdash; send me a sample file or describe the process.
+        I will tell you what automation looks like for your specific case and what it costs.
+      </p>
       <a href="mailto:ytcodes.work@gmail.com" class="cta-btn">ytcodes.work@gmail.com</a>
       <div class="contact-meta">Salt Lake City, UT</div>
     </div>
   </section>
 
-</div>
-<footer><p>&copy; 2026 YTCodes</p></footer>
+</div><!-- /page-wrap -->
+
+<footer>
+  <p>&copy; 2026 <span>YTCodes</span> &nbsp;&middot;&nbsp; Data in. Signal out.</p>
+</footer>
+
+<script>
+  /* ── Filter tabs ───────────────────────────────── */
+  const tabs  = document.querySelectorAll('.f-tab');
+  const cards = document.querySelectorAll('.tool-card');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const f = tab.dataset.filter;
+      cards.forEach(c => {
+        const match = f === 'all' || c.dataset.cats.includes(f);
+        c.classList.toggle('hidden', !match);
+        if (!match) c.classList.remove('open');
+      });
+    });
+  });
+
+  /* ── Card expand / collapse ────────────────────── */
+  cards.forEach(card => {
+    const toggle = () => {
+      const wasOpen = card.classList.contains('open');
+      cards.forEach(c => {
+        c.classList.remove('open');
+        c.setAttribute('aria-expanded', 'false');
+      });
+      if (!wasOpen) {
+        card.classList.add('open');
+        card.setAttribute('aria-expanded', 'true');
+      }
+    };
+    card.addEventListener('click', toggle);
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+    });
+  });
+
+  /* ── Scroll-reveal (IntersectionObserver) ──────── */
+  const fadeEls = document.querySelectorAll('.fade-up');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  fadeEls.forEach(el => io.observe(el));
+
+  /* ── Active nav highlight on scroll ────────────── */
+  const sections  = document.querySelectorAll('section[id]');
+  const navLinks  = document.querySelectorAll('.nav-links a');
+  const navIO = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach(s => navIO.observe(s));
+
+  /* ── Stagger fade-up delays for card grid ──────── */
+  document.querySelectorAll('.tool-grid .tool-card').forEach((card, i) => {
+    card.style.transitionDelay = (i % 2) * 0.08 + 's';
+  });
+</script>
 </body>
 </html>
