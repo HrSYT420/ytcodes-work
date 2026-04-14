@@ -1,1065 +1,618 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YTCodes — Data Automation Tools</title>
-<meta name="description" content="Custom automation tools for data cleanup, normalization, template generation, and validation. Built in Excel VBA and Python. Flat rate. Fast turnaround.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>YTCodes — Data automation, flat rate</title>
+<meta name="description" content="Custom automation tools for messy data. Excel VBA and Python. Flat rate." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a0a0f'/%3E%3Ctext x='50%25' y='54%25' font-size='38' text-anchor='middle' dominant-baseline='middle' font-family='monospace' fill='%2300d4aa'%3E%E2%9A%99%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
-    --bg:           #070b14;
-    --bg-card:      #0f1528;
-    --bg-card2:     #131929;
-    --accent:       #00e5c3;
-    --accent2:      #00b4d8;
-    --accent-dim:   rgba(0,229,195,0.12);
-    --accent-faint: rgba(0,229,195,0.05);
-    --text:         #c8d6e5;
-    --text-bright:  #edf2f7;
-    --text-muted:   #6b7fa3;
-    --border:       rgba(0,229,195,0.08);
-    --border-hover: rgba(0,229,195,0.28);
-    --grid-color:   rgba(0,229,195,0.022);
-    --body-font:    'Outfit', system-ui, sans-serif;
-    --mono:         'Space Mono', monospace;
-    --r:            10px;
-    --nav-h:        60px;
+    --bg: #0a0a0f;
+    --bg-2: #11121a;
+    --bg-3: #181a24;
+    --border: #23263250;
+    --border-strong: #2a2e3d;
+    --text: #e6e8ef;
+    --text-dim: #9097a8;
+    --text-dimmer: #5b6275;
+    --accent: #00d4aa;
+    --accent-2: #4f8ef7;
+    --danger: #ff6b6b;
+    --warn: #ffb547;
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
   }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    font-family: var(--body-font);
+    font-family: var(--font-sans);
     background: var(--bg);
     color: var(--text);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image:
-      linear-gradient(var(--grid-color) 1px, transparent 1px),
-      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-    background-size: 60px 60px;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .orb {
-    position: fixed;
-    border-radius: 50%;
-    filter: blur(90px);
-    pointer-events: none;
-    z-index: 0;
-  }
-  .orb-1 {
-    width: 480px; height: 480px;
-    background: radial-gradient(circle, rgba(0,229,195,0.06), transparent 70%);
-    top: -160px; right: -140px;
-    animation: orbFloat 22s ease-in-out infinite;
-  }
-  .orb-2 {
-    width: 380px; height: 380px;
-    background: radial-gradient(circle, rgba(0,180,216,0.05), transparent 70%);
-    bottom: 8%; left: -110px;
-    animation: orbFloat 28s ease-in-out infinite reverse;
-  }
-  .orb-3 {
-    width: 280px; height: 280px;
-    background: radial-gradient(circle, rgba(123,97,255,0.04), transparent 70%);
-    top: 45%; right: 12%;
-    animation: orbFloat 18s ease-in-out 5s infinite;
-  }
-  @keyframes orbFloat {
-    0%, 100% { transform: translate(0, 0); }
-    33%       { transform: translate(18px, -28px); }
-    66%       { transform: translate(-14px, 14px); }
+  a { color: inherit; text-decoration: none; }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
   }
 
-  /* ── Layout ─────────────────────────────────────── */
-  .page-wrap {
+  .container { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+
+  nav.top {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    background: rgba(10,10,15,0.65);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid transparent;
+    transition: padding .25s ease, border-color .25s ease, background .25s ease;
+    padding: 18px 0;
+  }
+  nav.top.scrolled {
+    padding: 10px 0;
+    border-bottom-color: var(--border-strong);
+    background: rgba(10,10,15,0.85);
+  }
+  nav.top .container { display: flex; align-items: center; justify-content: space-between; }
+  .brand { font-family: var(--font-mono); font-weight: 600; font-size: 15px; letter-spacing: .02em; }
+  .brand .dot { color: var(--accent); }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a { font-size: 14px; color: var(--text-dim); transition: color .15s ease; }
+  .nav-links a:hover { color: var(--text); }
+  @media (max-width: 640px) { .nav-links { display: none; } }
+
+  header.hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 120px 0 80px;
     position: relative;
-    z-index: 1;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 28px;
+    background:
+      radial-gradient(ellipse at top right, rgba(0,212,170,0.08), transparent 50%),
+      radial-gradient(ellipse at bottom left, rgba(79,142,247,0.06), transparent 50%);
   }
+  .hero-grid { display: grid; grid-template-columns: 1fr; gap: 48px; align-items: center; }
+  @media (min-width: 960px) { .hero-grid { grid-template-columns: 1.1fr 1fr; gap: 64px; } }
 
-  /* ── Nav ─────────────────────────────────────────── */
-  nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    height: var(--nav-h);
-    background: rgba(7,11,20,0.88);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    border-bottom: 1px solid var(--border);
+  .hero-copy .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono); font-size: 12px; color: var(--accent);
+    background: rgba(0,212,170,0.08);
+    border: 1px solid rgba(0,212,170,0.25);
+    padding: 6px 12px; border-radius: 100px; margin-bottom: 24px;
   }
-  .nav-inner {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 28px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-  }
-  .logo-mark {
-    width: 30px; height: 30px;
-    border: 1.5px solid var(--accent);
-    border-radius: 5px;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 0 14px rgba(0,229,195,0.12);
-  }
-  .logo-mark::after {
-    content: '>';
-    font-family: var(--mono);
-    font-size: 13px; font-weight: 700;
-    color: var(--accent);
-    animation: blink 1.2s step-end infinite;
-  }
-  @keyframes blink { 50% { opacity: 0; } }
-  .logo-text {
-    font-family: var(--mono);
-    font-size: 13px; font-weight: 700;
-    color: var(--accent);
-    letter-spacing: 1px;
-  }
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 28px;
-    list-style: none;
-  }
-  .nav-links a {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-muted);
-    text-decoration: none;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover, .nav-links a.active { color: var(--accent); }
-
-  /* ── Hero ────────────────────────────────────────── */
-  header { padding: 80px 0 68px; }
-  .yt-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 9px;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--text-muted);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 5px 14px;
-    margin-bottom: 28px;
-    letter-spacing: 0.8px;
-  }
-  .yt-badge::before {
-    content: '';
-    width: 6px; height: 6px;
-    border-radius: 50%;
+  .eyebrow .pulse {
+    width: 6px; height: 6px; border-radius: 50%;
     background: var(--accent);
-    box-shadow: 0 0 6px var(--accent);
-    animation: pulse 2.2s ease-in-out infinite;
-    flex-shrink: 0;
+    box-shadow: 0 0 0 0 rgba(0,212,170,0.6);
+    animation: pulse 2s infinite;
   }
-  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-  h1 {
-    font-size: clamp(34px, 6.5vw, 56px);
-    font-weight: 700;
-    line-height: 1.06;
-    color: var(--text-bright);
-    margin-bottom: 22px;
-    letter-spacing: -0.5px;
-  }
-  .hl {
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .hero-sub {
-    font-size: 17px;
-    color: var(--text-muted);
-    max-width: 540px;
-    font-weight: 300;
-    line-height: 1.78;
-    margin-bottom: 40px;
-  }
-  .hero-stats {
-    display: flex;
-    gap: 40px;
-    flex-wrap: wrap;
-  }
-  .stat { display: flex; flex-direction: column; gap: 3px; }
-  .stat-val {
-    font-family: var(--mono);
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--accent);
-  }
-  .stat-label {
-    font-size: 12px;
-    color: var(--text-muted);
-    letter-spacing: 0.4px;
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(0,212,170,0.6); }
+    70% { box-shadow: 0 0 0 8px rgba(0,212,170,0); }
+    100% { box-shadow: 0 0 0 0 rgba(0,212,170,0); }
   }
 
-  /* ── Divider ─────────────────────────────────────── */
-  .divider {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(0,229,195,0.14), transparent);
-  }
-
-  /* ── Sections ────────────────────────────────────── */
-  section { padding: 62px 0; }
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 32px;
-  }
-  .section-num {
-    font-family: var(--mono);
-    font-size: 11px; font-weight: 700;
-    color: var(--accent);
-    background: var(--accent-dim);
-    border: 1px solid rgba(0,229,195,0.15);
-    padding: 4px 10px;
-    border-radius: 4px;
-    letter-spacing: 1px;
-  }
-  .section-title {
-    font-family: var(--mono);
-    font-size: 11px; font-weight: 400;
-    text-transform: uppercase;
-    letter-spacing: 2.5px;
-    color: var(--text-muted);
-  }
-
-  /* ── Filter Tabs ─────────────────────────────────── */
-  .filter-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 28px;
-  }
-  .f-tab {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.8px;
-    color: var(--text-muted);
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 7px 16px;
+  h1.tagline { font-size: clamp(34px, 5.2vw, 56px); line-height: 1.05; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 20px; }
+  h1.tagline .accent { color: var(--accent); }
+  .hero-sub { font-size: 18px; color: var(--text-dim); margin-bottom: 32px; max-width: 520px; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 22px; border-radius: 8px;
+    font-family: var(--font-sans); font-size: 15px; font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s;
-    user-select: none;
-    outline: none;
+    transition: transform .15s ease, background .15s ease, border-color .15s ease;
+    border: 1px solid transparent;
   }
-  .f-tab:hover { color: var(--text); border-color: rgba(0,229,195,0.2); }
-  .f-tab.active {
-    color: var(--accent);
-    border-color: rgba(0,229,195,0.35);
-    background: var(--accent-dim);
-  }
+  .btn-primary { background: var(--accent); color: #042a22; font-weight: 600; }
+  .btn-primary:hover { transform: translateY(-1px); background: #00e8bb; }
+  .btn-ghost { background: transparent; border-color: var(--border-strong); color: var(--text); }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* ── Tool Grid ───────────────────────────────────── */
-  .tool-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-
-  .tool-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--r);
-    padding: 26px 24px;
+  .demo-wrap {
     position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    transition: border-color 0.3s, box-shadow 0.3s, transform 0.22s;
-    /* remove default button styles if used as button */
-    text-align: left;
-    color: inherit;
-    font-family: inherit;
+    background: var(--bg-2);
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 24px 60px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.02) inset;
   }
-  .tool-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 44px; height: 44px;
-    border-top: 2px solid var(--accent);
-    border-left: 2px solid var(--accent);
-    border-radius: var(--r) 0 0 0;
-    opacity: 0.22;
-    transition: opacity 0.3s;
-  }
-  .tool-card:hover {
-    border-color: var(--border-hover);
-    box-shadow: 0 0 38px var(--accent-faint);
-    transform: translateY(-2px);
-  }
-  .tool-card:hover::before { opacity: 0.6; }
-  .tool-card.open {
-    border-color: rgba(0,229,195,0.32);
-    box-shadow: 0 0 42px var(--accent-dim);
-  }
-  .tool-card.open::before { opacity: 0.75; }
-  .tool-card.hidden { display: none; }
-
-  .card-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-  }
-  .card-code {
-    font-family: var(--mono);
-    font-size: 10px; font-weight: 700;
-    color: var(--accent);
-    background: var(--accent-dim);
-    border: 1px solid rgba(0,229,195,0.2);
-    padding: 3px 9px;
-    border-radius: 4px;
-    letter-spacing: 1.5px;
-  }
-  .card-status {
-    font-family: var(--mono);
-    font-size: 10px;
-    padding: 3px 9px;
-    border-radius: 4px;
-    border: 1px solid;
-    letter-spacing: 0.5px;
-  }
-  .card-status.live  { color: var(--accent); border-color: rgba(0,229,195,0.22); background: var(--accent-dim); }
-  .card-status.dev   { color: #f0a500;       border-color: rgba(240,165,0,0.28); background: rgba(240,165,0,0.07); }
-
-  .card-icon {
-    font-size: 26px;
+  .demo-header {
+    display: flex; align-items: center; gap: 8px;
+    padding: 2px 4px 12px;
+    border-bottom: 1px solid var(--border);
     margin-bottom: 12px;
-    display: block;
-    line-height: 1;
   }
-  .card-name {
-    font-size: 16px; font-weight: 600;
-    color: var(--text-bright);
-    margin-bottom: 5px;
+  .demo-dots { display: flex; gap: 6px; }
+  .demo-dots span { width: 10px; height: 10px; border-radius: 50%; background: #3a3f52; }
+  .demo-dots span:nth-child(1) { background: #ff5f57; }
+  .demo-dots span:nth-child(2) { background: #febc2e; }
+  .demo-dots span:nth-child(3) { background: #28c840; }
+  .demo-title { font-family: var(--font-mono); font-size: 12px; color: var(--text-dimmer); margin-left: 6px; }
+  .demo-status { margin-left: auto; font-family: var(--font-mono); font-size: 11px; color: var(--text-dimmer); letter-spacing: .05em; text-transform: uppercase; }
+  .demo-status .s-dot {
+    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--warn); margin-right: 6px; vertical-align: middle;
+    transition: background .3s ease;
   }
-  .card-tagline {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--accent);
-    margin-bottom: 12px;
-    opacity: 0.8;
-    letter-spacing: 0.3px;
+  .demo-status.state-clean .s-dot { background: var(--accent); }
+
+  .grid-scroll { overflow-x: auto; position: relative; }
+  table.sheet { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 12.5px; position: relative; }
+  table.sheet th, table.sheet td {
+    border: 1px solid var(--border-strong);
+    padding: 8px 10px; text-align: left; white-space: nowrap;
+    position: relative; transition: background .3s ease, color .3s ease;
   }
-  .card-summary {
-    font-size: 13px;
-    color: var(--text-muted);
-    line-height: 1.65;
-    font-weight: 300;
+  table.sheet th { background: var(--bg-3); color: var(--text-dim); font-weight: 500; font-size: 11px; letter-spacing: .05em; }
+  table.sheet th.row-h, table.sheet td.row-h {
+    background: var(--bg-3); color: var(--text-dimmer);
+    text-align: center; width: 32px; font-size: 11px;
   }
-  .card-cats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
+  table.sheet td { color: var(--text); background: var(--bg-2); }
+
+  td.dirty { background: rgba(255,107,107,0.06); color: #ffd4d4; }
+  td.dirty::after {
+    content: ''; position: absolute; top: 4px; right: 4px;
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--danger); opacity: .7;
+  }
+  td.clean { background: rgba(0,212,170,0.05); color: #d4f7ee; }
+  td.clean .strike { text-decoration: line-through; color: var(--text-dimmer); font-size: 11px; margin-left: 4px; }
+
+  tr.scanning td:not(.row-h) {
+    background: rgba(79,142,247,0.18);
+    box-shadow: inset 0 0 0 1px rgba(79,142,247,0.5);
+  }
+
+  table.sheet.after-glow td:not(.row-h) { animation: greenFlash 1.4s ease; }
+  @keyframes greenFlash {
+    0% { box-shadow: inset 0 0 0 0 rgba(0,212,170,0); }
+    40% { box-shadow: inset 0 0 0 2px rgba(0,212,170,0.7); background: rgba(0,212,170,0.15); }
+    100% { box-shadow: inset 0 0 0 0 rgba(0,212,170,0); }
+  }
+
+  .check-overlay {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none; opacity: 0; transition: opacity .3s ease;
+  }
+  .check-overlay.show { opacity: 1; }
+  .check-overlay svg { width: 72px; height: 72px; filter: drop-shadow(0 0 20px rgba(0,212,170,0.6)); }
+
+  .demo-caption {
     margin-top: 14px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--font-mono); font-size: 11px; color: var(--text-dimmer);
   }
-  .cat-tag {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--text-muted);
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.06);
-    padding: 2px 8px;
-    border-radius: 3px;
-  }
-  .expand-cue {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 18px;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--accent);
-    opacity: 0.55;
-    transition: opacity 0.2s;
-    pointer-events: none;
-    letter-spacing: 0.3px;
-  }
-  .expand-cue .arr {
-    display: inline-block;
-    font-size: 13px;
-    transition: transform 0.32s ease;
-  }
-  .tool-card:hover .expand-cue { opacity: 0.9; }
-  .tool-card.open .expand-cue { opacity: 1; }
-  .tool-card.open .expand-cue .arr { transform: rotate(180deg); }
+  .phase-indicator { display: flex; gap: 6px; }
+  .phase-indicator .pip { width: 22px; height: 3px; border-radius: 2px; background: var(--border-strong); transition: background .3s ease; }
+  .phase-indicator .pip.active { background: var(--accent); }
 
-  /* Expandable detail */
-  .card-detail {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.42s ease, opacity 0.32s ease;
-    opacity: 0;
+  .hide-sm { display: table-cell; }
+  @media (max-width: 640px) { .hide-sm { display: none; } }
+
+  section { padding: 100px 0; }
+  .section-head { margin-bottom: 48px; max-width: 680px; }
+  .section-label { font-family: var(--font-mono); font-size: 12px; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 12px; }
+  .section-title { font-size: clamp(28px, 3.4vw, 40px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 12px; }
+  .section-desc { color: var(--text-dim); font-size: 17px; }
+
+  .tools-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  @media (min-width: 720px) { .tools-grid { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1040px) { .tools-grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+  .tool {
+    background: var(--bg-2);
+    border: 1px solid var(--border-strong);
+    border-radius: 12px; padding: 24px;
+    transition: border-color .2s ease, transform .2s ease;
+    cursor: pointer; text-align: left; width: 100%;
+    font-family: inherit; color: inherit;
   }
-  .tool-card.open .card-detail {
-    max-height: 700px;
-    opacity: 1;
+  .tool:hover { border-color: var(--accent); }
+  .tool-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .tool-icon {
+    width: 40px; height: 40px; border-radius: 8px;
+    background: var(--bg-3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
   }
-  .detail-inner {
-    border-top: 1px solid var(--border);
-    margin-top: 20px;
-    padding-top: 20px;
+  .badge {
+    font-family: var(--font-mono); font-size: 11px;
+    padding: 3px 8px; border-radius: 4px;
+    background: rgba(79,142,247,0.12); color: var(--accent-2);
+    letter-spacing: .05em;
   }
-  .detail-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1.8px;
-    color: var(--text-muted);
-    margin-bottom: 10px;
-    margin-top: 16px;
+  .status {
+    margin-left: auto; font-family: var(--font-mono); font-size: 10px;
+    padding: 3px 8px; border-radius: 100px;
+    letter-spacing: .05em; text-transform: uppercase;
   }
-  .detail-label:first-child { margin-top: 0; }
-  .cap-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
+  .status.live { background: rgba(0,212,170,0.12); color: var(--accent); }
+  .status.dev { background: rgba(255,181,71,0.12); color: var(--warn); }
+
+  .tool h3 { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
+  .tool p { color: var(--text-dim); font-size: 14.5px; }
+  .tool .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+  .tag { font-family: var(--font-mono); font-size: 11px; color: var(--text-dimmer); background: var(--bg-3); padding: 3px 8px; border-radius: 4px; }
+  .tool-details {
+    max-height: 0; overflow: hidden;
+    transition: max-height .35s ease, margin-top .35s ease, opacity .35s ease, padding-top .35s ease;
+    opacity: 0; color: var(--text-dim); font-size: 14px; line-height: 1.65;
   }
-  .cap-list li {
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    font-size: 13px;
+  .tool.open .tool-details {
+    max-height: 600px; margin-top: 16px; padding-top: 16px;
+    border-top: 1px solid var(--border-strong); opacity: 1;
+  }
+  .tool-toggle { margin-top: 14px; font-family: var(--font-mono); font-size: 12px; color: var(--text-dimmer); display: flex; align-items: center; gap: 6px; }
+  .tool.open .tool-toggle .chev { transform: rotate(180deg); }
+  .chev { transition: transform .2s ease; display: inline-block; }
+
+  .process-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  @media (min-width: 760px) { .process-grid { grid-template-columns: repeat(3, 1fr); } }
+  .step { background: var(--bg-2); border: 1px solid var(--border-strong); border-radius: 12px; padding: 28px 24px; position: relative; }
+  .step-num { font-family: var(--font-mono); font-size: 13px; color: var(--accent); margin-bottom: 16px; }
+  .step h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
+  .step p { color: var(--text-dim); font-size: 15px; }
+
+  .stack-scroll { display: flex; flex-wrap: wrap; gap: 10px; }
+  .pill {
+    font-family: var(--font-mono); font-size: 13px;
+    padding: 8px 14px; border-radius: 100px;
+    background: var(--bg-2); border: 1px solid var(--border-strong);
     color: var(--text);
-    font-weight: 300;
-    line-height: 1.55;
+    transition: border-color .15s ease, color .15s ease;
   }
-  .cap-list li::before {
-    content: '›';
-    color: var(--accent);
-    font-weight: 700;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-  .detail-use {
-    font-size: 12.5px;
-    color: var(--text-muted);
-    line-height: 1.65;
-    font-weight: 300;
-    font-style: italic;
-  }
-  .detail-use strong {
-    color: var(--text);
-    font-style: normal;
-    font-weight: 500;
-  }
+  .pill:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* ── Stack ───────────────────────────────────────── */
-  .tech-wrap { display: flex; flex-wrap: wrap; gap: 10px; }
-  .tech-tag {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--text);
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    padding: 8px 16px;
-    border-radius: 6px;
-    transition: border-color 0.2s, color 0.2s;
-    cursor: default;
+  .contact-card {
+    background: linear-gradient(135deg, var(--bg-2), var(--bg-3));
+    border: 1px solid var(--border-strong);
+    border-radius: 16px; padding: 48px;
   }
-  .tech-tag:hover { border-color: var(--border-hover); color: var(--accent); }
+  @media (max-width: 640px) { .contact-card { padding: 32px 24px; } }
+  .contact-card h3 { font-size: clamp(24px, 3vw, 32px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 16px; }
+  .contact-card p { color: var(--text-dim); margin-bottom: 24px; max-width: 620px; }
+  .contact-meta {
+    display: grid; gap: 14px; grid-template-columns: 1fr;
+    margin-top: 24px; padding-top: 24px;
+    border-top: 1px solid var(--border-strong);
+  }
+  @media (min-width: 640px) { .contact-meta { grid-template-columns: repeat(3, 1fr); } }
+  .meta-item .k { font-family: var(--font-mono); font-size: 11px; color: var(--text-dimmer); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
+  .meta-item .v { font-size: 15px; }
+  .meta-item .v a:hover { color: var(--accent); }
 
-  /* ── Timeline ────────────────────────────────────── */
-  .timeline { position: relative; padding-left: 42px; }
-  .timeline::before {
-    content: '';
-    position: absolute;
-    left: 14px; top: 8px; bottom: 8px;
-    width: 1px;
-    background: linear-gradient(180deg, var(--accent), rgba(0,229,195,0.06));
-  }
-  .tl-step { position: relative; margin-bottom: 32px; }
-  .tl-step:last-child { margin-bottom: 0; }
-  .tl-dot {
-    position: absolute;
-    left: -34px; top: 4px;
-    width: 12px; height: 12px;
-    background: var(--bg);
-    border: 2px solid var(--accent);
-    border-radius: 50%;
-    box-shadow: 0 0 10px rgba(0,229,195,0.28);
-  }
-  .tl-step h4 { font-size: 15px; font-weight: 600; color: var(--text-bright); margin-bottom: 5px; }
-  .tl-step p  { font-size: 13.5px; color: var(--text-muted); font-weight: 300; max-width: 520px; }
-
-  /* ── Callout ─────────────────────────────────────── */
-  .callout {
-    background: var(--accent-dim);
-    border: 1px solid rgba(0,229,195,0.14);
-    border-radius: 8px;
-    padding: 20px 24px;
-    margin-top: 36px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .callout-icon { font-size: 20px; flex-shrink: 0; }
-  .callout-text { font-size: 14px; color: var(--accent); font-weight: 500; }
-  .callout-text span { display: block; font-size: 12.5px; color: var(--text-muted); font-weight: 300; margin-top: 2px; }
-
-  /* ── Contact ─────────────────────────────────────── */
-  .contact-box {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--r);
-    padding: 36px 32px;
-    position: relative;
-    overflow: hidden;
-  }
-  .contact-box::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0.28;
-  }
-  .contact-name { font-size: 22px; font-weight: 700; color: var(--text-bright); margin-bottom: 10px; }
-  .contact-box > p {
-    font-size: 14px; color: var(--text-muted); font-weight: 300;
-    line-height: 1.72; margin-bottom: 24px; max-width: 500px;
-  }
-  .cta-btn {
-    display: inline-block;
-    font-family: var(--mono);
-    font-size: 13px; font-weight: 700;
-    color: var(--bg);
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    padding: 12px 28px;
-    border-radius: 6px;
-    text-decoration: none;
-    transition: box-shadow 0.28s, transform 0.2s;
-    letter-spacing: 0.5px;
-  }
-  .cta-btn:hover { box-shadow: 0 0 28px rgba(0,229,195,0.38); transform: translateY(-1px); }
-  .contact-meta { margin-top: 18px; font-size: 13px; color: var(--text-muted); font-weight: 300; }
-
-  /* ── Footer ──────────────────────────────────────── */
   footer {
-    padding: 32px 0 52px;
+    padding: 40px 0 60px;
+    border-top: 1px solid var(--border-strong);
     text-align: center;
-    border-top: 1px solid var(--border);
-    margin-top: 8px;
-  }
-  footer p { font-family: var(--mono); font-size: 11px; color: var(--text-muted); letter-spacing: 0.4px; }
-  footer span { color: var(--accent); }
-
-  /* ── Scroll-reveal ───────────────────────────────── */
-  .fade-up {
-    opacity: 0;
-    transform: translateY(22px);
-    transition: opacity 0.55s ease, transform 0.55s ease;
-  }
-  .fade-up.visible { opacity: 1; transform: translateY(0); }
-
-  /* ── Responsive ──────────────────────────────────── */
-  @media (max-width: 640px) {
-    header { padding: 56px 0 48px; }
-    section { padding: 46px 0; }
-    .tool-grid { grid-template-columns: 1fr; }
-    .hero-stats { gap: 24px; }
-    .contact-box { padding: 24px 20px; }
-    .timeline { padding-left: 34px; }
-    .tl-dot { left: -27px; }
-    .nav-links { display: none; }
-    .filter-row { gap: 6px; }
-    .f-tab { font-size: 10px; padding: 6px 12px; }
+    font-family: var(--font-mono); font-size: 13px; color: var(--text-dimmer);
   }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .001s !important; transition-duration: .001s !important; }
   }
-  header { animation: fadeUp 0.65s ease-out both; }
 </style>
 </head>
 <body>
 
-<div class="orb orb-1"></div>
-<div class="orb orb-2"></div>
-<div class="orb orb-3"></div>
-
-<!-- NAV -->
-<nav>
-  <div class="nav-inner">
-    <a href="#" class="nav-logo">
-      <div class="logo-mark"></div>
-      <span class="logo-text">YTCODES</span>
-    </a>
-    <ul class="nav-links">
-      <li><a href="#tools">Tools</a></li>
-      <li><a href="#process">Process</a></li>
-      <li><a href="#stack">Stack</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
+<nav class="top" id="topnav" aria-label="Primary">
+  <div class="container">
+    <a href="#top" class="brand" aria-label="YTCodes home">ytcodes<span class="dot">.</span>work</a>
+    <div class="nav-links">
+      <a href="#tools">Tools</a>
+      <a href="#process">Process</a>
+      <a href="#stack">Stack</a>
+      <a href="#contact">Contact</a>
+    </div>
   </div>
 </nav>
 
-<div class="page-wrap">
-
-  <!-- HERO -->
-  <header>
-    <div class="yt-badge">Y.T. &nbsp;|&nbsp; data courier &nbsp;|&nbsp; signal over noise</div>
-    <h1>The grid doesn't<br>clean itself.<br><span class="hl">I do.</span></h1>
-    <p class="hero-sub">
-      Custom automation tools that turn raw, messy data into clean, structured, delivery-ready output.
-      Excel VBA and Python. Built for any dataset. Flat rate.
-    </p>
-    <div class="hero-stats">
-      <div class="stat">
-        <span class="stat-val">5</span>
-        <span class="stat-label">Tools Shipped</span>
-      </div>
-      <div class="stat">
-        <span class="stat-val">9</span>
-        <span class="stat-label">Reusable Modules</span>
-      </div>
-      <div class="stat">
-        <span class="stat-val">&infin;</span>
-        <span class="stat-label">Data Sources</span>
-      </div>
-    </div>
-  </header>
-
-  <div class="divider"></div>
-
-  <!-- TOOLS -->
-  <section id="tools">
-    <div class="section-header fade-up">
-      <span class="section-num">01</span>
-      <span class="section-title">The Packages</span>
-    </div>
-
-    <div class="filter-row fade-up">
-      <button class="f-tab active" data-filter="all">All</button>
-      <button class="f-tab" data-filter="cleanup">Data Cleanup</button>
-      <button class="f-tab" data-filter="generation">File Generation</button>
-      <button class="f-tab" data-filter="validation">Validation</button>
-      <button class="f-tab" data-filter="library">Library</button>
-    </div>
-
-    <div class="tool-grid">
-
-      <!-- VNE -->
-      <div class="tool-card fade-up" data-cats="cleanup" tabindex="0" role="button" aria-expanded="false">
-        <div class="card-top">
-          <span class="card-code">VNE</span>
-          <span class="card-status live">Live</span>
+<header class="hero" id="top">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow"><span class="pulse" aria-hidden="true"></span> Available for new work</span>
+        <h1 class="tagline">The grid doesn't clean itself.<br/><span class="accent">I do.</span></h1>
+        <p class="hero-sub">Custom automation tools for messy data. Excel VBA and Python. Flat rate.</p>
+        <div class="hero-cta">
+          <a href="#tools" class="btn btn-primary">See the tools ↓</a>
+          <a href="mailto:ytcodes.work@gmail.com" class="btn btn-ghost">ytcodes.work@gmail.com</a>
         </div>
-        <span class="card-icon">&#8776;</span>
-        <div class="card-name">Name Normalization Engine</div>
-        <div class="card-tagline">// finds what exact-match can't</div>
-        <p class="card-summary">Scans any large name list, groups near-duplicates into similarity clusters, then cross-references each cluster against a reference extract to surface matches and flag unknowns.</p>
-        <div class="card-cats">
-          <span class="cat-tag">fuzzy match</span>
-          <span class="cat-tag">clustering</span>
-          <span class="cat-tag">deduplication</span>
+      </div>
+
+      <div class="demo-wrap" role="img" aria-label="Animated demo of messy spreadsheet data being cleaned by automation">
+        <div class="demo-header">
+          <div class="demo-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="demo-title">vendor_data.xlsx — cleanup.bas</div>
+          <div class="demo-status" id="demoStatus"><span class="s-dot"></span><span id="statusText">Unclean</span></div>
         </div>
-        <div class="expand-cue">
-          <span>View details</span>
-          <span class="arr">&#8964;</span>
+        <div class="grid-scroll">
+          <table class="sheet" id="sheet" aria-hidden="true">
+            <thead>
+              <tr>
+                <th class="row-h"></th>
+                <th>A · Vendor</th>
+                <th>B · Date</th>
+                <th class="hide-sm">C · Amount</th>
+                <th class="hide-sm">D · Status</th>
+              </tr>
+            </thead>
+            <tbody id="sheetBody"></tbody>
+          </table>
+          <div class="check-overlay" id="checkOverlay" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none">
+              <circle cx="32" cy="32" r="28" fill="#0a0a0f" stroke="#00d4aa" stroke-width="3"/>
+              <path d="M20 33 L29 42 L45 24" stroke="#00d4aa" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
         </div>
-        <div class="card-detail">
-          <div class="detail-inner">
-            <div class="detail-label">Capabilities</div>
-            <ul class="cap-list">
-              <li>Levenshtein-based similarity scoring across thousands of rows in seconds</li>
-              <li>Automatic cluster grouping — catches abbreviations, punctuation, casing, typos</li>
-              <li>Cross-reference each cluster against any extract to surface matching IDs</li>
-              <li>Colour-coded analyst review workspace built for fast sign-off</li>
-              <li>Inactive and unrecognized entry flagging</li>
-              <li>Archivable output package with full run log</li>
-            </ul>
-            <div class="detail-label">Works on any name + identifier dataset</div>
-            <p class="detail-use">
-              <strong>Vendor lists &middot; Customer databases &middot; Inventory items &middot; GL accounts &middot; Employee rosters &middot; Manufacturer registers</strong>
-              &mdash; any dataset where names have accumulated inconsistency over time.
-            </p>
+        <div class="demo-caption">
+          <span id="phaseLabel">// scanning source…</span>
+          <div class="phase-indicator" aria-hidden="true">
+            <span class="pip"></span><span class="pip"></span><span class="pip"></span>
           </div>
         </div>
       </div>
-
-      <!-- TFT -->
-      <div class="tool-card fade-up" data-cats="generation" tabindex="0" role="button" aria-expanded="false">
-        <div class="card-top">
-          <span class="card-code">TFT</span>
-          <span class="card-status live">Live</span>
-        </div>
-        <span class="card-icon">&#8644;</span>
-        <div class="card-name">Template Fill Pipeline</div>
-        <div class="card-tagline">// configure once, run forever</div>
-        <p class="card-summary">Maps columns from any raw data file to any output template. Define the mapping, save it, and every future run produces a correctly formatted output file in a single click.</p>
-        <div class="card-cats">
-          <span class="cat-tag">column mapping</span>
-          <span class="cat-tag">batch output</span>
-          <span class="cat-tag">recurring workflow</span>
-        </div>
-        <div class="expand-cue">
-          <span>View details</span>
-          <span class="arr">&#8964;</span>
-        </div>
-        <div class="card-detail">
-          <div class="detail-inner">
-            <div class="detail-label">Capabilities</div>
-            <ul class="cap-list">
-              <li>7 mapping types: column pass-through, static value, skip, count, lookup, conditional, sum</li>
-              <li>Field normalization — strip characters, reformat, standardize values on output</li>
-              <li>Filter and group source rows before writing output</li>
-              <li>Named config saves: reload any saved mapping and run in seconds</li>
-              <li>Batch mode: execute multiple configs in a single unattended pass</li>
-              <li>Email dispatch with output files attached; routing driven by data values</li>
-              <li>Full run log with row counts and output file paths</li>
-            </ul>
-            <div class="detail-label">Use case</div>
-            <p class="detail-use">
-              Any recurring workflow that transforms a raw export into a specific output layout:
-              <strong>reports, upload files, data migrations, regulatory submissions, distribution packages.</strong>
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- BPA -->
-      <div class="tool-card fade-up" data-cats="generation" tabindex="0" role="button" aria-expanded="false">
-        <div class="card-top">
-          <span class="card-code">BPA</span>
-          <span class="card-status live">Live</span>
-        </div>
-        <span class="card-icon">&#9889;</span>
-        <div class="card-name">Batch File Generator</div>
-        <div class="card-tagline">// one source, many outputs</div>
-        <p class="card-summary">Reads a source spreadsheet, validates every row, builds a clean review list for sign-off, then generates multiple formatted output files in one click &mdash; auto-named and ready to send.</p>
-        <div class="card-cats">
-          <span class="cat-tag">batch processing</span>
-          <span class="cat-tag">multi-file output</span>
-          <span class="cat-tag">email dispatch</span>
-        </div>
-        <div class="expand-cue">
-          <span>View details</span>
-          <span class="arr">&#8964;</span>
-        </div>
-        <div class="card-detail">
-          <div class="detail-inner">
-            <div class="detail-label">Capabilities</div>
-            <ul class="cap-list">
-              <li>Source data ingestion with automatic layout detection and header scanning</li>
-              <li>Row-level validation against configurable rules before any output is written</li>
-              <li>Clean, editable review list for analyst approval before generation starts</li>
-              <li>Template Mapper: create and save output file configurations for each file type</li>
-              <li>One-click batch generation of multiple distinct output files per run</li>
-              <li>Auto-naming with date stamps, versioning, and configurable patterns</li>
-              <li>Outlook email draft with all output files attached and ready to review</li>
-            </ul>
-            <div class="detail-label">Use case</div>
-            <p class="detail-use">
-              Recurring batch export workflows:
-              <strong>data distribution, multi-file formatted output, upload preparation, any process that takes one input and produces many output files.</strong>
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- WPR -->
-      <div class="tool-card fade-up" data-cats="validation" tabindex="0" role="button" aria-expanded="false">
-        <div class="card-top">
-          <span class="card-code">WPR</span>
-          <span class="card-status live">Live</span>
-        </div>
-        <span class="card-icon">&#9745;</span>
-        <div class="card-name">Batch Validation Pipeline</div>
-        <div class="card-tagline">// five checks, one click</div>
-        <p class="card-summary">Runs a structured multi-step validation pipeline on any incoming data batch. Each step is independent. Outputs a colour-coded review package flagging mismatches, inactive records, and unrecognized entries.</p>
-        <div class="card-cats">
-          <span class="cat-tag">multi-step pipeline</span>
-          <span class="cat-tag">reconciliation</span>
-          <span class="cat-tag">audit trail</span>
-        </div>
-        <div class="expand-cue">
-          <span>View details</span>
-          <span class="arr">&#8964;</span>
-        </div>
-        <div class="card-detail">
-          <div class="detail-inner">
-            <div class="detail-label">The Pipeline</div>
-            <ul class="cap-list">
-              <li><strong>Import:</strong> Load input batches in multiple formats into dedicated tabs</li>
-              <li><strong>Registry Rebuild:</strong> Reconstruct a current reference registry from raw extracts</li>
-              <li><strong>Fuzzy Name Match:</strong> Match batch names to registry, surfacing near-duplicates</li>
-              <li><strong>ID Cross-check:</strong> Verify each record's identifier against the registry</li>
-              <li><strong>Inactive Check:</strong> Flag any records belonging to deactivated entries</li>
-              <li>Steps are independent &mdash; re-run any single step without restarting the pipeline</li>
-              <li>Archivable, colour-coded results package with full run log</li>
-            </ul>
-            <div class="detail-label">Use case</div>
-            <p class="detail-use">
-              Any quality-review workflow over structured batches:
-              <strong>payment review, data reconciliation, record validation against a reference set, import auditing, compliance checks.</strong>
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- WCL -->
-      <div class="tool-card fade-up" data-cats="cleanup" tabindex="0" role="button" aria-expanded="false">
-        <div class="card-top">
-          <span class="card-code">WCL</span>
-          <span class="card-status dev">In Dev</span>
-        </div>
-        <span class="card-icon">&#9881;</span>
-        <div class="card-name">Workbook Cleaner</div>
-        <div class="card-tagline">// raw data in, clean data out</div>
-        <p class="card-summary">Ingests raw data files from any source, applies configurable column-level validation rules, eliminates duplicates, and delivers a single analysis-ready master file with a full fix changelog.</p>
-        <div class="card-cats">
-          <span class="cat-tag">data cleaning</span>
-          <span class="cat-tag">deduplication</span>
-          <span class="cat-tag">validation rules</span>
-        </div>
-        <div class="expand-cue">
-          <span>View details</span>
-          <span class="arr">&#8964;</span>
-        </div>
-        <div class="card-detail">
-          <div class="detail-inner">
-            <div class="detail-label">Planned Capabilities</div>
-            <ul class="cap-list">
-              <li>Multi-source ingestion: manual entry, exports, PDF extracts, sheet copies</li>
-              <li>Configurable column-level validation rules: type, range, required field, format</li>
-              <li>Duplicate ID detection and configurable resolution logic</li>
-              <li>Business rule enforcement before any output is written</li>
-              <li>Single analysis-ready master output file</li>
-              <li>Full fix changelog: every correction documented row by row</li>
-              <li>Repeatable &mdash; same rules produce the same clean output every run</li>
-            </ul>
-            <div class="detail-label">Use case</div>
-            <p class="detail-use">
-              Any dataset that has grown organically from multiple sources and needs a thorough, repeatable cleaning pass before
-              <strong>reporting, analysis, or downstream processing.</strong>
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- LIB -->
-      <div class="tool-card fade-up" data-cats="library" tabindex="0" role="button" aria-expanded="false">
-        <div class="card-top">
-          <span class="card-code">LIB</span>
-          <span class="card-status live">Live</span>
-        </div>
-        <span class="card-icon">&#9633;</span>
-        <div class="card-name">Shared Utility Library</div>
-        <div class="card-tagline">// the engine under everything</div>
-        <p class="card-summary">Nine battle-tested VBA modules extracted from production tools. Drop them into any new automation project and skip re-writing the same patterns from scratch.</p>
-        <div class="card-cats">
-          <span class="cat-tag">reusable modules</span>
-          <span class="cat-tag">VBA</span>
-          <span class="cat-tag">developer kit</span>
-        </div>
-        <div class="expand-cue">
-          <span>View details</span>
-          <span class="arr">&#8964;</span>
-        </div>
-        <div class="card-detail">
-          <div class="detail-inner">
-            <div class="detail-label">9 Modules</div>
-            <ul class="cap-list">
-              <li><strong>LIB1 &mdash; String Utilities:</strong> cleaning, normalization, path handling</li>
-              <li><strong>LIB2 &mdash; Sheet Utilities:</strong> header finding, sheet safety, Dictionary helpers</li>
-              <li><strong>LIB3 &mdash; Date Utilities:</strong> safe date parsing and formatting</li>
-              <li><strong>LIB4 &mdash; Fuzzy Match:</strong> Levenshtein distance, name similarity scoring</li>
-              <li><strong>LIB5 &mdash; Logging:</strong> safe log-sheet append, 3-col and 9-col models</li>
-              <li><strong>LIB6 &mdash; Progress UI:</strong> user-facing progress bar wrapper skeleton</li>
-              <li><strong>LIB7 &mdash; Numeric Utilities:</strong> safe parsing, rounding, formatting</li>
-              <li><strong>LIB8 &mdash; HTML Utilities:</strong> HTML string generation helpers</li>
-              <li><strong>LIB9 &mdash; Org Code Utilities:</strong> org code parsing and validation</li>
-            </ul>
-            <div class="detail-label">How it works</div>
-            <p class="detail-use">
-              Import only the modules you need into any project. Every function has been used in at least one production tool.
-              <strong>Stop re-inventing the same patterns &mdash; just write the business logic.</strong>
-            </p>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /tool-grid -->
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- PROCESS -->
-  <section id="process">
-    <div class="section-header fade-up">
-      <span class="section-num">02</span>
-      <span class="section-title">The Run</span>
     </div>
-    <div class="timeline fade-up">
-      <div class="tl-step">
-        <div class="tl-dot"></div>
-        <h4>Send the problem</h4>
-        <p>A sample file, a screenshot, or a plain description of what your team is doing by hand. No formal brief needed. If people are copying and pasting it, it can probably be automated.</p>
-      </div>
-      <div class="tl-step">
-        <div class="tl-dot"></div>
-        <h4>Get a clear scope and price</h4>
-        <p>I outline exactly what the tool does, how long it takes, and what it costs. Everything agreed in writing before any work starts. No hourly billing. No scope creep.</p>
-      </div>
-      <div class="tl-step">
-        <div class="tl-dot"></div>
-        <h4>Receive a working tool</h4>
-        <p>Delivered as a self-contained workbook or script with documentation. Your team runs it from day one &mdash; no dependencies to install, no setup friction.</p>
+  </div>
+</header>
+
+<section id="tools">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-label">// Tools</div>
+      <h2 class="section-title">Production-ready automation, not one-off scripts.</h2>
+      <p class="section-desc">Six tools I've built and battle-tested. Each one solves a specific shape of messy data problem.</p>
+    </div>
+    <div class="tools-grid" id="toolsGrid"></div>
+  </div>
+</section>
+
+<section id="process">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-label">// Process</div>
+      <h2 class="section-title">Three steps. No hourly billing.</h2>
+    </div>
+    <div class="process-grid">
+      <div class="step reveal"><div class="step-num">01</div><h3>Send the problem</h3><p>Sample file, screenshot, or a plain-text description of what's slow. Whatever you have.</p></div>
+      <div class="step reveal"><div class="step-num">02</div><h3>Get a clear scope and price</h3><p>Flat rate quoted upfront. No hourly billing, no scope creep surprises.</p></div>
+      <div class="step reveal"><div class="step-num">03</div><h3>Receive a working tool</h3><p>Self-contained, documented, ready to use. Re-run it forever.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="stack">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="section-label">// Stack</div>
+      <h2 class="section-title">What I build with.</h2>
+    </div>
+    <div class="stack-scroll reveal">
+      <span class="pill">Excel VBA</span>
+      <span class="pill">Python</span>
+      <span class="pill">SQL</span>
+      <span class="pill">Flask</span>
+      <span class="pill">Selenium</span>
+      <span class="pill">Fuzzy Matching</span>
+      <span class="pill">Data Cleaning</span>
+      <span class="pill">Web Scraping</span>
+      <span class="pill">PDF Generation</span>
+      <span class="pill">Outlook COM</span>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="container">
+    <div class="contact-card reveal">
+      <div class="section-label">// Contact</div>
+      <h3>Send me a sample file.</h3>
+      <p>If your team is spending hours on repetitive data work, send me a sample file. I'll tell you what automation looks like for your case and what it costs.</p>
+      <a href="mailto:ytcodes.work@gmail.com" class="btn btn-primary">ytcodes.work@gmail.com →</a>
+      <div class="contact-meta">
+        <div class="meta-item"><div class="k">Name</div><div class="v">Darek Krawczynski</div></div>
+        <div class="meta-item"><div class="k">Email</div><div class="v"><a href="mailto:ytcodes.work@gmail.com">ytcodes.work@gmail.com</a></div></div>
+        <div class="meta-item"><div class="k">Location</div><div class="v">Salt Lake City, UT</div></div>
       </div>
     </div>
-    <div class="callout fade-up">
-      <span class="callout-icon">&#9889;</span>
-      <div class="callout-text">
-        Flat rate pricing. No hourly billing.
-        <span>Scope and cost locked in writing before work begins.</span>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- STACK -->
-  <section id="stack">
-    <div class="section-header fade-up">
-      <span class="section-num">03</span>
-      <span class="section-title">Stack</span>
-    </div>
-    <div class="tech-wrap fade-up">
-      <span class="tech-tag">Excel VBA</span>
-      <span class="tech-tag">Python</span>
-      <span class="tech-tag">SQL</span>
-      <span class="tech-tag">Outlook COM</span>
-      <span class="tech-tag">Selenium</span>
-      <span class="tech-tag">PDF Generation</span>
-      <span class="tech-tag">Fuzzy Matching</span>
-      <span class="tech-tag">Data Cleaning</span>
-      <span class="tech-tag">Web Scraping</span>
-      <span class="tech-tag">Flask</span>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="section-header fade-up">
-      <span class="section-num">04</span>
-      <span class="section-title">Contact</span>
-    </div>
-    <div class="contact-box fade-up">
-      <div class="contact-name">Darek Krawczynski</div>
-      <p>
-        If your team is spending hours on repetitive data work &mdash; cleanup, reformatting, matching, validation &mdash; send me a sample file or describe the process.
-        I will tell you what automation looks like for your specific case and what it costs.
-      </p>
-      <a href="mailto:ytcodes.work@gmail.com" class="cta-btn">ytcodes.work@gmail.com</a>
-      <div class="contact-meta">Salt Lake City, UT</div>
-    </div>
-  </section>
-
-</div><!-- /page-wrap -->
+  </div>
+</section>
 
 <footer>
-  <p>&copy; 2026 <span>YTCodes</span> &nbsp;&middot;&nbsp; Data in. Signal out.</p>
+  <div class="container">© 2026 YTCodes · Data in. Signal out.</div>
 </footer>
 
 <script>
-  /* ── Filter tabs ───────────────────────────────── */
-  const tabs  = document.querySelectorAll('.f-tab');
-  const cards = document.querySelectorAll('.tool-card');
+const nav = document.getElementById('topnav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 20);
+}, { passive: true });
 
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      const f = tab.dataset.filter;
-      cards.forEach(c => {
-        const match = f === 'all' || c.dataset.cats.includes(f);
-        c.classList.toggle('hidden', !match);
-        if (!match) c.classList.remove('open');
-      });
-    });
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+const TOOLS = [
+  { code:'VNE', icon:'🧬', name:'Name Normalization Engine', status:'live',
+    desc:"Scans any large name list, groups near-duplicates into similarity clusters, then cross-references against a reference extract.",
+    tags:['fuzzy match','clustering','deduplication'],
+    details:"Built for vendor, customer, and entity lists where the same name appears ten different ways. Configurable similarity thresholds, cluster review UI, and a reference-crosswalk step that flags canonical matches vs. orphans. Output: a clean mapping table you can feed back into your system of record."
+  },
+  { code:'TFT', icon:'🧩', name:'Template Fill Pipeline', status:'live',
+    desc:"Maps columns from any raw data file to any output template. Configure once, run forever.",
+    tags:['column mapping','batch output','recurring workflow'],
+    details:"Point at a source, point at a template, define the mapping once — the tool handles every subsequent run. Handles header drift, type coercion, and per-column transforms. Ideal for recurring report generation, client deliverables, and anything that lands in the same template every week."
+  },
+  { code:'BPA', icon:'📦', name:'Batch File Generator', status:'live',
+    desc:"Reads a source spreadsheet, validates every row, builds a review list, then generates multiple output files in one click.",
+    tags:['batch processing','multi-file output','email dispatch'],
+    details:"One source → many outputs. Validates rows against configurable rules, surfaces exceptions in a review pane, then emits per-row or per-group files. Optional Outlook dispatch step sends each output to the right recipient with a templated body."
+  },
+  { code:'WPR', icon:'🔀', name:'Batch Validation Pipeline', status:'live',
+    desc:"Runs a structured multi-step validation pipeline on any incoming data batch. Each step is independent.",
+    tags:['multi-step pipeline','reconciliation','audit trail'],
+    details:"Each validation step is a module: run them in any order, skip any you don't need. Every step writes to an audit log so you can reconstruct exactly why a row passed or failed. Designed for teams that need to defend data quality decisions after the fact."
+  },
+  { code:'WCL', icon:'🧹', name:'Workbook Cleaner', status:'dev',
+    desc:"Ingests raw data files, applies configurable validation rules, eliminates duplicates, delivers a clean master file.",
+    tags:['data cleaning','deduplication','validation rules'],
+    details:"The generalist cleaner — rules-based normalization, dedupe, and merge into a single master. Currently in active development; the engine is stable, the rules editor is being refined for non-technical users."
+  },
+  { code:'LIB', icon:'📚', name:'Shared Utility Library', status:'live',
+    desc:"Nine battle-tested VBA modules. Drop them into any new project and skip re-writing the same patterns.",
+    tags:['reusable modules','VBA','developer kit'],
+    details:"File I/O, range utilities, logging, fuzzy comparison, Outlook dispatch, progress UI, config parsing, error wrappers, and collection helpers. Every module is self-contained with zero external references — drop in, reference, ship."
+  },
+];
+const toolsGrid = document.getElementById('toolsGrid');
+TOOLS.forEach(t => {
+  const btn = document.createElement('button');
+  btn.className = 'tool reveal';
+  btn.type = 'button';
+  btn.setAttribute('aria-expanded','false');
+  btn.innerHTML = `
+    <div class="tool-head">
+      <div class="tool-icon" aria-hidden="true">${t.icon}</div>
+      <span class="badge">${t.code}</span>
+      <span class="status ${t.status}">${t.status==='live'?'Live':'In Dev'}</span>
+    </div>
+    <h3>${t.name}</h3>
+    <p>${t.desc}</p>
+    <div class="tags">${t.tags.map(x=>`<span class="tag">${x}</span>`).join('')}</div>
+    <div class="tool-details">${t.details}</div>
+    <div class="tool-toggle"><span class="chev">▾</span> <span class="toggle-label">More detail</span></div>
+  `;
+  btn.addEventListener('click', () => {
+    const open = btn.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.querySelector('.toggle-label').textContent = open ? 'Less detail' : 'More detail';
   });
+  toolsGrid.appendChild(btn);
+  io.observe(btn);
+});
 
-  /* ── Card expand / collapse ────────────────────── */
-  cards.forEach(card => {
-    const toggle = () => {
-      const wasOpen = card.classList.contains('open');
-      cards.forEach(c => {
-        c.classList.remove('open');
-        c.setAttribute('aria-expanded', 'false');
-      });
-      if (!wasOpen) {
-        card.classList.add('open');
-        card.setAttribute('aria-expanded', 'true');
-      }
-    };
-    card.addEventListener('click', toggle);
-    card.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
-    });
+const ROWS = [
+  { dirty:['ACME Corp',         '03/15/2026',    '$1,234.56',     'ACTIVE'],
+    clean:['Acme Corp',         '2026-03-15',    '$1,234.56',     'Active'] },
+  { dirty:['acme corporation',  '2026-03-15',    '1234.56',       'active'],
+    clean:['Acme Corp',         '2026-03-15',    '$1,234.56',     'Active'], dup:true },
+  { dirty:['Globex LLC',        'March 15, 2026','$1234.56 USD',  'Active'],
+    clean:['Globex LLC',        '2026-03-15',    '$1,234.56',     'Active'] },
+  { dirty:['Acme Corp.',        '15-Mar-26',     '1,234.56',      ''],
+    clean:['Acme Corp',         '2026-03-15',    '$1,234.56',     'Unknown'], dup:true },
+  { dirty:['Initech',           '04/02/2026',    '$980.00',       'active'],
+    clean:['Initech',           '2026-04-02',    '$980.00',       'Active'] },
+  { dirty:['ACME CORP LLC',     '2026-03-16',    '$1,234.56',     'Active'],
+    clean:['Acme Corp',         '2026-03-16',    '$1,234.56',     'Active'], dup:true },
+  { dirty:['Soylent',           'Mar 18, 2026',  '2,450',         ''],
+    clean:['Soylent Corp',      '2026-03-18',    '$2,450.00',     'Unknown'] },
+];
+
+const sheetBody = document.getElementById('sheetBody');
+const sheet = document.getElementById('sheet');
+const statusEl = document.getElementById('demoStatus');
+const statusText = document.getElementById('statusText');
+const phaseLabel = document.getElementById('phaseLabel');
+const pips = document.querySelectorAll('.phase-indicator .pip');
+const checkOverlay = document.getElementById('checkOverlay');
+
+function vendorClean(r) {
+  return r.dup ? `Acme Corp <span class="strike">dup</span>` : r.clean[0];
+}
+
+function renderRows(state) {
+  sheetBody.innerHTML = '';
+  ROWS.forEach((r, i) => {
+    const tr = document.createElement('tr');
+    const cls = state === 'clean' ? 'clean' : 'dirty';
+    const v = state === 'clean' ? r.clean : r.dirty;
+    const vendorCell = state === 'clean' ? vendorClean(r) : v[0];
+    const statusCell = v[3] === '' ? (state === 'clean' ? 'Unknown' : '<span style="color:#5b6275">—</span>') : v[3];
+    tr.innerHTML = `
+      <td class="row-h">${i+1}</td>
+      <td class="${cls}">${vendorCell}</td>
+      <td class="${cls}">${v[1]}</td>
+      <td class="${cls} hide-sm">${v[2]}</td>
+      <td class="${cls} hide-sm">${statusCell}</td>
+    `;
+    sheetBody.appendChild(tr);
   });
+}
 
-  /* ── Scroll-reveal (IntersectionObserver) ──────── */
-  const fadeEls = document.querySelectorAll('.fade-up');
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        io.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  fadeEls.forEach(el => io.observe(el));
+const wait = ms => new Promise(r => setTimeout(r, ms));
+function setPip(n) { pips.forEach((p, i) => p.classList.toggle('active', i <= n)); }
 
-  /* ── Active nav highlight on scroll ────────────── */
-  const sections  = document.querySelectorAll('section[id]');
-  const navLinks  = document.querySelectorAll('.nav-links a');
-  const navIO = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        navLinks.forEach(a => {
-          a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id);
-        });
-      }
-    });
-  }, { rootMargin: '-30% 0px -60% 0px' });
-  sections.forEach(s => navIO.observe(s));
+async function runAnimation() {
+  while (true) {
+    renderRows('dirty');
+    statusEl.classList.remove('state-clean');
+    statusText.textContent = 'Unclean · 7 rows';
+    phaseLabel.textContent = '// scanning source…';
+    setPip(0);
+    sheet.classList.remove('after-glow');
+    checkOverlay.classList.remove('show');
+    await wait(2000);
 
-  /* ── Stagger fade-up delays for card grid ──────── */
-  document.querySelectorAll('.tool-grid .tool-card').forEach((card, i) => {
-    card.style.transitionDelay = (i % 2) * 0.08 + 's';
-  });
+    phaseLabel.textContent = '// running cleanup.bas';
+    setPip(1);
+    const rows = sheetBody.querySelectorAll('tr');
+    const perRow = Math.max(260, Math.floor(3000 / rows.length));
+    for (let i = 0; i < rows.length; i++) {
+      const tr = rows[i];
+      tr.classList.add('scanning');
+      await wait(perRow * 0.55);
+      const r = ROWS[i];
+      const tds = tr.querySelectorAll('td');
+      tds[1].className = 'clean';
+      tds[1].innerHTML = vendorClean(r);
+      tds[2].className = 'clean';
+      tds[2].textContent = r.clean[1];
+      tds[3].className = 'clean hide-sm';
+      tds[3].textContent = r.clean[2];
+      tds[4].className = 'clean hide-sm';
+      tds[4].textContent = r.clean[3];
+      tr.classList.remove('scanning');
+      await wait(perRow * 0.45);
+    }
+
+    phaseLabel.textContent = '// 7 rows normalized · 3 duplicates flagged';
+    setPip(2);
+    statusEl.classList.add('state-clean');
+    statusText.textContent = 'Clean';
+    sheet.classList.add('after-glow');
+    await wait(400);
+    checkOverlay.classList.add('show');
+    await wait(1600);
+    checkOverlay.classList.remove('show');
+    await wait(400);
+  }
+}
+
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (reduced) {
+  renderRows('clean');
+  statusEl.classList.add('state-clean');
+  statusText.textContent = 'Clean';
+  phaseLabel.textContent = '// animation disabled (reduced motion)';
+  setPip(2);
+} else {
+  runAnimation();
+}
 </script>
 </body>
 </html>
