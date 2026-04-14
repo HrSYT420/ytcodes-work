@@ -3,12 +3,17 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>YTCodes — Data automation, flat rate</title>
-<meta name="description" content="Custom automation tools for messy data. Excel VBA and Python. Flat rate." />
+<title>YTCodes — Data Automation, Flat Rate</title>
+<meta name="description" content="Custom data automation tools built with Excel VBA and Python. Flat rate pricing, no hourly billing. Salt Lake City, UT." />
+<meta name="keywords" content="Excel VBA automation, data cleanup, Python automation, freelance developer, Salt Lake City" />
+<meta property="og:title" content="YTCodes — Data Automation, Flat Rate" />
+<meta property="og:description" content="Custom automation tools for messy data. Excel VBA and Python." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ytcodes.dev" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a0a0f'/%3E%3Ctext x='50%25' y='54%25' font-size='38' text-anchor='middle' dominant-baseline='middle' font-family='monospace' fill='%2300d4aa'%3E%E2%9A%99%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
   :root {
     --bg: #0a0a0f;
@@ -43,6 +48,7 @@
     outline-offset: 3px;
     border-radius: 4px;
   }
+  input, textarea, select { font-size: 16px; }
 
   .container { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
 
@@ -61,12 +67,49 @@
     background: rgba(10,10,15,0.85);
   }
   nav.top .container { display: flex; align-items: center; justify-content: space-between; }
-  .brand { font-family: var(--font-mono); font-weight: 600; font-size: 15px; letter-spacing: .02em; }
+  .brand { font-family: var(--font-mono); font-weight: 600; font-size: 15px; letter-spacing: .02em; min-height: 44px; display: inline-flex; align-items: center; }
   .brand .dot { color: var(--accent); }
-  .nav-links { display: flex; gap: 28px; }
-  .nav-links a { font-size: 14px; color: var(--text-dim); transition: color .15s ease; }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a { font-size: 14px; color: var(--text-dim); transition: color .15s ease; padding: 10px 2px; }
   .nav-links a:hover { color: var(--text); }
-  @media (max-width: 640px) { .nav-links { display: none; } }
+
+  .hamburger {
+    display: none;
+    width: 44px; height: 44px;
+    background: transparent; border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .hamburger span {
+    display: block; width: 18px; height: 2px; background: var(--text);
+    position: relative;
+  }
+  .hamburger span::before, .hamburger span::after {
+    content: ''; position: absolute; left: 0; width: 18px; height: 2px; background: var(--text);
+    transition: transform .2s ease, top .2s ease;
+  }
+  .hamburger span::before { top: -6px; }
+  .hamburger span::after { top: 6px; }
+  .hamburger[aria-expanded="true"] span { background: transparent; }
+  .hamburger[aria-expanded="true"] span::before { top: 0; transform: rotate(45deg); }
+  .hamburger[aria-expanded="true"] span::after { top: 0; transform: rotate(-45deg); }
+
+  @media (max-width: 720px) {
+    .hamburger { display: inline-flex; }
+    .nav-links {
+      position: absolute; top: 100%; left: 0; right: 0;
+      background: rgba(10,10,15,0.96);
+      backdrop-filter: blur(12px);
+      flex-direction: column; gap: 0;
+      padding: 12px 24px 20px;
+      border-bottom: 1px solid var(--border-strong);
+      display: none;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links a { padding: 14px 0; font-size: 15px; color: var(--text); border-bottom: 1px solid var(--border); }
+    .nav-links a:last-child { border-bottom: none; }
+  }
 
   header.hero {
     min-height: 100vh;
@@ -104,8 +147,9 @@
   .hero-sub { font-size: 18px; color: var(--text-dim); margin-bottom: 32px; max-width: 520px; }
   .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
   .btn {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 13px 22px; border-radius: 8px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 13px 22px; min-height: 44px;
+    border-radius: 8px;
     font-family: var(--font-sans); font-size: 15px; font-weight: 500;
     cursor: pointer;
     transition: transform .15s ease, background .15s ease, border-color .15s ease;
@@ -136,25 +180,31 @@
   .demo-dots span:nth-child(2) { background: #febc2e; }
   .demo-dots span:nth-child(3) { background: #28c840; }
   .demo-title { font-family: var(--font-mono); font-size: 12px; color: var(--text-dimmer); margin-left: 6px; }
-  .demo-status { margin-left: auto; font-family: var(--font-mono); font-size: 11px; color: var(--text-dimmer); letter-spacing: .05em; text-transform: uppercase; }
-  .demo-status .s-dot {
-    display: inline-block; width: 6px; height: 6px; border-radius: 50%;
-    background: var(--warn); margin-right: 6px; vertical-align: middle;
-    transition: background .3s ease;
+  .demo-status {
+    margin-left: auto;
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: .05em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 100px;
+    color: var(--warn);
+    background: rgba(255,181,71,0.12);
+    border: 1px solid rgba(255,181,71,0.25);
+    transition: color .3s ease, background .3s ease, border-color .3s ease;
+    white-space: nowrap;
   }
-  .demo-status.state-clean .s-dot { background: var(--accent); }
+  .demo-status.state-clean { color: var(--accent); background: rgba(0,212,170,0.12); border-color: rgba(0,212,170,0.3); }
 
-  .grid-scroll { overflow-x: auto; position: relative; }
+  .grid-scroll { position: relative; overflow: hidden; }
   table.sheet { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 12.5px; position: relative; }
   table.sheet th, table.sheet td {
     border: 1px solid var(--border-strong);
     padding: 8px 10px; text-align: left; white-space: nowrap;
-    position: relative; transition: background .3s ease, color .3s ease;
+    position: relative;
+    transition: background .3s ease, color .3s ease, opacity .5s ease, transform .5s ease;
   }
   table.sheet th { background: var(--bg-3); color: var(--text-dim); font-weight: 500; font-size: 11px; letter-spacing: .05em; }
   table.sheet th.row-h, table.sheet td.row-h {
     background: var(--bg-3); color: var(--text-dimmer);
-    text-align: center; width: 32px; font-size: 11px;
+    text-align: center; width: 30px; font-size: 11px;
   }
   table.sheet td { color: var(--text); background: var(--bg-2); }
 
@@ -164,35 +214,69 @@
     width: 5px; height: 5px; border-radius: 50%;
     background: var(--danger); opacity: .7;
   }
-  td.clean { background: rgba(0,212,170,0.05); color: #d4f7ee; }
-  td.clean .strike { text-decoration: line-through; color: var(--text-dimmer); font-size: 11px; margin-left: 4px; }
-
-  tr.scanning td:not(.row-h) {
-    background: rgba(79,142,247,0.18);
-    box-shadow: inset 0 0 0 1px rgba(79,142,247,0.5);
+  td.clean { background: rgba(0,212,170,0.04); color: #d4f7ee; }
+  td.flash { animation: cellFlash .5s ease; }
+  @keyframes cellFlash {
+    0% { background: rgba(0,212,170,0.5); box-shadow: inset 0 0 0 2px rgba(0,212,170,0.8); }
+    100% { background: rgba(0,212,170,0.04); }
   }
 
-  table.sheet.after-glow td:not(.row-h) { animation: greenFlash 1.4s ease; }
-  @keyframes greenFlash {
-    0% { box-shadow: inset 0 0 0 0 rgba(0,212,170,0); }
-    40% { box-shadow: inset 0 0 0 2px rgba(0,212,170,0.7); background: rgba(0,212,170,0.15); }
-    100% { box-shadow: inset 0 0 0 0 rgba(0,212,170,0); }
+  .dup-badge {
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: rgba(255,107,107,0.15);
+    color: var(--danger);
+    border: 1px solid rgba(255,107,107,0.3);
+    letter-spacing: .08em;
+    font-weight: 600;
+    vertical-align: middle;
+    animation: badgeIn .4s ease;
   }
+  @keyframes badgeIn {
+    from { opacity: 0; transform: scale(.7); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  tr.removing td { opacity: 0; color: transparent !important; }
+  tr.removing td:not(.row-h) {
+    background: rgba(255,107,107,0.08) !important;
+    text-decoration: line-through;
+  }
+
+  .scan-line {
+    position: absolute; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    box-shadow: 0 0 20px rgba(0,212,170,0.8), 0 0 40px rgba(0,212,170,0.4);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 2;
+    top: 0;
+  }
+  .scan-line.active { opacity: 1; }
 
   .check-overlay {
     position: absolute; inset: 0;
     display: flex; align-items: center; justify-content: center;
     pointer-events: none; opacity: 0; transition: opacity .3s ease;
+    z-index: 3;
   }
   .check-overlay.show { opacity: 1; }
-  .check-overlay svg { width: 72px; height: 72px; filter: drop-shadow(0 0 20px rgba(0,212,170,0.6)); }
+  .check-overlay svg { width: 84px; height: 84px; filter: drop-shadow(0 0 24px rgba(0,212,170,0.7)); }
+  .check-overlay circle { stroke-dasharray: 176; stroke-dashoffset: 176; animation: drawCircle .5s ease forwards; }
+  .check-overlay path { stroke-dasharray: 60; stroke-dashoffset: 60; animation: drawCheck .4s ease .4s forwards; }
+  @keyframes drawCircle { to { stroke-dashoffset: 0; } }
+  @keyframes drawCheck { to { stroke-dashoffset: 0; } }
 
   .demo-caption {
     margin-top: 14px;
-    display: flex; justify-content: space-between; align-items: center;
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
     font-family: var(--font-mono); font-size: 11px; color: var(--text-dimmer);
   }
-  .phase-indicator { display: flex; gap: 6px; }
+  .phase-indicator { display: flex; gap: 6px; flex-shrink: 0; }
   .phase-indicator .pip { width: 22px; height: 3px; border-radius: 2px; background: var(--border-strong); transition: background .3s ease; }
   .phase-indicator .pip.active { background: var(--accent); }
 
@@ -200,11 +284,44 @@
   @media (max-width: 640px) { .hide-sm { display: none; } }
 
   section { padding: 100px 0; }
+  @media (max-width: 640px) { section { padding: 72px 0; } }
   .section-head { margin-bottom: 48px; max-width: 680px; }
   .section-label { font-family: var(--font-mono); font-size: 12px; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 12px; }
-  .section-title { font-size: clamp(28px, 3.4vw, 40px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 12px; }
+  .section-title { font-size: clamp(28px, 3.4vw, 40px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 12px; line-height: 1.15; }
   .section-desc { color: var(--text-dim); font-size: 17px; }
 
+  /* STATS */
+  .stats { padding: 60px 0; border-top: 1px solid var(--border-strong); border-bottom: 1px solid var(--border-strong); }
+  .stats-grid {
+    display: grid; gap: 14px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 820px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
+  .stat-card {
+    background: var(--bg-2);
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    padding: 28px 20px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: var(--font-sans);
+    font-size: clamp(32px, 4.2vw, 44px);
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 8px;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: .04em;
+  }
+
+  /* TOOLS */
   .tools-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
   @media (min-width: 720px) { .tools-grid { grid-template-columns: 1fr 1fr; } }
   @media (min-width: 1040px) { .tools-grid { grid-template-columns: 1fr 1fr 1fr; } }
@@ -213,28 +330,23 @@
     background: var(--bg-2);
     border: 1px solid var(--border-strong);
     border-radius: 12px; padding: 24px;
-    transition: border-color .2s ease, transform .2s ease;
+    transition: border-color .2s ease;
     cursor: pointer; text-align: left; width: 100%;
     font-family: inherit; color: inherit;
+    min-height: 44px;
   }
   .tool:hover { border-color: var(--accent); }
-  .tool-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-  .tool-icon {
-    width: 40px; height: 40px; border-radius: 8px;
-    background: var(--bg-3);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px;
-  }
+  .tool-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
   .badge {
     font-family: var(--font-mono); font-size: 11px;
-    padding: 3px 8px; border-radius: 4px;
+    padding: 4px 8px; border-radius: 4px;
     background: rgba(79,142,247,0.12); color: var(--accent-2);
-    letter-spacing: .05em;
+    letter-spacing: .05em; font-weight: 600;
   }
   .status {
     margin-left: auto; font-family: var(--font-mono); font-size: 10px;
-    padding: 3px 8px; border-radius: 100px;
-    letter-spacing: .05em; text-transform: uppercase;
+    padding: 4px 9px; border-radius: 100px;
+    letter-spacing: .06em; text-transform: uppercase; font-weight: 600;
   }
   .status.live { background: rgba(0,212,170,0.12); color: var(--accent); }
   .status.dev { background: rgba(255,181,71,0.12); color: var(--warn); }
@@ -252,17 +364,86 @@
     max-height: 600px; margin-top: 16px; padding-top: 16px;
     border-top: 1px solid var(--border-strong); opacity: 1;
   }
+  .tool-manual {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 12px;
+    font-family: var(--font-mono); font-size: 12px;
+    color: var(--accent);
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: rgba(0,212,170,0.08);
+    border: 1px solid rgba(0,212,170,0.2);
+  }
+  .tool-manual:hover { background: rgba(0,212,170,0.15); }
   .tool-toggle { margin-top: 14px; font-family: var(--font-mono); font-size: 12px; color: var(--text-dimmer); display: flex; align-items: center; gap: 6px; }
   .tool.open .tool-toggle .chev { transform: rotate(180deg); }
   .chev { transition: transform .2s ease; display: inline-block; }
 
+  /* FEATURED */
+  .featured {
+    margin-top: 40px;
+    background: linear-gradient(135deg, rgba(0,212,170,0.08), rgba(79,142,247,0.05));
+    border: 1px solid var(--accent);
+    border-radius: 16px;
+    padding: 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .featured::before {
+    content: ''; position: absolute; top: -50%; right: -20%;
+    width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,212,170,0.1), transparent 60%);
+    pointer-events: none;
+  }
+  @media (max-width: 640px) { .featured { padding: 28px 22px; } }
+  .featured-eyebrow {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--accent); letter-spacing: .15em; text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .featured h3 {
+    font-size: clamp(22px, 2.8vw, 30px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+  }
+  .featured h3 .status { margin-left: 12px; vertical-align: middle; font-size: 11px; }
+  .featured-desc { color: var(--text-dim); font-size: 16px; margin-bottom: 20px; max-width: 780px; }
+  .featured-stack { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+  .featured-quote {
+    font-family: var(--font-mono); font-size: 13px;
+    color: var(--accent); font-style: italic;
+    padding-left: 14px; border-left: 2px solid var(--accent);
+  }
+
+  /* CTA BANNER */
+  .cta-banner {
+    background: var(--bg-2);
+    border: 1px solid var(--accent);
+    border-radius: 16px;
+    padding: 44px 36px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 0 40px -10px rgba(0,212,170,0.2);
+  }
+  @media (max-width: 640px) { .cta-banner { padding: 32px 22px; } }
+  .cta-banner h3 {
+    font-size: clamp(22px, 2.8vw, 28px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .cta-banner p { color: var(--text-dim); margin-bottom: 24px; max-width: 620px; margin-left: auto; margin-right: auto; }
+
+  /* PROCESS */
   .process-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
   @media (min-width: 760px) { .process-grid { grid-template-columns: repeat(3, 1fr); } }
-  .step { background: var(--bg-2); border: 1px solid var(--border-strong); border-radius: 12px; padding: 28px 24px; position: relative; }
+  .step { background: var(--bg-2); border: 1px solid var(--border-strong); border-radius: 12px; padding: 28px 24px; }
   .step-num { font-family: var(--font-mono); font-size: 13px; color: var(--accent); margin-bottom: 16px; }
   .step h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
   .step p { color: var(--text-dim); font-size: 15px; }
 
+  /* STACK */
   .stack-scroll { display: flex; flex-wrap: wrap; gap: 10px; }
   .pill {
     font-family: var(--font-mono); font-size: 13px;
@@ -271,8 +452,10 @@
     color: var(--text);
     transition: border-color .15s ease, color .15s ease;
   }
+  .pill.sm { padding: 5px 11px; font-size: 12px; background: rgba(255,255,255,0.02); }
   .pill:hover { border-color: var(--accent); color: var(--accent); }
 
+  /* CONTACT */
   .contact-card {
     background: linear-gradient(135deg, var(--bg-2), var(--bg-3));
     border: 1px solid var(--border-strong);
@@ -281,9 +464,14 @@
   @media (max-width: 640px) { .contact-card { padding: 32px 24px; } }
   .contact-card h3 { font-size: clamp(24px, 3vw, 32px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 16px; }
   .contact-card p { color: var(--text-dim); margin-bottom: 24px; max-width: 620px; }
+  .contact-assurance {
+    font-family: var(--font-mono); font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 18px;
+  }
   .contact-meta {
     display: grid; gap: 14px; grid-template-columns: 1fr;
-    margin-top: 24px; padding-top: 24px;
+    margin-top: 28px; padding-top: 24px;
     border-top: 1px solid var(--border-strong);
   }
   @media (min-width: 640px) { .contact-meta { grid-template-columns: repeat(3, 1fr); } }
@@ -302,7 +490,7 @@
   .reveal.in { opacity: 1; transform: none; }
 
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation-duration: .001s !important; transition-duration: .001s !important; }
+    *, *::before, *::after { animation-duration: .001s !important; transition-duration: .001s !important; scroll-behavior: auto !important; }
   }
 </style>
 </head>
@@ -311,7 +499,8 @@
 <nav class="top" id="topnav" aria-label="Primary">
   <div class="container">
     <a href="#top" class="brand" aria-label="YTCodes home">ytcodes<span class="dot">.</span>work</a>
-    <div class="nav-links">
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks"><span></span></button>
+    <div class="nav-links" id="navLinks">
       <a href="#tools">Tools</a>
       <a href="#process">Process</a>
       <a href="#stack">Stack</a>
@@ -337,16 +526,17 @@
         <div class="demo-header">
           <div class="demo-dots" aria-hidden="true"><span></span><span></span><span></span></div>
           <div class="demo-title">vendor_data.xlsx — cleanup.bas</div>
-          <div class="demo-status" id="demoStatus"><span class="s-dot"></span><span id="statusText">Unclean</span></div>
+          <div class="demo-status" id="demoStatus"><span id="statusText">Unclean · 7 rows</span></div>
         </div>
-        <div class="grid-scroll">
+        <div class="grid-scroll" id="gridScroll">
+          <div class="scan-line" id="scanLine" aria-hidden="true"></div>
           <table class="sheet" id="sheet" aria-hidden="true">
             <thead>
               <tr>
                 <th class="row-h"></th>
                 <th>A · Vendor</th>
                 <th>B · Date</th>
-                <th class="hide-sm">C · Amount</th>
+                <th>C · Amount</th>
                 <th class="hide-sm">D · Status</th>
               </tr>
             </thead>
@@ -370,6 +560,17 @@
   </div>
 </header>
 
+<section class="stats" aria-label="Impact stats">
+  <div class="container">
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card reveal"><div class="stat-num" data-target="5" data-suffix="">0</div><div class="stat-label">Tools Shipped</div></div>
+      <div class="stat-card reveal"><div class="stat-num" data-target="9" data-suffix="">0</div><div class="stat-label">Reusable Modules</div></div>
+      <div class="stat-card reveal"><div class="stat-num" data-target="500" data-suffix="K+">0</div><div class="stat-label">Rows Processed</div></div>
+      <div class="stat-card reveal"><div class="stat-num" data-target="6" data-suffix="">0</div><div class="stat-label">Job Boards Scraped</div></div>
+    </div>
+  </div>
+</section>
+
 <section id="tools">
   <div class="container">
     <div class="section-head reveal">
@@ -378,6 +579,32 @@
       <p class="section-desc">Six tools I've built and battle-tested. Each one solves a specific shape of messy data problem.</p>
     </div>
     <div class="tools-grid" id="toolsGrid"></div>
+
+    <div class="featured reveal" aria-label="Featured project: RoadToFreedom">
+      <div class="featured-eyebrow">// Featured Project</div>
+      <h3>RoadToFreedom — AI-Powered Job Hunting Agent <span class="status live">Live</span></h3>
+      <p class="featured-desc">Full-stack Python application that scrapes 5 job boards, AI-rates each posting against your skills, generates tailored resumes, drafts proposals, and tracks applications through a web dashboard.</p>
+      <div class="featured-stack">
+        <span class="pill sm">Python</span>
+        <span class="pill sm">Flask</span>
+        <span class="pill sm">SQLite</span>
+        <span class="pill sm">Selenium</span>
+        <span class="pill sm">Claude AI</span>
+        <span class="pill sm">BeautifulSoup</span>
+        <span class="pill sm">Chart.js</span>
+      </div>
+      <div class="featured-quote">"This is the tool I built to find my next role — and it's working."</div>
+    </div>
+  </div>
+</section>
+
+<section aria-label="Contact CTA">
+  <div class="container">
+    <div class="cta-banner reveal">
+      <h3>Have messy data?</h3>
+      <p>Send me the file your team hates working with. I'll tell you how long the automation takes and what it costs. No commitment.</p>
+      <a href="mailto:ytcodes.work@gmail.com" class="btn btn-primary">Email me → ytcodes.work@gmail.com</a>
+    </div>
   </div>
 </section>
 
@@ -420,9 +647,10 @@
   <div class="container">
     <div class="contact-card reveal">
       <div class="section-label">// Contact</div>
-      <h3>Send me a sample file.</h3>
+      <h3>Send me the file your team dreads opening.</h3>
       <p>If your team is spending hours on repetitive data work, send me a sample file. I'll tell you what automation looks like for your case and what it costs.</p>
       <a href="mailto:ytcodes.work@gmail.com" class="btn btn-primary">ytcodes.work@gmail.com →</a>
+      <div class="contact-assurance">Free assessment. I'll look at your file, tell you what's automatable, and quote a flat rate. No commitment, no hourly billing.</div>
       <div class="contact-meta">
         <div class="meta-item"><div class="k">Name</div><div class="v">Darek Krawczynski</div></div>
         <div class="meta-item"><div class="k">Email</div><div class="v"><a href="mailto:ytcodes.work@gmail.com">ytcodes.work@gmail.com</a></div></div>
@@ -437,46 +665,88 @@
 </footer>
 
 <script>
+// nav scroll state + mobile menu
 const nav = document.getElementById('topnav');
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 20);
 }, { passive: true });
 
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+hamburger.addEventListener('click', () => {
+  const open = navLinks.classList.toggle('open');
+  hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+});
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  navLinks.classList.remove('open');
+  hamburger.setAttribute('aria-expanded', 'false');
+}));
+
+// reveal on scroll
 const io = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
+// stat counters
+const statIo = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    const target = parseInt(el.dataset.target, 10);
+    const suffix = el.dataset.suffix || '';
+    const dur = 1400;
+    const start = performance.now();
+    function tick(now) {
+      const t = Math.min(1, (now - start) / dur);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const val = Math.round(target * eased);
+      el.textContent = val.toLocaleString() + suffix;
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+    statIo.unobserve(el);
+  });
+}, { threshold: 0.4 });
+document.querySelectorAll('.stat-num').forEach(el => statIo.observe(el));
+
+// tools
 const TOOLS = [
-  { code:'VNE', icon:'🧬', name:'Name Normalization Engine', status:'live',
-    desc:"Scans any large name list, groups near-duplicates into similarity clusters, then cross-references against a reference extract.",
+  { code:'VNE', name:'Name Normalization Engine', status:'live',
+    desc:"Scans large name lists, groups near-duplicates into similarity clusters, cross-references against a reference extract.",
     tags:['fuzzy match','clustering','deduplication'],
-    details:"Built for vendor, customer, and entity lists where the same name appears ten different ways. Configurable similarity thresholds, cluster review UI, and a reference-crosswalk step that flags canonical matches vs. orphans. Output: a clean mapping table you can feed back into your system of record."
+    details:"Built for vendor, customer, and entity lists where the same name appears ten different ways. Configurable similarity thresholds, cluster review UI, and a reference-crosswalk step that flags canonical matches vs. orphans. Output: a clean mapping table you can feed back into your system of record.",
+    manual:'User_Manuals/VNE_User_Manual.html'
   },
-  { code:'TFT', icon:'🧩', name:'Template Fill Pipeline', status:'live',
+  { code:'TFT', name:'Template Fill Pipeline', status:'live',
     desc:"Maps columns from any raw data file to any output template. Configure once, run forever.",
     tags:['column mapping','batch output','recurring workflow'],
-    details:"Point at a source, point at a template, define the mapping once — the tool handles every subsequent run. Handles header drift, type coercion, and per-column transforms. Ideal for recurring report generation, client deliverables, and anything that lands in the same template every week."
+    details:"Point at a source, point at a template, define the mapping once — the tool handles every subsequent run. Handles header drift, type coercion, and per-column transforms. Ideal for recurring report generation, client deliverables, and anything that lands in the same template every week.",
+    manual:'User_Manuals/TFT_User_Manual.html'
   },
-  { code:'BPA', icon:'📦', name:'Batch File Generator', status:'live',
-    desc:"Reads a source spreadsheet, validates every row, builds a review list, then generates multiple output files in one click.",
+  { code:'BPA', name:'Batch File Generator', status:'live',
+    desc:"Reads a source spreadsheet, validates every row, builds a review list, generates multiple output files in one click.",
     tags:['batch processing','multi-file output','email dispatch'],
-    details:"One source → many outputs. Validates rows against configurable rules, surfaces exceptions in a review pane, then emits per-row or per-group files. Optional Outlook dispatch step sends each output to the right recipient with a templated body."
+    details:"One source → many outputs. Validates rows against configurable rules, surfaces exceptions in a review pane, then emits per-row or per-group files. Optional Outlook dispatch step sends each output to the right recipient with a templated body.",
+    manual:'User_Manuals/BPA_User_Manual_V2.html'
   },
-  { code:'WPR', icon:'🔀', name:'Batch Validation Pipeline', status:'live',
-    desc:"Runs a structured multi-step validation pipeline on any incoming data batch. Each step is independent.",
+  { code:'WPR', name:'Batch Validation Pipeline', status:'live',
+    desc:"Runs a multi-step validation pipeline on incoming data batches. Each step is independent.",
     tags:['multi-step pipeline','reconciliation','audit trail'],
-    details:"Each validation step is a module: run them in any order, skip any you don't need. Every step writes to an audit log so you can reconstruct exactly why a row passed or failed. Designed for teams that need to defend data quality decisions after the fact."
+    details:"Each validation step is a module: run them in any order, skip any you don't need. Every step writes to an audit log so you can reconstruct exactly why a row passed or failed. Designed for teams that need to defend data quality decisions after the fact.",
+    manual:'User_Manuals/WPR_User_Manual.html'
   },
-  { code:'WCL', icon:'🧹', name:'Workbook Cleaner', status:'dev',
+  { code:'WCL', name:'Workbook Cleaner', status:'dev',
     desc:"Ingests raw data files, applies configurable validation rules, eliminates duplicates, delivers a clean master file.",
     tags:['data cleaning','deduplication','validation rules'],
-    details:"The generalist cleaner — rules-based normalization, dedupe, and merge into a single master. Currently in active development; the engine is stable, the rules editor is being refined for non-technical users."
+    details:"The generalist cleaner — rules-based normalization, dedupe, and merge into a single master. Currently in active development; the engine is stable, the rules editor is being refined for non-technical users.",
+    manual:null
   },
-  { code:'LIB', icon:'📚', name:'Shared Utility Library', status:'live',
+  { code:'LIB', name:'Shared Utility Library', status:'live',
     desc:"Nine battle-tested VBA modules. Drop them into any new project and skip re-writing the same patterns.",
     tags:['reusable modules','VBA','developer kit'],
-    details:"File I/O, range utilities, logging, fuzzy comparison, Outlook dispatch, progress UI, config parsing, error wrappers, and collection helpers. Every module is self-contained with zero external references — drop in, reference, ship."
+    details:"File I/O, range utilities, logging, fuzzy comparison, Outlook dispatch, progress UI, config parsing, error wrappers, and collection helpers. Every module is self-contained with zero external references — drop in, reference, ship.",
+    manual:'User_Manuals/LIB_User_Manual.html'
   },
 ];
 const toolsGrid = document.getElementById('toolsGrid');
@@ -485,16 +755,18 @@ TOOLS.forEach(t => {
   btn.className = 'tool reveal';
   btn.type = 'button';
   btn.setAttribute('aria-expanded','false');
+  const manualLink = t.manual
+    ? `<a class="tool-manual" href="${t.manual}" target="_blank" rel="noopener" onclick="event.stopPropagation()">📖 User Manual</a>`
+    : '';
   btn.innerHTML = `
     <div class="tool-head">
-      <div class="tool-icon" aria-hidden="true">${t.icon}</div>
       <span class="badge">${t.code}</span>
       <span class="status ${t.status}">${t.status==='live'?'Live':'In Dev'}</span>
     </div>
     <h3>${t.name}</h3>
     <p>${t.desc}</p>
     <div class="tags">${t.tags.map(x=>`<span class="tag">${x}</span>`).join('')}</div>
-    <div class="tool-details">${t.details}</div>
+    <div class="tool-details">${t.details}${manualLink ? '<br/>'+manualLink : ''}</div>
     <div class="tool-toggle"><span class="chev">▾</span> <span class="toggle-label">More detail</span></div>
   `;
   btn.addEventListener('click', () => {
@@ -506,49 +778,49 @@ TOOLS.forEach(t => {
   io.observe(btn);
 });
 
+// ---------- Spreadsheet animation ----------
+// rows[i].clean.vendor can be a { name, canonical } object. dup => mark as DUPLICATE
 const ROWS = [
   { dirty:['ACME Corp',         '03/15/2026',    '$1,234.56',     'ACTIVE'],
-    clean:['Acme Corp',         '2026-03-15',    '$1,234.56',     'Active'] },
+    clean:['ACME Corp',         '2026-03-15',    '$1,234.56',     'Active'], changed:[false,true,false,true] },
   { dirty:['acme corporation',  '2026-03-15',    '1234.56',       'active'],
-    clean:['Acme Corp',         '2026-03-15',    '$1,234.56',     'Active'], dup:true },
+    clean:['Acme Corp',         '2026-03-15',    '$1,234.56',     'Active'], changed:[true,false,true,true], dup:true },
   { dirty:['Globex LLC',        'March 15, 2026','$1234.56 USD',  'Active'],
-    clean:['Globex LLC',        '2026-03-15',    '$1,234.56',     'Active'] },
+    clean:['Globex LLC',        '2026-03-15',    '$1,234.56',     'Active'], changed:[false,true,true,false] },
   { dirty:['Acme Corp.',        '15-Mar-26',     '1,234.56',      ''],
-    clean:['Acme Corp',         '2026-03-15',    '$1,234.56',     'Unknown'], dup:true },
+    clean:['Acme Corp',         '2026-03-15',    '$1,234.56',     'Unknown'], changed:[true,true,true,true], dup:true },
   { dirty:['Initech',           '04/02/2026',    '$980.00',       'active'],
-    clean:['Initech',           '2026-04-02',    '$980.00',       'Active'] },
+    clean:['Initech',           '2026-04-02',    '$980.00',       'Active'], changed:[false,true,false,true] },
   { dirty:['ACME CORP LLC',     '2026-03-16',    '$1,234.56',     'Active'],
-    clean:['Acme Corp',         '2026-03-16',    '$1,234.56',     'Active'], dup:true },
+    clean:['Acme Corp',         '2026-03-16',    '$1,234.56',     'Active'], changed:[true,false,false,false], dup:true },
   { dirty:['Soylent',           'Mar 18, 2026',  '2,450',         ''],
-    clean:['Soylent Corp',      '2026-03-18',    '$2,450.00',     'Unknown'] },
+    clean:['Soylent Corp',      '2026-03-18',    '$2,450.00',     'Unknown'], changed:[true,true,true,true] },
 ];
 
 const sheetBody = document.getElementById('sheetBody');
-const sheet = document.getElementById('sheet');
+const gridScroll = document.getElementById('gridScroll');
+const scanLine = document.getElementById('scanLine');
 const statusEl = document.getElementById('demoStatus');
 const statusText = document.getElementById('statusText');
 const phaseLabel = document.getElementById('phaseLabel');
 const pips = document.querySelectorAll('.phase-indicator .pip');
 const checkOverlay = document.getElementById('checkOverlay');
 
-function vendorClean(r) {
-  return r.dup ? `Acme Corp <span class="strike">dup</span>` : r.clean[0];
+function emptyCell(v) {
+  return v === '' ? '<span style="color:#5b6275">—</span>' : v;
 }
 
-function renderRows(state) {
+function renderDirty() {
   sheetBody.innerHTML = '';
   ROWS.forEach((r, i) => {
     const tr = document.createElement('tr');
-    const cls = state === 'clean' ? 'clean' : 'dirty';
-    const v = state === 'clean' ? r.clean : r.dirty;
-    const vendorCell = state === 'clean' ? vendorClean(r) : v[0];
-    const statusCell = v[3] === '' ? (state === 'clean' ? 'Unknown' : '<span style="color:#5b6275">—</span>') : v[3];
+    tr.dataset.idx = i;
     tr.innerHTML = `
       <td class="row-h">${i+1}</td>
-      <td class="${cls}">${vendorCell}</td>
-      <td class="${cls}">${v[1]}</td>
-      <td class="${cls} hide-sm">${v[2]}</td>
-      <td class="${cls} hide-sm">${statusCell}</td>
+      <td class="dirty">${r.dirty[0]}</td>
+      <td class="dirty">${r.dirty[1]}</td>
+      <td class="dirty">${r.dirty[2]}</td>
+      <td class="dirty hide-sm">${emptyCell(r.dirty[3])}</td>
     `;
     sheetBody.appendChild(tr);
   });
@@ -559,55 +831,98 @@ function setPip(n) { pips.forEach((p, i) => p.classList.toggle('active', i <= n)
 
 async function runAnimation() {
   while (true) {
-    renderRows('dirty');
+    // PHASE 1 — Unclean
+    renderDirty();
     statusEl.classList.remove('state-clean');
     statusText.textContent = 'Unclean · 7 rows';
     phaseLabel.textContent = '// scanning source…';
     setPip(0);
-    sheet.classList.remove('after-glow');
     checkOverlay.classList.remove('show');
-    await wait(2000);
+    scanLine.classList.remove('active');
+    scanLine.style.top = '0px';
+    await wait(3000);
 
+    // PHASE 2 — Processing: scan line sweeps, each row transforms
     phaseLabel.textContent = '// running cleanup.bas';
     setPip(1);
-    const rows = sheetBody.querySelectorAll('tr');
-    const perRow = Math.max(260, Math.floor(3000 / rows.length));
+    scanLine.classList.add('active');
+
+    const rows = Array.from(sheetBody.querySelectorAll('tr'));
+    const totalMs = 4000;
+    const perRow = totalMs / rows.length;
+
     for (let i = 0; i < rows.length; i++) {
       const tr = rows[i];
-      tr.classList.add('scanning');
-      await wait(perRow * 0.55);
       const r = ROWS[i];
-      const tds = tr.querySelectorAll('td');
-      tds[1].className = 'clean';
-      tds[1].innerHTML = vendorClean(r);
-      tds[2].className = 'clean';
-      tds[2].textContent = r.clean[1];
-      tds[3].className = 'clean hide-sm';
-      tds[3].textContent = r.clean[2];
-      tds[4].className = 'clean hide-sm';
-      tds[4].textContent = r.clean[3];
-      tr.classList.remove('scanning');
+      // move scan line to this row's top
+      const rowTop = tr.offsetTop;
+      scanLine.style.transition = 'top .35s ease';
+      scanLine.style.top = (rowTop + tr.offsetHeight / 2) + 'px';
       await wait(perRow * 0.45);
+
+      // transform cells
+      const tds = tr.querySelectorAll('td');
+      const mapping = [null, 1, 2, 3, 4]; // skip row-h (index 0)
+      for (let c = 1; c <= 4; c++) {
+        const td = tds[c];
+        const cleanVal = r.clean[c-1];
+        const displayVal = (cleanVal === '' || cleanVal === undefined) ? emptyCell('') : cleanVal;
+        const baseHtml = (c === 4) ? displayVal : displayVal;
+        // set clean
+        td.classList.remove('dirty');
+        td.classList.add('clean');
+        // preserve dup badge injection on vendor col (1) for dup rows on last cell
+        if (c === 1 && r.dup) {
+          td.innerHTML = cleanVal + '<span class="dup-badge">DUPLICATE</span>';
+        } else {
+          td.innerHTML = baseHtml;
+        }
+        // flash
+        td.classList.remove('flash');
+        // force reflow
+        void td.offsetWidth;
+        td.classList.add('flash');
+      }
+      await wait(perRow * 0.55);
     }
 
-    phaseLabel.textContent = '// 7 rows normalized · 3 duplicates flagged';
-    setPip(2);
+    scanLine.classList.remove('active');
+
+    // PHASE 3 — Clean: remove duplicates, show checkmark
+    await wait(400);
+    phaseLabel.textContent = '// removing duplicates…';
+    const dupRows = rows.filter((_, i) => ROWS[i].dup);
+    dupRows.forEach(tr => tr.classList.add('removing'));
+    await wait(500);
+    // collapse heights
+    dupRows.forEach(tr => {
+      tr.style.transition = 'height .4s ease, padding .4s ease, border-width .4s ease';
+      tr.querySelectorAll('td').forEach(td => {
+        td.style.paddingTop = '0'; td.style.paddingBottom = '0';
+        td.style.borderTopWidth = '0'; td.style.borderBottomWidth = '0';
+        td.style.fontSize = '0'; td.style.lineHeight = '0';
+      });
+    });
+    await wait(500);
+
     statusEl.classList.add('state-clean');
-    statusText.textContent = 'Clean';
-    sheet.classList.add('after-glow');
-    await wait(400);
+    statusText.textContent = 'Clean · 4 unique rows';
+    phaseLabel.textContent = '// 4 unique rows · 3 duplicates removed';
+    setPip(2);
     checkOverlay.classList.add('show');
-    await wait(1600);
+    await wait(2200);
     checkOverlay.classList.remove('show');
-    await wait(400);
+    await wait(300);
   }
 }
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 if (reduced) {
-  renderRows('clean');
+  renderDirty();
+  // flip to clean statically
+  document.querySelectorAll('td.dirty').forEach(td => { td.classList.remove('dirty'); td.classList.add('clean'); });
   statusEl.classList.add('state-clean');
-  statusText.textContent = 'Clean';
+  statusText.textContent = 'Clean · 4 unique rows';
   phaseLabel.textContent = '// animation disabled (reduced motion)';
   setPip(2);
 } else {
