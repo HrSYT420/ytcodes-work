@@ -167,6 +167,8 @@
     border-radius: 12px;
     padding: 16px;
     box-shadow: 0 24px 60px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.02) inset;
+    display: flex;
+    flex-direction: column;
   }
   .demo-header {
     display: flex; align-items: center; gap: 8px;
@@ -193,7 +195,8 @@
   }
   .demo-status.state-clean { color: var(--accent); background: rgba(0,212,170,0.12); border-color: rgba(0,212,170,0.3); }
 
-  .grid-scroll { position: relative; overflow: hidden; }
+  .grid-scroll { position: relative; overflow: hidden; height: 310px; }
+  @media (max-width: 768px) { .grid-scroll { height: 260px; } }
   table.sheet { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 12.5px; position: relative; }
   table.sheet th, table.sheet td {
     border: 1px solid var(--border-strong);
@@ -240,10 +243,19 @@
     to { opacity: 1; transform: scale(1); }
   }
 
-  tr.removing td { opacity: 0; color: transparent !important; }
+  tr.removing td {
+    transition: opacity 0.5s ease, transform 0.5s ease, padding 0.4s ease, font-size 0.4s ease, line-height 0.4s ease, border-width 0.4s ease;
+    opacity: 0;
+    color: transparent !important;
+  }
   tr.removing td:not(.row-h) {
     background: rgba(255,107,107,0.08) !important;
     text-decoration: line-through;
+  }
+  tr.removing.collapsed td {
+    padding-top: 0; padding-bottom: 0;
+    font-size: 0; line-height: 0;
+    border-top-width: 0; border-bottom-width: 0;
   }
 
   .scan-line {
@@ -275,6 +287,7 @@
     margin-top: 14px;
     display: flex; justify-content: space-between; align-items: center; gap: 12px;
     font-family: var(--font-mono); font-size: 11px; color: var(--text-dimmer);
+    flex-shrink: 0;
   }
   .phase-indicator { display: flex; gap: 6px; flex-shrink: 0; }
   .phase-indicator .pip { width: 22px; height: 3px; border-radius: 2px; background: var(--border-strong); transition: background .3s ease; }
@@ -282,6 +295,11 @@
 
   .hide-sm { display: table-cell; }
   @media (max-width: 640px) { .hide-sm { display: none; } }
+
+  @media (max-width: 768px) {
+    .demo-wrap { overflow-x: hidden; }
+    table.sheet { font-size: 11px; }
+  }
 
   section { padding: 100px 0; }
   @media (max-width: 640px) { section { padding: 72px 0; } }
@@ -580,9 +598,9 @@
     </div>
     <div class="tools-grid" id="toolsGrid"></div>
 
-    <div class="featured reveal" aria-label="Featured project: RoadToFreedom">
+    <div class="featured reveal" aria-label="Featured project: JobScoutAI">
       <div class="featured-eyebrow">// Featured Project</div>
-      <h3>RoadToFreedom — AI-Powered Job Hunting Agent <span class="status live">Live</span></h3>
+      <h3>JobScoutAI — AI-Powered Job Hunting Agent <span class="status live">Live · Open Source</span></h3>
       <p class="featured-desc">Full-stack Python application that scrapes 5 job boards, AI-rates each posting against your skills, generates tailored resumes, drafts proposals, and tracks applications through a web dashboard.</p>
       <div class="featured-stack">
         <span class="pill sm">Python</span>
@@ -594,6 +612,10 @@
         <span class="pill sm">Chart.js</span>
       </div>
       <div class="featured-quote">"This is the tool I built to find my next role — and it's working."</div>
+      <div style="margin-top: 16px; display: flex; flex-wrap: wrap; gap: 12px;">
+        <a class="tool-manual" href="https://github.com/HrSYT420/JobScoutAI" target="_blank" rel="noopener">View on GitHub →</a>
+        <a class="tool-manual" href="docs/JobScoutAI_User_Guide.html" target="_blank" rel="noopener">User Guide →</a>
+      </div>
     </div>
   </div>
 </section>
@@ -894,15 +916,8 @@ async function runAnimation() {
     const dupRows = rows.filter((_, i) => ROWS[i].dup);
     dupRows.forEach(tr => tr.classList.add('removing'));
     await wait(500);
-    // collapse heights
-    dupRows.forEach(tr => {
-      tr.style.transition = 'height .4s ease, padding .4s ease, border-width .4s ease';
-      tr.querySelectorAll('td').forEach(td => {
-        td.style.paddingTop = '0'; td.style.paddingBottom = '0';
-        td.style.borderTopWidth = '0'; td.style.borderBottomWidth = '0';
-        td.style.fontSize = '0'; td.style.lineHeight = '0';
-      });
-    });
+    // collapse heights via CSS class (container has fixed height so no layout shift)
+    dupRows.forEach(tr => tr.classList.add('collapsed'));
     await wait(500);
 
     statusEl.classList.add('state-clean');
