@@ -116,6 +116,7 @@
     display: flex; align-items: center;
     padding: 120px 0 80px;
     position: relative;
+    overflow: hidden;
     background:
       radial-gradient(ellipse at top right, rgba(0,212,170,0.08), transparent 50%),
       radial-gradient(ellipse at bottom left, rgba(79,142,247,0.06), transparent 50%);
@@ -195,8 +196,9 @@
   }
   .demo-status.state-clean { color: var(--accent); background: rgba(0,212,170,0.12); border-color: rgba(0,212,170,0.3); }
 
-  .grid-scroll { position: relative; overflow: hidden; height: 310px; }
-  @media (max-width: 768px) { .grid-scroll { height: 260px; } }
+  .grid-scroll { position: relative; overflow: hidden; height: 340px; }
+  @media (max-width: 768px) { .grid-scroll { height: 300px; } }
+  @media (max-width: 480px) { .grid-scroll { height: 280px; } }
   table.sheet { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 12.5px; position: relative; }
   table.sheet th, table.sheet td {
     border: 1px solid var(--border-strong);
@@ -487,15 +489,127 @@
     color: var(--text-dim);
     margin-top: 18px;
   }
-  .contact-meta {
-    display: grid; gap: 14px; grid-template-columns: 1fr;
-    margin-top: 28px; padding-top: 24px;
-    border-top: 1px solid var(--border-strong);
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 40px;
+    margin-top: 36px;
   }
-  @media (min-width: 640px) { .contact-meta { grid-template-columns: repeat(3, 1fr); } }
-  .meta-item .k { font-family: var(--font-mono); font-size: 11px; color: var(--text-dimmer); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
-  .meta-item .v { font-size: 15px; }
-  .meta-item .v a:hover { color: var(--accent); }
+  @media (max-width: 768px) {
+    .contact-grid { grid-template-columns: 1fr; gap: 24px; }
+  }
+
+  .contact-form label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 6px;
+    font-family: var(--font-mono);
+  }
+  .contact-form input,
+  .contact-form select,
+  .contact-form textarea {
+    width: 100%;
+    background: rgba(0, 212, 170, 0.05);
+    border: 1px solid rgba(0, 212, 170, 0.3);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .contact-form textarea { resize: vertical; min-height: 120px; }
+  .contact-form input:focus,
+  .contact-form select:focus,
+  .contact-form textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 8px rgba(0, 212, 170, 0.2);
+  }
+  .contact-form select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300d4aa' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+  }
+  .contact-form select option { background: var(--bg); color: var(--text); }
+  .contact-form button[type="submit"] {
+    background: var(--accent);
+    color: #042a22;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 32px;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+    width: 100%;
+    min-height: 48px;
+  }
+  .contact-form button[type="submit"]:hover { background: #00e8bb; transform: translateY(-1px); }
+  .contact-form button[type="submit"]:active { transform: translateY(0); }
+  .contact-form button[type="submit"]:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  @media (max-width: 768px) {
+    .contact-form input,
+    .contact-form select,
+    .contact-form textarea { font-size: 16px; }
+  }
+
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-top: 8px;
+  }
+  .contact-detail { border-left: 2px solid var(--accent); padding-left: 16px; }
+  .contact-label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    margin-bottom: 4px;
+    font-family: var(--font-mono);
+  }
+  .contact-detail a { color: var(--text); }
+  .contact-detail a:hover { color: var(--accent); text-decoration: underline; }
+
+  /* Sticky floating CTA */
+  .sticky-cta {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--accent);
+    color: #042a22;
+    padding: 12px 20px;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: var(--font-sans);
+    text-decoration: none;
+    z-index: 100;
+    box-shadow: 0 4px 16px rgba(0, 212, 170, 0.35);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease, background 0.15s ease;
+    pointer-events: none;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .sticky-cta.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .sticky-cta:hover { background: #00e8bb; transform: translateY(-2px); }
+  @media (max-width: 768px) {
+    .sticky-cta { bottom: 16px; right: 16px; padding: 10px 16px; font-size: 13px; }
+  }
 
   footer {
     padding: 40px 0 60px;
@@ -506,6 +620,19 @@
 
   .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
   .reveal.in { opacity: 1; transform: none; }
+
+  /* Mobile touch targets */
+  @media (max-width: 768px) {
+    .nav-links a,
+    .btn,
+    .tool,
+    .tool-manual,
+    .contact-form button[type="submit"],
+    .sticky-cta {
+      min-height: 44px;
+    }
+    .featured a.tool-manual { padding: 10px 14px; }
+  }
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .001s !important; transition-duration: .001s !important; scroll-behavior: auto !important; }
@@ -670,17 +797,62 @@
     <div class="contact-card reveal">
       <div class="section-label">// Contact</div>
       <h3>Send me the file your team dreads opening.</h3>
-      <p>If your team is spending hours on repetitive data work, send me a sample file. I'll tell you what automation looks like for your case and what it costs.</p>
-      <a href="mailto:ytcodes.work@gmail.com" class="btn btn-primary">ytcodes.work@gmail.com →</a>
-      <div class="contact-assurance">Free assessment. I'll look at your file, tell you what's automatable, and quote a flat rate. No commitment, no hourly billing.</div>
-      <div class="contact-meta">
-        <div class="meta-item"><div class="k">Name</div><div class="v">Darek Krawczynski</div></div>
-        <div class="meta-item"><div class="k">Email</div><div class="v"><a href="mailto:ytcodes.work@gmail.com">ytcodes.work@gmail.com</a></div></div>
-        <div class="meta-item"><div class="k">Location</div><div class="v">Salt Lake City, UT</div></div>
+      <p>Free assessment. I'll look at your file, tell you what's automatable, and quote a flat rate.</p>
+
+      <div class="contact-grid">
+        <div class="contact-form-wrap">
+          <!-- TODO: Replace YOUR_FORM_ID with your Formspree form ID from https://formspree.io -->
+          <form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
+            <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+            <label for="cf-name">Name</label>
+            <input type="text" id="cf-name" name="name" required placeholder="Your name" autocomplete="name">
+
+            <label for="cf-email">Email</label>
+            <input type="email" id="cf-email" name="email" required placeholder="your@email.com" autocomplete="email">
+
+            <label for="cf-type">Project type</label>
+            <select id="cf-type" name="project_type" required>
+              <option value="" disabled selected>What do you need?</option>
+              <option value="Excel VBA">Excel VBA Automation</option>
+              <option value="Python Automation">Python Automation</option>
+              <option value="Data Cleanup">Data Cleanup / Deduplication</option>
+              <option value="Not sure">Not sure yet</option>
+            </select>
+
+            <label for="cf-desc">Describe the problem</label>
+            <textarea id="cf-desc" name="description" required minlength="20"
+                      placeholder="What data, what format, what's manual today?" rows="5"></textarea>
+
+            <button type="submit">Send</button>
+            <div id="form-message" role="status" aria-live="polite" style="display:none; margin-top:12px; font-size:14px; text-align:center;"></div>
+          </form>
+        </div>
+
+        <div class="contact-info">
+          <div class="contact-detail">
+            <span class="contact-label">Email</span>
+            <a href="mailto:ytcodes.work@gmail.com">ytcodes.work@gmail.com</a>
+          </div>
+          <div class="contact-detail">
+            <span class="contact-label">Location</span>
+            <span>Salt Lake City, UT</span>
+          </div>
+          <div class="contact-detail">
+            <span class="contact-label">Response time</span>
+            <span>Within 24 hours</span>
+          </div>
+          <div class="contact-detail">
+            <span class="contact-label">Pricing</span>
+            <span>Flat rate, $200–$2,000 per project</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
+
+<a href="#contact" class="sticky-cta" id="stickyCta">Get in touch ↓</a>
 
 <footer>
   <div class="container">© 2026 YTCodes · Data in. Signal out.</div>
@@ -711,26 +883,42 @@ const io = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
 // stat counters
+function animateStat(el) {
+  if (el.dataset.animated) return;
+  el.dataset.animated = '1';
+  const target = parseInt(el.dataset.target, 10);
+  const suffix = el.dataset.suffix || '';
+  const dur = 1400;
+  const start = performance.now();
+  function tick(now) {
+    const t = Math.min(1, (now - start) / dur);
+    const eased = 1 - Math.pow(1 - t, 3);
+    const val = Math.round(target * eased);
+    el.textContent = val.toLocaleString() + suffix;
+    if (t < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
 const statIo = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (!e.isIntersecting) return;
-    const el = e.target;
-    const target = parseInt(el.dataset.target, 10);
-    const suffix = el.dataset.suffix || '';
-    const dur = 1400;
-    const start = performance.now();
-    function tick(now) {
-      const t = Math.min(1, (now - start) / dur);
-      const eased = 1 - Math.pow(1 - t, 3);
-      const val = Math.round(target * eased);
-      el.textContent = val.toLocaleString() + suffix;
-      if (t < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-    statIo.unobserve(el);
+    animateStat(e.target);
+    statIo.unobserve(e.target);
   });
-}, { threshold: 0.4 });
-document.querySelectorAll('.stat-num').forEach(el => statIo.observe(el));
+}, { threshold: 0.2 });
+const statEls = document.querySelectorAll('.stat-num');
+statEls.forEach(el => statIo.observe(el));
+// Fallback: if observer never fires within 5s, set final values directly
+setTimeout(() => {
+  statEls.forEach(el => {
+    if (!el.dataset.animated) {
+      const target = parseInt(el.dataset.target, 10);
+      const suffix = el.dataset.suffix || '';
+      el.textContent = target.toLocaleString() + suffix;
+      el.dataset.animated = '1';
+    }
+  });
+}, 5000);
 
 // tools
 const TOOLS = [
@@ -942,6 +1130,61 @@ if (reduced) {
   setPip(2);
 } else {
   runAnimation();
+}
+
+// ---------- Contact form (Formspree) ----------
+const contactForm = document.querySelector('.contact-form');
+const formMsg = document.getElementById('form-message');
+if (contactForm && formMsg) {
+  contactForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const btn = contactForm.querySelector('button[type="submit"]');
+    const originalText = btn.textContent;
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    formMsg.style.display = 'none';
+
+    fetch(contactForm.action, {
+      method: 'POST',
+      body: new FormData(contactForm),
+      headers: { 'Accept': 'application/json' }
+    })
+    .then(r => {
+      if (r.ok) {
+        contactForm.reset();
+        formMsg.textContent = 'Got it. I will reply within 24 hours.';
+        formMsg.style.color = 'var(--accent)';
+      } else {
+        formMsg.textContent = 'Something went wrong. Email me directly at ytcodes.work@gmail.com';
+        formMsg.style.color = 'var(--danger)';
+      }
+      formMsg.style.display = 'block';
+    })
+    .catch(() => {
+      formMsg.textContent = 'Connection error. Email me directly at ytcodes.work@gmail.com';
+      formMsg.style.color = 'var(--danger)';
+      formMsg.style.display = 'block';
+    })
+    .finally(() => {
+      btn.textContent = originalText;
+      btn.disabled = false;
+    });
+  });
+}
+
+// ---------- Sticky CTA ----------
+const stickyCta = document.getElementById('stickyCta');
+const heroEl = document.querySelector('header.hero');
+const contactSectionEl = document.getElementById('contact');
+if (stickyCta && heroEl && contactSectionEl) {
+  const onScroll = () => {
+    const heroBottom = heroEl.getBoundingClientRect().bottom;
+    const contactTop = contactSectionEl.getBoundingClientRect().top;
+    const show = heroBottom < 0 && contactTop > window.innerHeight;
+    stickyCta.classList.toggle('visible', show);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 }
 </script>
 </body>
