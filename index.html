@@ -121,8 +121,65 @@
       radial-gradient(ellipse at top right, rgba(0,212,170,0.08), transparent 50%),
       radial-gradient(ellipse at bottom left, rgba(79,142,247,0.06), transparent 50%);
   }
-  .hero-grid { display: grid; grid-template-columns: 1fr; gap: 48px; align-items: center; }
-  @media (min-width: 960px) { .hero-grid { grid-template-columns: 1.1fr 1fr; gap: 64px; } }
+  .hero-grid { display: grid; grid-template-columns: 1fr; gap: 48px; align-items: start; }
+
+  /* Value proposition cards — plain-language benefits between headline and animation */
+  .value-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 8px;
+  }
+  @media (max-width: 768px) {
+    .value-cards { grid-template-columns: 1fr; gap: 12px; }
+  }
+  .value-card {
+    background: rgba(0, 212, 170, 0.04);
+    border: 1px solid rgba(0, 212, 170, 0.18);
+    border-radius: 10px;
+    padding: 22px 20px;
+    text-align: left;
+    transition: border-color .2s ease, transform .2s ease;
+  }
+  .value-card:hover { border-color: rgba(0, 212, 170, 0.45); transform: translateY(-2px); }
+  .value-card-icon { font-size: 26px; margin-bottom: 12px; line-height: 1; }
+  .value-card h3 { font-size: 16px; font-weight: 700; color: var(--text); margin: 0 0 8px; letter-spacing: -0.01em; }
+  .value-card p { font-size: 14px; color: var(--text-dim); line-height: 1.55; margin: 0; }
+
+  .value-hook {
+    text-align: center;
+    margin: 24px auto 0;
+    padding: 0 16px;
+  }
+  .value-hook p {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+    margin: 0;
+  }
+
+  .before-after {
+    max-width: 720px;
+    margin: 22px auto 0;
+    padding: 14px 18px;
+    background: rgba(255, 107, 107, 0.05);
+    border-left: 3px solid var(--danger);
+    border-radius: 0 6px 6px 0;
+    font-family: var(--font-mono);
+  }
+  .before-after .ba-before {
+    color: var(--text-dimmer);
+    font-size: 12.5px;
+    text-decoration: line-through;
+    margin-bottom: 4px;
+  }
+  .before-after .ba-after {
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 600;
+  }
 
   .hero-copy .eyebrow {
     display: inline-flex; align-items: center; gap: 8px;
@@ -170,6 +227,9 @@
     box-shadow: 0 24px 60px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.02) inset;
     display: flex;
     flex-direction: column;
+    max-width: 720px;
+    width: 100%;
+    margin: 24px auto 0;
   }
   .demo-header {
     display: flex; align-items: center; gap: 8px;
@@ -682,11 +742,38 @@
       <div class="hero-copy">
         <span class="eyebrow"><span class="pulse" aria-hidden="true"></span> Available for new work</span>
         <h1 class="tagline">The grid doesn't clean itself.<br/><span class="accent">I do.</span></h1>
-        <p class="hero-sub">Custom automation tools for messy data. Excel VBA and Python. Flat rate.</p>
+        <p class="hero-sub">Custom tools that do the data work nobody wants to do. Flat rate.</p>
         <div class="hero-cta">
           <a href="#tools" class="btn btn-primary">See the tools ↓</a>
           <a href="mailto:ytcodes.work@gmail.com" class="btn btn-ghost">ytcodes.work@gmail.com</a>
         </div>
+      </div>
+
+      <div class="value-cards reveal" aria-label="What this means for you">
+        <div class="value-card">
+          <div class="value-card-icon" aria-hidden="true">📊</div>
+          <h3>Your spreadsheet runs itself</h3>
+          <p>That report your team rebuilds every Monday? It can be done in one click. Same output, same format, zero manual work.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-card-icon" aria-hidden="true">🔍</div>
+          <h3>Messy data, cleaned automatically</h3>
+          <p>Duplicates, typos, inconsistent formats — the tool finds them, fixes them, and logs every change. You review, not rebuild.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-card-icon" aria-hidden="true">⚡</div>
+          <h3>Hours become seconds</h3>
+          <p>If your team copies, pastes, reformats, or cross-references the same files every week — that process can be automated permanently.</p>
+        </div>
+      </div>
+
+      <div class="value-hook reveal">
+        <p>// No software to install. It runs inside the Excel you already have.</p>
+      </div>
+
+      <div class="before-after reveal" aria-label="Before and after comparison">
+        <div class="ba-before">Before: 3 hours, 4 spreadsheets, 12 copy-paste steps, 2 formatting mistakes.</div>
+        <div class="ba-after">After: One click. Same result. Every time.</div>
       </div>
 
       <div class="demo-wrap" role="img" aria-label="Animated demo of messy spreadsheet data being cleaned by automation">

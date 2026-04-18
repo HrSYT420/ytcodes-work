@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720" width="720" height="720">
+<rect width="720" height="720" fill="#0a0e27"/>
+<g opacity="0.08" stroke="#e6e8ff" stroke-width="1.2">
+<line x1="0" y1="60" x2="720" y2="60"/><line x1="0" y1="120" x2="720" y2="120"/>
+<line x1="0" y1="180" x2="720" y2="180"/><line x1="0" y1="240" x2="720" y2="240"/>
+<line x1="0" y1="300" x2="720" y2="300"/><line x1="0" y1="360" x2="720" y2="360"/>
+<line x1="0" y1="420" x2="720" y2="420"/><line x1="0" y1="480" x2="720" y2="480"/>
+<line x1="0" y1="540" x2="720" y2="540"/><line x1="0" y1="600" x2="720" y2="600"/>
+<line x1="0" y1="660" x2="720" y2="660"/>
+</g>
+<path d="M 40 40 L 40 100 M 40 40 L 100 40" stroke="#ff2a6d" stroke-width="6" fill="none"/>
+<path d="M 680 40 L 680 100 M 680 40 L 620 40" stroke="#ff2a6d" stroke-width="6" fill="none"/>
+<path d="M 40 680 L 40 620 M 40 680 L 100 680" stroke="#05d9e8" stroke-width="6" fill="none"/>
+<path d="M 680 680 L 680 620 M 680 680 L 620 680" stroke="#05d9e8" stroke-width="6" fill="none"/>
+<path d="M 170 335 L 270 412 L 170 489" stroke="#05d9e8" stroke-width="22" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="305" y="440" font-family="'DejaVu Sans Mono',monospace" font-size="180" font-weight="700" fill="#ff2a6d">YT</text>
+<rect x="525" y="452" width="70" height="22" fill="#ffd23f"/>
+<text x="360" y="555" text-anchor="middle" font-family="'DejaVu Sans Mono',monospace" font-size="28" font-weight="400" fill="#e6e8ff" letter-spacing="10">YOURS TRULY CODE</text>
+</svg>
