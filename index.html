@@ -318,6 +318,14 @@
 
   h1.tagline { font-size: clamp(34px, 5.2vw, 56px); line-height: 1.05; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 20px; }
   h1.tagline .accent { color: var(--accent); }
+  .tagline-sub {
+    font-size: clamp(20px, 3vw, 32px);
+    font-weight: 400;
+    line-height: 1.35;
+    display: block;
+    margin-top: 8px;
+    letter-spacing: -0.01em;
+  }
   .hero-sub { font-size: 17px; color: var(--text-dim); margin-bottom: 20px; max-width: 540px; line-height: 1.6; }
   .hero-points {
     list-style: none;
@@ -864,7 +872,7 @@
     <div class="hero-grid">
       <div class="hero-copy">
         <span class="eyebrow"><span class="pulse" aria-hidden="true"></span> Available for new work</span>
-        <h1 class="tagline">One click. Same result. Every time.<br/><span class="accent">Custom tools that turn hours of spreadsheet work into a single click.</span></h1>
+        <h1 class="tagline">One click. Same result. Every time.<br/><span class="accent tagline-sub">Custom tools that turn hours of spreadsheet work into a single click.</span></h1>
         <p class="hero-sub">I build custom tools that take the hours of spreadsheet work off your team's plate. Excel automation, data cleanup, report generation — running inside the Excel you already have.</p>
         <ul class="hero-points">
           <li>Clean duplicates, typos, and inconsistent formats automatically</li>
