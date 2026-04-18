@@ -154,24 +154,30 @@
   .value-cards {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 40px;
     margin-top: 8px;
   }
   @media (max-width: 768px) {
-    .value-cards { grid-template-columns: 1fr; gap: 12px; }
+    .value-cards { grid-template-columns: 1fr; gap: 28px; }
   }
   .value-card {
-    background: rgba(0, 212, 170, 0.04);
-    border: 1px solid rgba(0, 212, 170, 0.18);
-    border-radius: 10px;
-    padding: 22px 20px;
+    background: transparent;
+    border: none;
+    border-top: 2px solid var(--accent);
+    border-radius: 0;
+    padding: 18px 0 0;
     text-align: left;
-    transition: border-color .2s ease, transform .2s ease;
   }
-  .value-card:hover { border-color: rgba(0, 212, 170, 0.45); transform: translateY(-2px); }
-  .value-card-icon { font-size: 26px; margin-bottom: 12px; line-height: 1; }
-  .value-card h3 { font-size: 16px; font-weight: 700; color: var(--text); margin: 0 0 8px; letter-spacing: -0.01em; }
-  .value-card p { font-size: 14px; color: var(--text-dim); line-height: 1.55; margin: 0; }
+  .value-card-num {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 10px;
+  }
+  .value-card h3 { font-size: 17px; font-weight: 700; color: var(--text); margin: 0 0 10px; letter-spacing: -0.01em; line-height: 1.25; }
+  .value-card p { font-size: 14.5px; color: var(--text-dim); line-height: 1.6; margin: 0; }
 
   .value-hook {
     text-align: center;
@@ -229,7 +235,31 @@
 
   h1.tagline { font-size: clamp(34px, 5.2vw, 56px); line-height: 1.05; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 20px; }
   h1.tagline .accent { color: var(--accent); }
-  .hero-sub { font-size: 18px; color: var(--text-dim); margin-bottom: 32px; max-width: 520px; }
+  .hero-sub { font-size: 17px; color: var(--text-dim); margin-bottom: 20px; max-width: 540px; line-height: 1.6; }
+  .hero-points {
+    list-style: none;
+    margin: 0 0 30px;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+    max-width: 540px;
+  }
+  .hero-points li {
+    font-size: 14.5px;
+    color: var(--text);
+    padding-left: 22px;
+    position: relative;
+    line-height: 1.55;
+  }
+  .hero-points li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-weight: 600;
+  }
   .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
@@ -750,7 +780,13 @@
       <div class="hero-copy">
         <span class="eyebrow"><span class="pulse" aria-hidden="true"></span> Available for new work</span>
         <h1 class="tagline">The grid doesn't clean itself.<br/><span class="accent">I do.</span></h1>
-        <p class="hero-sub">Custom tools that do the data work nobody wants to do. Flat rate.</p>
+        <p class="hero-sub">I build custom tools that take the hours of spreadsheet work off your team's plate. Excel automation, data cleanup, report generation — running inside the Excel you already have.</p>
+        <ul class="hero-points">
+          <li>Clean duplicates, typos, and inconsistent formats automatically</li>
+          <li>Generate reports that took hours, in one click</li>
+          <li>Merge, validate, and reconcile data across files</li>
+          <li>Flat rate. Quoted upfront. No hourly billing.</li>
+        </ul>
         <div class="hero-cta">
           <a href="#tools" class="btn btn-primary">See the tools ↓</a>
           <a href="mailto:ytcodes.work@gmail.com" class="btn btn-ghost">ytcodes.work@gmail.com</a>
@@ -782,17 +818,17 @@
   <div class="container">
     <div class="value-cards reveal">
       <div class="value-card">
-        <div class="value-card-icon" aria-hidden="true">📊</div>
+        <span class="value-card-num">// 01</span>
         <h3>Your spreadsheet runs itself</h3>
         <p>That report your team rebuilds every Monday? It can be done in one click. Same output, same format, zero manual work.</p>
       </div>
       <div class="value-card">
-        <div class="value-card-icon" aria-hidden="true">🔍</div>
+        <span class="value-card-num">// 02</span>
         <h3>Messy data, cleaned automatically</h3>
         <p>Duplicates, typos, inconsistent formats — the tool finds them, fixes them, and logs every change. You review, not rebuild.</p>
       </div>
       <div class="value-card">
-        <div class="value-card-icon" aria-hidden="true">⚡</div>
+        <span class="value-card-num">// 03</span>
         <h3>Hours become seconds</h3>
         <p>If your team copies, pastes, reformats, or cross-references the same files every week — that process can be automated permanently.</p>
       </div>
