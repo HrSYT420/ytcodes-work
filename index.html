@@ -17,6 +17,89 @@
 <meta name="twitter:image" content="https://ytcodes.dev/cover.svg" />
 <link rel="icon" type="image/svg+xml" href="logo_tag.svg" />
 <link rel="apple-touch-icon" href="logo_tag.svg" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "YTCodes Automation",
+  "description": "Custom data automation tools built with Excel VBA and Python. Flat rate pricing. Spreadsheet automation, data cleanup, report generation, and batch file processing for small businesses.",
+  "url": "https://ytcodes.dev",
+  "telephone": "+1-971-762-5577",
+  "email": "ytcodes.work@gmail.com",
+  "priceRange": "$200-$2000",
+  "image": "https://ytcodes.dev/cover.svg",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Salt Lake City",
+    "addressRegion": "UT",
+    "addressCountry": "US"
+  },
+  "areaServed": [
+    "Salt Lake City", "West Valley City", "Provo", "West Jordan",
+    "Orem", "Sandy", "Ogden", "St. George", "Layton", "Taylorsville",
+    "South Jordan", "Lehi", "Logan", "Murray", "Draper",
+    "Bountiful", "Riverton", "Roy", "Spanish Fork", "Pleasant Grove"
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Data Automation Services",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Excel VBA Automation",
+          "description": "Custom Excel macros that automate repetitive spreadsheet tasks. One click replaces hours of manual work."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Data Cleanup and Deduplication",
+          "description": "Automated tools that find duplicates, fix typos, standardize formats, and deliver clean master files."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Batch File Generation",
+          "description": "Tools that read one source file and generate multiple formatted output files automatically."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Data Validation Pipelines",
+          "description": "Multi-step validation workflows that check incoming data against business rules before processing."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Report Automation",
+          "description": "Automated report generation from raw data. Configure once, generate formatted reports with one click."
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Python Automation",
+          "description": "Custom Python scripts for web scraping, data processing, API integrations, and workflow automation."
+        }
+      }
+    ]
+  },
+  "sameAs": [
+    "https://github.com/HrSYT420",
+    "https://github.com/HrSYT420/JobScoutAI"
+  ]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -123,7 +206,7 @@
   header.hero {
     min-height: 100vh;
     display: flex; align-items: center;
-    padding: 120px 0 80px;
+    padding: 120px 0 48px;
     position: relative;
     overflow: hidden;
     background:
@@ -149,8 +232,8 @@
   @media (min-width: 900px) { .hero-grid { grid-template-columns: 1.1fr 1fr; gap: 56px; } }
 
   /* Value proposition section (below hero) */
-  .value-section { padding: 72px 0 48px; border-top: 1px solid var(--border); }
-  @media (max-width: 640px) { .value-section { padding: 56px 0 32px; } }
+  .value-section { padding: 56px 0 40px; border-top: 1px solid var(--border); }
+  @media (max-width: 640px) { .value-section { padding: 40px 0 28px; } }
   .value-cards {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -395,15 +478,17 @@
     .demo-wrap { overflow-x: hidden; }
   }
 
-  section { padding: 100px 0; }
-  @media (max-width: 640px) { section { padding: 72px 0; } }
-  .section-head { margin-bottom: 48px; max-width: 680px; }
+  section { padding: 44px 0; }
+  @media (max-width: 640px) { section { padding: 36px 0; } }
+  .section-head { margin-bottom: 32px; max-width: 680px; }
+  /* Tighten specific transitions per spec */
+  section[aria-label="Contact CTA"] { padding-top: 0; }
   .section-label { font-family: var(--font-mono); font-size: 12px; color: var(--accent); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 12px; }
   .section-title { font-size: clamp(28px, 3.4vw, 40px); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 12px; line-height: 1.15; }
   .section-desc { color: var(--text-dim); font-size: 17px; }
 
   /* STATS */
-  .stats { padding: 60px 0; border-top: 1px solid var(--border-strong); border-bottom: 1px solid var(--border-strong); }
+  .stats { padding: 44px 0; border-top: 1px solid var(--border-strong); border-bottom: 1px solid var(--border-strong); }
   .stats-grid {
     display: grid; gap: 14px;
     grid-template-columns: repeat(2, 1fr);
@@ -891,8 +976,8 @@
   <div class="container">
     <div class="cta-banner reveal">
       <h3>Have messy data?</h3>
-      <p>Send me the file your team hates working with. I'll tell you how long the automation takes and what it costs. No commitment.</p>
-      <a href="mailto:ytcodes.work@gmail.com" class="btn btn-primary">Email me → ytcodes.work@gmail.com</a>
+      <p>Describe the problem. I'll tell you what it costs to make it disappear.</p>
+      <a href="#contact" class="btn btn-primary">Tell me about it ↓</a>
     </div>
   </div>
 </section>
@@ -970,12 +1055,8 @@
 
         <div class="contact-info">
           <div class="contact-detail">
-            <span class="contact-label">Email</span>
-            <a href="mailto:ytcodes.work@gmail.com">ytcodes.work@gmail.com</a>
-          </div>
-          <div class="contact-detail">
             <span class="contact-label">Location</span>
-            <span>Salt Lake City, UT</span>
+            <span>Salt Lake City, UT &middot; also available remote</span>
           </div>
           <div class="contact-detail">
             <span class="contact-label">Response time</span>
@@ -983,7 +1064,11 @@
           </div>
           <div class="contact-detail">
             <span class="contact-label">Pricing</span>
-            <span>Project-based pricing. No hourly billing. No meetings about meetings.</span>
+            <span>Project-based. Quoted same day. No meetings about meetings.</span>
+          </div>
+          <div class="contact-detail">
+            <span class="contact-label">Availability</span>
+            <span>Currently taking new projects</span>
           </div>
         </div>
       </div>
