@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JobScoutAI — User Guide</title>
+<style>
+  :root {
+    --navy: #1F4E79;
+    --blue-hdr: #2E75B6;
+    --blue-light: #DEEBF7;
+    --tip-green: #2E7D32;
+    --tip-bg: #E8F5E9;
+    --warn-amber: #E65100;
+    --warn-bg: #FFF3E0;
+    --note-blue: #1565C0;
+    --note-bg: #E3F2FD;
+    --step-bg: #F5F9FD;
+    --border: #B4C7DC;
+    --code-bg: #F4F6F9;
+    --text: #222;
+    --muted: #5A6677;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: Calibri, "Segoe UI", Arial, sans-serif;
+    font-size: 11pt;
+    line-height: 1.55;
+    color: var(--text);
+    background: #fff;
+    margin: 0;
+    padding: 0;
+  }
+
+  .page {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 32px 40px 72px;
+  }
+
+  header.cover {
+    border-bottom: 4px solid var(--navy);
+    padding-bottom: 18px;
+    margin-bottom: 28px;
+  }
+
+  header.cover .eyebrow {
+    color: var(--blue-hdr);
+    font-size: 10pt;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  header.cover h1 {
+    color: var(--navy);
+    font-size: 30pt;
+    margin: 6px 0 4px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  header.cover .subtitle {
+    color: var(--muted);
+    font-size: 13pt;
+    margin: 0;
+  }
+
+  header.cover .meta {
+    margin-top: 14px;
+    font-size: 10pt;
+    color: var(--muted);
+  }
+
+  h2 {
+    color: var(--navy);
+    font-size: 18pt;
+    margin: 40px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--blue-hdr);
+    scroll-margin-top: 16px;
+  }
+
+  h3 {
+    color: var(--navy);
+    font-size: 14pt;
+    margin: 24px 0 8px;
+  }
+
+  h4 {
+    color: var(--blue-hdr);
+    font-size: 12pt;
+    margin: 18px 0 6px;
+  }
+
+  p { margin: 0 0 12px; }
+
+  a {
+    color: var(--blue-hdr);
+    text-decoration: none;
+  }
+
+  a:hover { text-decoration: underline; }
+
+  ul, ol {
+    margin: 6px 0 12px;
+    padding-left: 26px;
+  }
+
+  li { margin-bottom: 4px; }
+
+  code {
+    font-family: Consolas, "Courier New", monospace;
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 10.5pt;
+    color: #c0392b;
+  }
+
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--navy);
+    border-radius: 3px;
+    padding: 12px 14px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 10pt;
+    overflow-x: auto;
+    margin: 8px 0 14px;
+    color: #222;
+    line-height: 1.45;
+  }
+
+  pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    font-size: inherit;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0 18px;
+    font-size: 10.5pt;
+    border: 1px solid var(--border);
+  }
+
+  th {
+    background: var(--blue-hdr);
+    color: white;
+    text-align: left;
+    padding: 8px 12px;
+    font-weight: 600;
+    border: 1px solid var(--blue-hdr);
+  }
+
+  td {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  tr:nth-child(even) td { background: var(--blue-light); }
+
+  .callout {
+    border-left: 5px solid;
+    padding: 12px 16px;
+    margin: 14px 0;
+    border-radius: 3px;
+    font-size: 10.5pt;
+  }
+
+  .callout .label {
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 9.5pt;
+    letter-spacing: 1px;
+    margin-right: 6px;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .tip {
+    background: var(--tip-bg);
+    border-left-color: var(--tip-green);
+  }
+  .tip .label { color: var(--tip-green); }
+
+  .warn {
+    background: var(--warn-bg);
+    border-left-color: var(--warn-amber);
+  }
+  .warn .label { color: var(--warn-amber); }
+
+  .note {
+    background: var(--note-bg);
+    border-left-color: var(--note-blue);
+  }
+  .note .label { color: var(--note-blue); }
+
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+    counter-reset: step;
+  }
+
+  .steps li {
+    counter-increment: step;
+    background: var(--step-bg);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--navy);
+    margin: 0 0 10px;
+    padding: 14px 18px 14px 58px;
+    position: relative;
+    border-radius: 3px;
+  }
+
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    background: var(--navy);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 12pt;
+  }
+
+  .steps li strong {
+    display: block;
+    color: var(--navy);
+    font-size: 11.5pt;
+    margin-bottom: 4px;
+  }
+
+  .steps li pre {
+    margin: 8px 0 0;
+  }
+
+  nav.toc {
+    background: var(--blue-light);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 18px 24px;
+    margin: 20px 0 36px;
+  }
+
+  nav.toc h2 {
+    border: none;
+    margin: 0 0 10px;
+    font-size: 14pt;
+    padding: 0;
+  }
+
+  nav.toc ol {
+    columns: 2;
+    column-gap: 32px;
+    padding-left: 22px;
+    margin: 0;
+  }
+
+  nav.toc li { margin-bottom: 5px; }
+
+  nav.toc a {
+    color: var(--navy);
+    font-weight: 500;
+  }
+
+  .pipeline {
+    counter-reset: phase;
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+  }
+
+  .pipeline li {
+    counter-increment: phase;
+    padding: 12px 16px 12px 56px;
+    margin-bottom: 8px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    position: relative;
+  }
+
+  .pipeline li::before {
+    content: counter(phase);
+    position: absolute;
+    left: 14px;
+    top: 14px;
+    width: 28px;
+    height: 28px;
+    background: var(--blue-hdr);
+    color: white;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 10pt;
+  }
+
+  .pipeline li strong {
+    color: var(--navy);
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 9pt;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .badge-ok { background: var(--tip-bg); color: var(--tip-green); }
+  .badge-warn { background: var(--warn-bg); color: var(--warn-amber); }
+  .badge-dead { background: #FBE9E7; color: #C62828; }
+
+  dl.defs { margin: 10px 0 18px; }
+  dl.defs dt {
+    font-weight: 700;
+    color: var(--navy);
+    margin-top: 10px;
+  }
+  dl.defs dd {
+    margin: 2px 0 0 16px;
+    color: var(--text);
+  }
+
+  footer {
+    margin-top: 60px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 9.5pt;
+    text-align: center;
+  }
+
+  .hero-quote {
+    background: var(--navy);
+    color: #fff;
+    padding: 16px 22px;
+    border-radius: 4px;
+    font-size: 12pt;
+    font-weight: 500;
+    margin: 12px 0 20px;
+    font-style: italic;
+  }
+
+  @media (max-width: 680px) {
+    .page { padding: 18px 16px 48px; }
+    header.cover h1 { font-size: 22pt; }
+    header.cover .subtitle { font-size: 11pt; }
+    h2 { font-size: 15pt; }
+    h3 { font-size: 12pt; }
+    nav.toc ol { columns: 1; }
+    table, thead, tbody, th, td, tr { display: block; }
+    thead { display: none; }
+    tr {
+      border: 1px solid var(--border);
+      margin-bottom: 10px;
+      background: #fff;
+    }
+    td {
+      border: none;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      padding-left: 45%;
+    }
+    td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 12px;
+      top: 8px;
+      width: 40%;
+      font-weight: 700;
+      color: var(--navy);
+      font-size: 9.5pt;
+    }
+    tr:nth-child(even) td { background: #fff; }
+    .steps li { padding-left: 48px; }
+    .steps li::before { width: 26px; height: 26px; font-size: 11pt; left: 10px; }
+    pre { font-size: 9.5pt; }
+  }
+
+  @media print {
+    body { font-size: 10pt; }
+    .page { max-width: 100%; padding: 0; }
+    nav.toc { background: #fff; border: 1px solid #999; }
+    a { color: #000; text-decoration: none; }
+    h2 { page-break-after: avoid; }
+    table, pre, .callout, .steps li { page-break-inside: avoid; }
+    header.cover { page-break-after: always; }
+    pre { border: 1px solid #999; background: #fafafa; }
+    .hero-quote { background: #eee; color: #000; border: 1px solid #999; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="cover">
+  <div class="eyebrow">User Guide</div>
+  <h1>JobScoutAI</h1>
+  <p class="subtitle">AI-powered job hunting agent — setup, features, and day-to-day use.</p>
+  <div class="meta">Version 1.0 &nbsp;&middot;&nbsp; Comprehensive Documentation</div>
+</header>
+
+<div class="hero-quote">
+  Stop scrolling job boards. Let AI find and rate the opportunities that match your skills.
+</div>
+
+<nav class="toc" aria-label="Table of contents">
+  <h2>Table of Contents</h2>
+  <ol>
+    <li><a href="#s1">What is JobScoutAI?</a></li>
+    <li><a href="#s2">Features Overview</a></li>
+    <li><a href="#s3">Requirements</a></li>
+    <li><a href="#s4">Quick Start — First-Time Setup</a></li>
+    <li><a href="#s5">Scraper Sources — What Works</a></li>
+    <li><a href="#s6">The Pipeline — How It Works</a></li>
+    <li><a href="#s7">The Web UI — Page by Page</a></li>
+    <li><a href="#s8">Settings Reference</a></li>
+    <li><a href="#s9">AI Providers — Claude vs Ollama</a></li>
+    <li><a href="#s10">Resume Builder</a></li>
+    <li><a href="#s11">Proposal Drafter</a></li>
+    <li><a href="#s12">Skip Tag Learning</a></li>
+    <li><a href="#s13">Mobile Usage</a></li>
+    <li><a href="#s14">Known Limitations</a></li>
+    <li><a href="#s15">Roadmap</a></li>
+    <li><a href="#s16">Project Structure</a></li>
+    <li><a href="#s17">Troubleshooting</a></li>
+    <li><a href="#s18">Contributing</a></li>
+    <li><a href="#s19">License</a></li>
+  </ol>
+</nav>
+
+<section id="s1">
+  <h2>1. What is JobScoutAI?</h2>
+  <p>
+    JobScoutAI is an AI-powered job hunting agent that scrapes job boards, rates each posting against your skills using AI, generates tailored resumes, drafts freelance proposals, tracks applications, and sends daily email briefings. It is built with Python, Flask, and SQLite, and runs locally on your machine — no accounts, no cloud, no shared data.
+  </p>
+  <p>
+    Instead of manually refreshing LinkedIn, Indeed, and Freelancer every morning, you point JobScoutAI at the keywords that matter, tune your skill profile once, and let the agent do the filtering. Jobs that survive the AI rating pass appear in your tracker with a score, a summary, and an Apply button. The ones that don't are learned from — the system remembers why you skipped a listing and scores similar ones lower next time.
+  </p>
+</section>
+
+<section id="s2">
+  <h2>2. Features Overview</h2>
+  <table>
+    <thead>
+      <tr><th style="width:26%">Feature</th><th style="width:50%">Description</th><th style="width:24%">Status</th></tr>
+    </thead>
+    <tbody>
+      <tr><td data-label="Feature">Multi-platform scraping</td><td data-label="Description">Searches LinkedIn, Indeed, ZipRecruiter, Freelancer.com, Upwork, Craigslist, Google Jobs</td><td data-label="Status"><span class="badge badge-warn">LinkedIn primary</span> — others depend on ScraperAPI or may be blocked</td></tr>
+      <tr><td data-label="Feature">AI job rating</td><td data-label="Description">Claude AI rates each job 1–10 against your skill profile with two tiers: Standard (7+) and Quick Win (5+)</td><td data-label="Status"><span class="badge badge-ok">Working</span></td></tr>
+      <tr><td data-label="Feature">Ollama support</td><td data-label="Description">Free local AI alternative — no API key needed for job rating</td><td data-label="Status"><span class="badge badge-ok">Working</span></td></tr>
+      <tr><td data-label="Feature">Resume builder</td><td data-label="Description">Generates tailored HTML resumes for specific job postings using your profile and work history</td><td data-label="Status"><span class="badge badge-ok">Working</span></td></tr>
+      <tr><td data-label="Feature">Proposal drafter</td><td data-label="Description">Drafts freelance proposals using your past proposals as style reference</td><td data-label="Status"><span class="badge badge-ok">Working</span></td></tr>
+      <tr><td data-label="Feature">Application tracker</td><td data-label="Description">Full CRM — tracks status, follow-ups, communications, deadlines</td><td data-label="Status"><span class="badge badge-ok">Working</span></td></tr>
+      <tr><td data-label="Feature">Skip tag learning</td><td data-label="Description">Learns your preferences from skipped jobs and adjusts future AI ratings</td><td data-label="Status"><span class="badge badge-ok">Working</span></td></tr>
+      <tr><td data-label="Feature">Email notifications</td><td data-label="Description">Daily briefing email with new matches and follow-up reminders</td><td data-label="Status"><span class="badge badge-ok">Working</span> — requires Gmail OAuth</td></tr>
+      <tr><td data-label="Feature">Dashboard &amp; analytics</td><td data-label="Description">Funnel chart, skills demand tracker, scraper activity, win rate trends</td><td data-label="Status"><span class="badge badge-ok">Working</span></td></tr>
+      <tr><td data-label="Feature">Mobile-responsive UI</td><td data-label="Description">Card-based layout on phones, bottom navigation, touch-friendly</td><td data-label="Status"><span class="badge badge-ok">Working</span></td></tr>
+      <tr><td data-label="Feature">Background scraper</td><td data-label="Description">Runs in background thread — doesn't freeze the UI, survives phone disconnect</td><td data-label="Status"><span class="badge badge-ok">Working</span></td></tr>
+      <tr><td data-label="Feature">Demo page</td><td data-label="Description">Read-only showcase at /demo for quick presentations</td><td data-label="Status"><span class="badge badge-ok">Working</span></td></tr>
+      <tr><td data-label="Feature">Search profiles</td><td data-label="Description">Multiple keyword/filter configurations for different job categories</td><td data-label="Status"><span class="badge badge-ok">Working</span></td></tr>
+      <tr><td data-label="Feature">API keys in Settings</td><td data-label="Description">Manage all API keys from the web UI — no .env editing needed</td><td data-label="Status"><span class="badge badge-ok">Working</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="s3">
+  <h2>3. Requirements</h2>
+  <h4>Required</h4>
+  <ul>
+    <li><strong>Python 3.11 or higher</strong> — the app relies on modern type hints and stdlib features.</li>
+    <li><strong>A web browser</strong> — Chrome is recommended for scraping paths that use undetected-chromedriver; any modern browser works for the UI.</li>
+    <li><strong>Anthropic API key</strong> — powers AI features: job rating, resume generation, proposal drafting.</li>
+  </ul>
+  <h4>Optional but recommended</h4>
+  <ul>
+    <li><strong>ScraperAPI key</strong> — unlocks Indeed, ZipRecruiter, and Google Jobs. Without it, you're limited to LinkedIn and Freelancer.</li>
+    <li><strong>Gmail OAuth credentials</strong> — needed for the email digest scraper and for sending daily notification emails.</li>
+    <li><strong>Ollama</strong> — a free, local AI alternative for job rating. Lower quality than Claude but useful when call volume is high.</li>
+    <li><strong>Chrome browser</strong> — installed locally so undetected-chromedriver can bypass CAPTCHA walls on some sites.</li>
+  </ul>
+</section>
+
+<section id="s4">
+  <h2>4. Quick Start — First-Time Setup</h2>
+  <p>Follow these seven steps once. After that, running the app is a single command.</p>
+
+  <ol class="steps">
+    <li>
+      <strong>Clone the repository</strong>
+<pre><code>git clone https://github.com/HrSYT420/JobScoutAI.git
+cd JobScoutAI</code></pre>
+    </li>
+    <li>
+      <strong>Create a virtual environment</strong>
+<pre><code># Windows
+python -m venv .venv
+.venv\Scripts\activate
+
+# macOS / Linux
+python -m venv .venv
+source .venv/bin/activate</code></pre>
+    </li>
+    <li>
+      <strong>Install dependencies</strong>
+<pre><code>pip install -r requirements.txt</code></pre>
+    </li>
+    <li>
+      <strong>Set up your API keys</strong>
+      <p>Copy <code>.env.example</code> to <code>.env</code> and add at least your Anthropic key:</p>
+<pre><code>cp .env.example .env
+# then edit .env and set:
+ANTHROPIC_API_KEY=sk-ant-...
+SCRAPER_API_KEY=your_key   # optional</code></pre>
+      <p>Or skip the file and enter the keys in the web UI under <em>Settings &rarr; API Keys</em> once the app is running.</p>
+    </li>
+    <li>
+      <strong>Set up your profile</strong>
+      <p>Copy the example config files and fill them in:</p>
+<pre><code>cp config/profile.example.json config/profile.json
+cp config/resume_content.example.txt config/resume_content.txt</code></pre>
+      <p>Edit <code>config/profile.json</code> with your skills, proof points, contact info, and job preferences. Edit <code>config/resume_content.txt</code> with your work history and bullet points. You can also edit both from <em>Settings &rarr; Profile</em> and <em>Settings &rarr; Resume</em>.</p>
+    </li>
+    <li>
+      <strong>Start the app</strong>
+<pre><code>python -m tracker.app</code></pre>
+      <p>Open <a href="http://localhost:5001">http://localhost:5001</a> in your browser.</p>
+    </li>
+    <li>
+      <strong>Run your first scrape</strong>
+      <p>Go to the Control page and click <em>Run Scraper</em>. Or from the terminal:</p>
+<pre><code>python -m job_hunter.scraper</code></pre>
+    </li>
+  </ol>
+
+  <div class="callout tip">
+    <span class="label">Tip</span>
+    The first scrape is the slowest — subsequent runs skip URLs seen in the last 7 days and finish much faster.
+  </div>
+</section>
+
+<section id="s5">
+  <h2>5. Scraper Sources — What Works and What Doesn't</h2>
+  <p>Job boards actively fight automated scraping. JobScoutAI supports many sources on paper, but in practice the reliability varies. This table is current and honest.</p>
+  <table>
+    <thead>
+      <tr><th>Source</th><th>Method</th><th>Status</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td data-label="Source">LinkedIn</td>
+        <td data-label="Method">JobSpy library</td>
+        <td data-label="Status"><span class="badge badge-ok">Working (FREE)</span></td>
+        <td data-label="Notes">Primary source. 30–50+ jobs per keyword. No API key needed.</td>
+      </tr>
+      <tr>
+        <td data-label="Source">Indeed</td>
+        <td data-label="Method">Selenium / ScraperAPI</td>
+        <td data-label="Status"><span class="badge badge-warn">Blocked without ScraperAPI</span></td>
+        <td data-label="Notes">Cloudflare CAPTCHA blocks browser scraping. Works with ScraperAPI ($49/mo).</td>
+      </tr>
+      <tr>
+        <td data-label="Source">ZipRecruiter</td>
+        <td data-label="Method">Selenium / ScraperAPI</td>
+        <td data-label="Status"><span class="badge badge-warn">Blocked without ScraperAPI</span></td>
+        <td data-label="Notes">Same as Indeed — Cloudflare-protected.</td>
+      </tr>
+      <tr>
+        <td data-label="Source">Freelancer.com</td>
+        <td data-label="Method">Direct HTML scraping</td>
+        <td data-label="Status"><span class="badge badge-ok">Working (FREE)</span></td>
+        <td data-label="Notes">Parses search pages directly. Limited free bids on the platform itself.</td>
+      </tr>
+      <tr>
+        <td data-label="Source">Upwork</td>
+        <td data-label="Method">RSS feed</td>
+        <td data-label="Status"><span class="badge badge-dead">Dead</span></td>
+        <td data-label="Notes">Upwork removed their RSS feeds (410 Gone). Selenium also blocked.</td>
+      </tr>
+      <tr>
+        <td data-label="Source">Craigslist</td>
+        <td data-label="Method">RSS feed</td>
+        <td data-label="Status"><span class="badge badge-dead">Blocked</span></td>
+        <td data-label="Notes">Returns 403 on all requests.</td>
+      </tr>
+      <tr>
+        <td data-label="Source">Google Jobs</td>
+        <td data-label="Method">ScraperAPI structured</td>
+        <td data-label="Status"><span class="badge badge-warn">Requires ScraperAPI</span></td>
+        <td data-label="Notes">Up to 10 jobs per keyword.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout tip">
+    <span class="label">Tip</span>
+    LinkedIn via JobSpy is the most reliable free source. If only one source works for you, make it LinkedIn.
+  </div>
+
+  <div class="callout note">
+    <span class="label">Note</span>
+    ScraperAPI costs $49/month but unlocks Indeed, ZipRecruiter, and Google Jobs. If the app helps you land one freelance gig or full-time role, it pays for itself.
+  </div>
+</section>
+
+<section id="s6">
+  <h2>6. The Pipeline — How It Works</h2>
+  <p>Every scraper run walks through eight phases:</p>
+  <ol class="pipeline">
+    <li><strong>Scrape</strong> — searches enabled platforms for each keyword in your active profiles.</li>
+    <li><strong>Deduplicate</strong> — checks each URL against <code>seen_urls.json</code> with a 7-day rolling window.</li>
+    <li><strong>Keyword Filter</strong> — keeps only jobs matching at least one of your filter terms.</li>
+    <li><strong>AI Rating</strong> — Claude (or Ollama) scores each job 1–10 against your profile.</li>
+    <li><strong>Two-Tier Sort</strong> — Standard jobs (score 7+, budget $200+) and Quick Wins (score 5+, low budget or hourly).</li>
+    <li><strong>Save</strong> — results written to a dated JSON file: <code>data/jobs_YYYY-MM-DD.json</code>.</li>
+    <li><strong>Notify</strong> — email sent with new matches and follow-up reminders (if Gmail is configured).</li>
+    <li><strong>Display</strong> — jobs appear in the <em>Available Jobs</em> section of the tracker.</li>
+  </ol>
+</section>
+
+<section id="s7">
+  <h2>7. The Web UI — Page by Page</h2>
+  <dl class="defs">
+    <dt>Tracker <code>/</code></dt>
+    <dd>Main dashboard. Stat cards, Available Jobs with AI scores, In Progress applications, Skipped Jobs with learning data, Apply Later queue. Sorting, filtering, and pagination on Available Jobs.</dd>
+    <dt>Control <code>/control</code></dt>
+    <dd>Run the scraper, watch live log output, stop a running scrape. Profile selector chooses which search profiles to run.</dd>
+    <dt>Dashboard <code>/dashboard</code></dt>
+    <dd>Analytics charts: pipeline funnel, proposals over time, win rate trend, scraper daily activity, skills demand tracker, skip tag frequency, bid distribution, response times.</dd>
+    <dt>Rated Jobs <code>/rated-jobs</code></dt>
+    <dd>Review AI-rated jobs by date with thumbs up / thumbs down feedback.</dd>
+    <dt>Resumes <code>/resumes</code></dt>
+    <dd>Index of all generated resumes. View, download, or delete.</dd>
+    <dt>Settings <code>/settings</code></dt>
+    <dd>Ten tabs: Scraper, AI Filter, Profile, Notifications, Statistics, Overrides, Proposal Rules, Profiles, Resume, API Keys.</dd>
+    <dt>Demo <code>/demo</code></dt>
+    <dd>Read-only showcase page for presentations. Pipeline visualization, live stats, scraper control.</dd>
+    <dt>Application Detail <code>/application/&lt;id&gt;</code></dt>
+    <dd>Individual application view with communication timeline, proposal text, and full job description.</dd>
+  </dl>
+</section>
+
+<section id="s8">
+  <h2>8. Settings Reference</h2>
+  <table>
+    <thead>
+      <tr><th style="width:22%">Tab</th><th>What you configure</th></tr>
+    </thead>
+    <tbody>
+      <tr><td data-label="Tab">Scraper</td><td data-label="What you configure">Keywords, filter terms, budget range, hourly rate, platforms, location, browser preference.</td></tr>
+      <tr><td data-label="Tab">AI Filter</td><td data-label="What you configure">Score thresholds for Standard and Quick Win tiers, quick-win hour limit, feature toggles.</td></tr>
+      <tr><td data-label="Tab">Profile</td><td data-label="What you configure">Primary skills, secondary skills, topics to avoid, proof points.</td></tr>
+      <tr><td data-label="Tab">Notifications</td><td data-label="What you configure">Email address and per-event toggles (new jobs / follow-up due / nothing new).</td></tr>
+      <tr><td data-label="Tab">Statistics</td><td data-label="What you configure">Proposal stats, source performance breakdown, skip tag weights with sorting.</td></tr>
+      <tr><td data-label="Tab">Overrides</td><td data-label="What you configure">Manual weight adjustments for skip tags, temporary or permanent.</td></tr>
+      <tr><td data-label="Tab">Proposal Rules</td><td data-label="What you configure">Writing guidelines for the AI proposal drafter.</td></tr>
+      <tr><td data-label="Tab">Profiles</td><td data-label="What you configure">Create, edit, and delete search profiles with their own keywords and filter terms.</td></tr>
+      <tr><td data-label="Tab">Resume</td><td data-label="What you configure">Contact info, resume content library, skills willing to learn.</td></tr>
+      <tr><td data-label="Tab">API Keys</td><td data-label="What you configure">Anthropic, ScraperAPI, Gmail OAuth, notification email — all manageable from UI.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="s9">
+  <h2>9. AI Providers — Claude vs Ollama</h2>
+  <p>JobScoutAI ships with two interchangeable AI backends. Swap between them in <em>Settings &rarr; AI Filter</em> or <em>Settings &rarr; Scraper</em>.</p>
+
+  <h3>Claude (Anthropic API)</h3>
+  <ul>
+    <li>Models: <code>claude-haiku-4-5</code> for job rating, <code>claude-sonnet-4-6</code> for proposals and resumes.</li>
+    <li>Requires a paid API key.</li>
+    <li>Best quality for structured JSON output and creative writing.</li>
+    <li>Recommended for proposal drafting and resume generation.</li>
+  </ul>
+
+  <h3>Ollama (Free, Local)</h3>
+  <ul>
+    <li>Runs on your machine — no internet needed for rating.</li>
+    <li>Install from <a href="https://ollama.com">ollama.com</a>, pull a model (e.g. <code>ollama pull llama3.2</code>).</li>
+    <li>Lower quality than Claude for structured JSON — expect more parse errors.</li>
+    <li>Good for high-volume job rating (50+ calls per scraper run) to save on API costs.</li>
+    <li>Not recommended for proposals or resumes where quality matters.</li>
+  </ul>
+
+  <div class="callout note">
+    <span class="label">Note</span>
+    A common setup: use Ollama for the per-job rating pass and Claude only for proposal drafting and resume generation. That keeps API spend low while still producing polished output where it counts.
+  </div>
+</section>
+
+<section id="s10">
+  <h2>10. Resume Builder</h2>
+  <p>The resume builder produces a tailored one-page HTML resume per job, using your profile and work history as the only sources of truth.</p>
+  <ol>
+    <li>Click <em>Create Resume</em> on any Available Job or In Progress application.</li>
+    <li>The app looks up the job details from scraped data.</li>
+    <li>Claude generates a tailored HTML resume matching the job requirements.</li>
+    <li>The anti-fabrication checker highlights any skills Claude invented (red badges).</li>
+    <li>The resume opens in a new tab — review, print, or save as PDF.</li>
+    <li>All resumes are saved to <code>data/resumes/</code> and accessible from the Resumes page.</li>
+  </ol>
+
+  <div class="callout warn">
+    <span class="label">Warning</span>
+    The AI may fabricate skills despite anti-fabrication rules. Always review generated resumes before submitting. Skills highlighted in red were <em>not</em> in your profile.
+  </div>
+</section>
+
+<section id="s11">
+  <h2>11. Proposal Drafter</h2>
+  <p>The drafter uses your past proposals and your writing rules to keep new drafts consistent with your voice.</p>
+  <ol>
+    <li>Click <em>Draft Proposal</em> on any Available Job.</li>
+    <li>The app loads your past proposals from the tracker as style examples.</li>
+    <li>Proposal writing rules from <code>config/proposal_rules.txt</code> are applied.</li>
+    <li>Claude drafts a proposal matching your tone and structure.</li>
+    <li>The draft is saved as a new application with status <code>draft</code> — edit before submitting.</li>
+  </ol>
+
+  <div class="callout tip">
+    <span class="label">Tip</span>
+    Label every past application with its actual outcome (<em>won</em> / <em>lost</em>). The drafter weights winning proposals higher as style references, so labelled history improves future drafts.
+  </div>
+</section>
+
+<section id="s12">
+  <h2>12. Skip Tag Learning</h2>
+  <p>The system learns from every job you skip and uses that knowledge to score future jobs.</p>
+  <ul>
+    <li>When you skip a job, you select reason tags (e.g. <em>Too complex</em>, <em>Not my skill set</em>).</li>
+    <li>Tags accumulate weights based on how often you use them.</li>
+    <li>The AI rater receives these weighted tags and scores matching jobs lower automatically.</li>
+    <li>Over time, the system filters out jobs you'd skip before you even see them.</li>
+    <li>View and adjust tag weights in <em>Settings &rarr; Statistics</em> and <em>Settings &rarr; Overrides</em>.</li>
+  </ul>
+</section>
+
+<section id="s13">
+  <h2>13. Mobile Usage</h2>
+  <ul>
+    <li>All pages are responsive — works on iPhone (390&nbsp;px wide) and tablets.</li>
+    <li>Bottom navigation bar on mobile (Jobs, Stats, Resumes, Settings, Demo).</li>
+    <li>Card-based layout replaces tables on small screens.</li>
+    <li>Run the scraper from your phone via the Demo or Control page.</li>
+    <li>The background scraper keeps running even if you lock your phone or close the browser.</li>
+    <li>Access remotely via ngrok: <code>ngrok http 5001</code> gives you a public URL.</li>
+  </ul>
+
+  <div class="callout note">
+    <span class="label">Note</span>
+    Remote ngrok access exposes your tracker publicly. Only run it when you need it, and consider adding basic auth in front of the Flask app before sharing the URL.
+  </div>
+</section>
+
+<section id="s14">
+  <h2>14. Known Limitations</h2>
+  <ul>
+    <li><strong>Scraping is fragile.</strong> Job boards actively block automated access. LinkedIn (via JobSpy) is currently the only reliable free source. Indeed, ZipRecruiter, Upwork, and Craigslist are all blocked without paid proxies.</li>
+    <li><strong>ScraperAPI dependency.</strong> Indeed and ZipRecruiter require ScraperAPI ($49/month) to work. Without it, you're limited to LinkedIn + Freelancer.</li>
+    <li><strong>AI costs money.</strong> Claude API calls cost roughly $0.01–0.05 per scraper run (50+ rating calls). Ollama is free but lower quality.</li>
+    <li><strong>Single user.</strong> The app runs locally for one user. No multi-user support, no server deployment, no authentication.</li>
+    <li><strong>No auto-apply.</strong> The app finds and rates jobs but cannot submit applications automatically. You still apply manually on each platform.</li>
+    <li><strong>Gmail OAuth setup is complex.</strong> Requires a Google Cloud project with Gmail API enabled and a <code>client_secret.json</code> file. Not beginner-friendly.</li>
+  </ul>
+</section>
+
+<section id="s15">
+  <h2>15. Roadmap — Room for Improvement</h2>
+  <table>
+    <thead>
+      <tr><th style="width:28%">Feature</th><th>Description</th><th style="width:16%">Difficulty</th></tr>
+    </thead>
+    <tbody>
+      <tr><td data-label="Feature">Residential proxy support</td><td data-label="Description">Unlock Indeed / ZipRecruiter without ScraperAPI</td><td data-label="Difficulty">Medium</td></tr>
+      <tr><td data-label="Feature">Scheduled scraping</td><td data-label="Description">Cron-style automatic daily runs</td><td data-label="Difficulty">Easy</td></tr>
+      <tr><td data-label="Feature">First-time setup wizard</td><td data-label="Description">Step-by-step UI for new users</td><td data-label="Difficulty">Medium</td></tr>
+      <tr><td data-label="Feature">PyInstaller .exe build</td><td data-label="Description">Standalone executable for non-developers</td><td data-label="Difficulty">Medium</td></tr>
+      <tr><td data-label="Feature">Multi-user support</td><td data-label="Description">User accounts, separate profiles, shared server</td><td data-label="Difficulty">Hard</td></tr>
+      <tr><td data-label="Feature">Browser extension</td><td data-label="Description">One-click "rate this job" from any job board page</td><td data-label="Difficulty">Hard</td></tr>
+      <tr><td data-label="Feature">More AI providers</td><td data-label="Description">OpenAI, Google Gemini, local models beyond Ollama</td><td data-label="Difficulty">Easy</td></tr>
+      <tr><td data-label="Feature">Email template system</td><td data-label="Description">Cold outreach templates for freelance client acquisition</td><td data-label="Difficulty">Easy</td></tr>
+      <tr><td data-label="Feature">Advanced analytics</td><td data-label="Description">Profile comparison, ROI by source, weekly activity trends</td><td data-label="Difficulty">Medium</td></tr>
+      <tr><td data-label="Feature">Webhook integrations</td><td data-label="Description">Slack / Discord notifications instead of email</td><td data-label="Difficulty">Easy</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="s16">
+  <h2>16. Project Structure</h2>
+<pre><code>JobScoutAI/
+&#9500;&#9472;&#9472; config/
+&#9474;   &#9500;&#9472;&#9472; settings.py              &#8212; keywords, budget, platforms, location
+&#9474;   &#9500;&#9472;&#9472; profile.json             &#8212; your skills and contact info
+&#9474;   &#9500;&#9472;&#9472; proposal_rules.txt       &#8212; AI writing guidelines
+&#9474;   &#9500;&#9472;&#9472; resume_content.txt       &#8212; work history for resume builder
+&#9474;   &#9500;&#9472;&#9472; filter_config.json       &#8212; AI score thresholds
+&#9474;   &#9500;&#9472;&#9472; notification_config.json &#8212; email notification settings
+&#9474;   &#9500;&#9472;&#9472; profiles/                &#8212; search profile configs
+&#9474;   &#9492;&#9472;&#9472; ...
+&#9500;&#9472;&#9472; job_hunter/
+&#9474;   &#9500;&#9472;&#9472; scraper.py               &#8212; main pipeline orchestrator
+&#9474;   &#9500;&#9472;&#9472; filter.py                &#8212; two-tier AI job rating
+&#9474;   &#9500;&#9472;&#9472; ai_client.py             &#8212; unified Claude / Ollama interface
+&#9474;   &#9500;&#9472;&#9472; notifier.py              &#8212; email notifications
+&#9474;   &#9500;&#9472;&#9472; proposer.py              &#8212; proposal drafter
+&#9474;   &#9500;&#9472;&#9472; resume_builder.py        &#8212; AI resume generator
+&#9474;   &#9500;&#9472;&#9472; browser.py               &#8212; Selenium / undetected-chrome manager
+&#9474;   &#9500;&#9472;&#9472; background.py            &#8212; background thread execution
+&#9474;   &#9492;&#9472;&#9472; *_scraper.py             &#8212; per-platform scrapers
+&#9500;&#9472;&#9472; tracker/
+&#9474;   &#9500;&#9472;&#9472; app.py                   &#8212; Flask app entry point
+&#9474;   &#9500;&#9472;&#9472; database.py              &#8212; SQLite queries
+&#9474;   &#9500;&#9472;&#9472; helpers.py               &#8212; shared utilities
+&#9474;   &#9500;&#9472;&#9472; routes/                  &#8212; Flask blueprint routes
+&#9474;   &#9492;&#9472;&#9472; templates/               &#8212; HTML templates
+&#9500;&#9472;&#9472; data/                        &#8212; job results, database, resumes (gitignored)
+&#9500;&#9472;&#9472; .env                         &#8212; API keys (gitignored)
+&#9500;&#9472;&#9472; requirements.txt
+&#9500;&#9472;&#9472; CLAUDE.md                    &#8212; developer guide
+&#9492;&#9472;&#9472; README.md</code></pre>
+</section>
+
+<section id="s17">
+  <h2>17. Troubleshooting</h2>
+  <dl class="defs">
+    <dt>"No module named 'distutils'"</dt>
+    <dd>Run <code>pip install setuptools</code>. Required for <code>undetected-chromedriver</code> on Python 3.12+.</dd>
+
+    <dt>Indeed / ZipRecruiter return 0 jobs</dt>
+    <dd>These platforms block scraping without ScraperAPI. Check <em>Settings &rarr; Scraper</em> for your ScraperAPI key, or disable these platforms.</dd>
+
+    <dt>"Invalid grant" Gmail error</dt>
+    <dd>Delete <code>gmail_token.json</code> and restart the app to re-authenticate.</dd>
+
+    <dt>Dashboard shows Internal Server Error</dt>
+    <dd>Check for Jinja2 template errors in the terminal. Common cause: dict keys that clash with Python method names — use bracket notation <code>d["values"]</code>, not <code>d.values</code>.</dd>
+
+    <dt>Resume builder fabricates skills</dt>
+    <dd>Review all generated resumes before submitting. Skills highlighted in red were not found in your profile.</dd>
+
+    <dt>Scraper runs for 40+ minutes</dt>
+    <dd>Normal with multiple profiles and polite delays. Use the background scraper (Control page) so the UI stays responsive.</dd>
+
+    <dt>App freezes during scraping</dt>
+    <dd>Use the background scraper (Control page's <em>Run Scraper</em> button) rather than running <code>python -m job_hunter.scraper</code> while the web UI is also running in the same shell.</dd>
+  </dl>
+
+  <div class="callout tip">
+    <span class="label">Tip</span>
+    When anything unusual happens, check the terminal running <code>python -m tracker.app</code> — nearly every error prints a clear traceback or warning there.
+  </div>
+</section>
+
+<section id="s18">
+  <h2>18. Contributing</h2>
+  <ul>
+    <li>Fork the repo and create a feature branch.</li>
+    <li>Follow the coding standards in <code>CLAUDE.md</code>.</li>
+    <li>All functions must have docstrings.</li>
+    <li>Use f-strings for string formatting.</li>
+    <li>Handle errors gracefully with clear print messages.</li>
+    <li>Test before submitting a PR — run the scraper end-to-end and check the tracker UI.</li>
+  </ul>
+</section>
+
+<section id="s19">
+  <h2>19. License</h2>
+  <p>
+    JobScoutAI is released under the <strong>MIT License</strong>. You are free to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the software, provided the license notice is preserved.
+  </p>
+  <p>
+    The software is provided "as is", without warranty of any kind. See the <code>LICENSE</code> file in the repository for the full text.
+  </p>
+</section>
+
+<footer>
+  JobScoutAI &middot; User Guide &middot; Built with Python, Flask, and Claude AI &middot; <a href="#">Back to top</a>
+</footer>
+
+</div>
+</body>
+</html>
