@@ -199,10 +199,20 @@
   .grid-scroll { position: relative; overflow: hidden; height: 340px; }
   @media (max-width: 768px) { .grid-scroll { height: 300px; } }
   @media (max-width: 480px) { .grid-scroll { height: 280px; } }
-  table.sheet { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 12.5px; position: relative; }
+  table.sheet {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    position: relative;
+    table-layout: fixed;
+  }
   table.sheet th, table.sheet td {
     border: 1px solid var(--border-strong);
-    padding: 8px 10px; text-align: left; white-space: nowrap;
+    padding: 8px 10px; text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     position: relative;
     transition: background .3s ease, color .3s ease, opacity .5s ease, transform .5s ease;
   }
@@ -210,6 +220,18 @@
   table.sheet th.row-h, table.sheet td.row-h {
     background: var(--bg-3); color: var(--text-dimmer);
     text-align: center; width: 30px; font-size: 11px;
+  }
+  /* Locked column widths — prevent width shift when content changes (dup badges, etc.) */
+  table.sheet col.col-vendor { width: 34%; }
+  table.sheet col.col-date   { width: 22%; }
+  table.sheet col.col-amount { width: 22%; }
+  table.sheet col.col-status { width: 18%; }
+  @media (max-width: 640px) {
+    /* Status column cells hidden via .hide-sm; collapse its col and redistribute */
+    table.sheet col.col-vendor { width: 44%; }
+    table.sheet col.col-date   { width: 28%; }
+    table.sheet col.col-amount { width: 24%; }
+    table.sheet col.col-status { width: 0; }
   }
   table.sheet td { color: var(--text); background: var(--bg-2); }
 
@@ -676,6 +698,13 @@
         <div class="grid-scroll" id="gridScroll">
           <div class="scan-line" id="scanLine" aria-hidden="true"></div>
           <table class="sheet" id="sheet" aria-hidden="true">
+            <colgroup>
+              <col style="width:30px" />
+              <col class="col-vendor" />
+              <col class="col-date" />
+              <col class="col-amount" />
+              <col class="col-status hide-sm" />
+            </colgroup>
             <thead>
               <tr>
                 <th class="row-h"></th>
@@ -843,7 +872,7 @@
           </div>
           <div class="contact-detail">
             <span class="contact-label">Pricing</span>
-            <span>Flat rate, $200–$2,000 per project</span>
+            <span>Project-based pricing. No hourly billing. No meetings about meetings.</span>
           </div>
         </div>
       </div>
@@ -1172,14 +1201,13 @@ if (contactForm && formMsg) {
 }
 
 // ---------- Sticky CTA ----------
+// Visible throughout the site; hides only when the contact section enters the viewport.
 const stickyCta = document.getElementById('stickyCta');
-const heroEl = document.querySelector('header.hero');
 const contactSectionEl = document.getElementById('contact');
-if (stickyCta && heroEl && contactSectionEl) {
+if (stickyCta && contactSectionEl) {
   const onScroll = () => {
-    const heroBottom = heroEl.getBoundingClientRect().bottom;
     const contactTop = contactSectionEl.getBoundingClientRect().top;
-    const show = heroBottom < 0 && contactTop > window.innerHeight;
+    const show = contactTop > window.innerHeight * 0.85;
     stickyCta.classList.toggle('visible', show);
   };
   window.addEventListener('scroll', onScroll, { passive: true });
