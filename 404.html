@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>404 — YTCodes</title>
+<meta name="robots" content="noindex" />
+<link rel="icon" type="image/svg+xml" href="/logo_tag.svg" />
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --text: #e6e8ef;
+    --text-dim: #9097a8;
+    --text-dimmer: #5b6275;
+    --accent: #00d4aa;
+    --danger: #ff6b6b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', 'DejaVu Sans Mono', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    background-image:
+      radial-gradient(ellipse at top right, rgba(0,212,170,0.06), transparent 50%),
+      radial-gradient(ellipse at bottom left, rgba(79,142,247,0.04), transparent 50%);
+  }
+  .ghost-logo {
+    width: 300px;
+    height: 300px;
+    opacity: 0.06;
+    margin-bottom: -60px;
+    pointer-events: none;
+    filter: drop-shadow(0 0 30px rgba(0,212,170,0.2));
+  }
+  .error-code {
+    font-size: 72px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: 10px;
+    margin-bottom: 24px;
+    text-shadow: 0 0 30px rgba(0,212,170,0.35);
+    animation: flicker 4s infinite;
+  }
+  .error-msg {
+    font-size: 20px;
+    color: var(--text);
+    margin-bottom: 12px;
+    font-weight: 400;
+  }
+  .error-detail {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-bottom: 40px;
+    max-width: 520px;
+    line-height: 1.65;
+  }
+  .error-links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+  }
+  .error-links a {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 15px;
+    padding: 12px 24px;
+    border: 1px solid rgba(0,212,170,0.3);
+    border-radius: 6px;
+    transition: background .2s ease, border-color .2s ease, box-shadow .2s ease, transform .1s ease;
+    min-width: 280px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+    letter-spacing: 0.02em;
+  }
+  .error-links a:hover {
+    background: rgba(0,212,170,0.1);
+    border-color: var(--accent);
+    box-shadow: 0 0 14px rgba(0,212,170,0.25);
+  }
+  .error-links a.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #042a22;
+    font-weight: 600;
+  }
+  .error-links a.primary:hover {
+    background: #00e8bb;
+    box-shadow: 0 0 18px rgba(0,212,170,0.4);
+    transform: translateY(-1px);
+  }
+  .footer-404 {
+    position: absolute;
+    bottom: 24px;
+    font-size: 11px;
+    color: var(--text-dimmer);
+    letter-spacing: 2px;
+  }
+  /* Subtle horizontal scan line */
+  .scanline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(0,212,170,0.08);
+    box-shadow: 0 0 12px rgba(0,212,170,0.15);
+    animation: scan 8s linear infinite;
+    pointer-events: none;
+    z-index: 100;
+  }
+  @keyframes scan {
+    0%   { top: -2px; }
+    100% { top: 100vh; }
+  }
+  @keyframes flicker {
+    0%, 92%, 100% { opacity: 1; }
+    93% { opacity: 0.82; }
+    94% { opacity: 1; }
+    96% { opacity: 0.92; }
+    97% { opacity: 1; }
+  }
+  @media (max-width: 768px) {
+    .error-code { font-size: 48px; letter-spacing: 6px; }
+    .error-msg { font-size: 16px; }
+    .error-detail { font-size: 13px; }
+    .ghost-logo { width: 220px; height: 220px; margin-bottom: -44px; }
+    .error-links a { min-width: 240px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: .001s !important;
+      transition-duration: .001s !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!--
+  "The Deliverator belongs to an elite order, a hallowed sub-category."
+  — Neal Stephenson, Snow Crash
+
+  You found the source. Respect.
+  If you're reading this, you probably know what VBA is.
+  Send me a hard problem: ytcodes.work@gmail.com
+-->
+
+<div class="scanline" aria-hidden="true"></div>
+
+<img src="/logo_glitch.svg" alt="" class="ghost-logo" aria-hidden="true" />
+
+<div class="error-code">&gt; 404</div>
+<div class="error-msg">This page has been franchised out of existence.</div>
+<div class="error-detail">
+  The URL you requested does not exist in this franchise territory.<br/>
+  All roads lead back to the grid.
+</div>
+
+<div class="error-links">
+  <a href="/" class="primary">&gt; return to grid</a>
+  <a href="mailto:ytcodes.work@gmail.com">&gt; contact the deliverator</a>
+</div>
+
+<div class="footer-404">// ytcodes.dev — data courier — signal over noise</div>
+
+</body>
+</html>

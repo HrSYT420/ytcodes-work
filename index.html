@@ -145,9 +145,12 @@
     z-index: 0;
   }
   header.hero .container { position: relative; z-index: 1; }
-  .hero-grid { display: grid; grid-template-columns: 1fr; gap: 48px; align-items: start; }
+  .hero-grid { display: grid; grid-template-columns: 1fr; gap: 40px; align-items: center; }
+  @media (min-width: 900px) { .hero-grid { grid-template-columns: 1.1fr 1fr; gap: 56px; } }
 
-  /* Value proposition cards — plain-language benefits between headline and animation */
+  /* Value proposition section (below hero) */
+  .value-section { padding: 72px 0 48px; border-top: 1px solid var(--border); }
+  @media (max-width: 640px) { .value-section { padding: 56px 0 32px; } }
   .value-cards {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -247,13 +250,10 @@
     background: var(--bg-2);
     border: 1px solid var(--border-strong);
     border-radius: 12px;
-    padding: 16px;
+    padding: 14px;
     box-shadow: 0 24px 60px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.02) inset;
     display: flex;
     flex-direction: column;
-    max-width: 720px;
-    width: 100%;
-    margin: 24px auto 0;
   }
   .demo-header {
     display: flex; align-items: center; gap: 8px;
@@ -280,116 +280,73 @@
   }
   .demo-status.state-clean { color: var(--accent); background: rgba(0,212,170,0.12); border-color: rgba(0,212,170,0.3); }
 
-  .grid-scroll { position: relative; overflow: hidden; height: 340px; }
-  @media (max-width: 768px) { .grid-scroll { height: 300px; } }
-  @media (max-width: 480px) { .grid-scroll { height: 280px; } }
-  table.sheet {
-    width: 100%;
-    border-collapse: collapse;
-    font-family: var(--font-mono);
-    font-size: 12.5px;
+  /* Scatter-Organize mini animation */
+  .mini-stage {
     position: relative;
-    table-layout: fixed;
-  }
-  table.sheet th, table.sheet td {
-    border: 1px solid var(--border-strong);
-    padding: 8px 10px; text-align: left;
-    white-space: nowrap;
+    height: 240px;
     overflow: hidden;
-    text-overflow: ellipsis;
+    cursor: pointer;
+    border-radius: 6px;
+    background:
+      radial-gradient(ellipse at center, rgba(0,212,170,0.04), transparent 70%);
+  }
+  @media (max-width: 640px) { .mini-stage { height: 220px; } }
+  .mini-grid {
+    position: absolute; inset: 14px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .mini-cell {
     position: relative;
-    transition: background .3s ease, color .3s ease, opacity .5s ease, transform .5s ease;
-  }
-  table.sheet th { background: var(--bg-3); color: var(--text-dim); font-weight: 500; font-size: 11px; letter-spacing: .05em; }
-  table.sheet th.row-h, table.sheet td.row-h {
-    background: var(--bg-3); color: var(--text-dimmer);
-    text-align: center; width: 30px; font-size: 11px;
-  }
-  /* Locked column widths — prevent width shift when content changes (dup badges, etc.) */
-  table.sheet col.col-vendor { width: 34%; }
-  table.sheet col.col-date   { width: 22%; }
-  table.sheet col.col-amount { width: 22%; }
-  table.sheet col.col-status { width: 18%; }
-  @media (max-width: 640px) {
-    /* Status column cells hidden via .hide-sm; collapse its col and redistribute */
-    table.sheet col.col-vendor { width: 44%; }
-    table.sheet col.col-date   { width: 28%; }
-    table.sheet col.col-amount { width: 24%; }
-    table.sheet col.col-status { width: 0; }
-  }
-  table.sheet td { color: var(--text); background: var(--bg-2); }
-
-  td.dirty { background: rgba(255,107,107,0.06); color: #ffd4d4; }
-  td.dirty::after {
-    content: ''; position: absolute; top: 4px; right: 4px;
-    width: 5px; height: 5px; border-radius: 50%;
-    background: var(--danger); opacity: .7;
-  }
-  td.clean { background: rgba(0,212,170,0.04); color: #d4f7ee; }
-  td.flash { animation: cellFlash .5s ease; }
-  @keyframes cellFlash {
-    0% { background: rgba(0,212,170,0.5); box-shadow: inset 0 0 0 2px rgba(0,212,170,0.8); }
-    100% { background: rgba(0,212,170,0.04); }
-  }
-
-  .dup-badge {
-    display: inline-block;
-    margin-left: 8px;
-    font-size: 9px;
-    padding: 2px 6px;
-    border-radius: 3px;
-    background: rgba(255,107,107,0.15);
-    color: var(--danger);
-    border: 1px solid rgba(255,107,107,0.3);
-    letter-spacing: .08em;
-    font-weight: 600;
-    vertical-align: middle;
-    animation: badgeIn .4s ease;
-  }
-  @keyframes badgeIn {
-    from { opacity: 0; transform: scale(.7); }
-    to { opacity: 1; transform: scale(1); }
-  }
-
-  tr.removing td {
-    transition: opacity 0.5s ease, transform 0.5s ease, padding 0.4s ease, font-size 0.4s ease, line-height 0.4s ease, border-width 0.4s ease;
-    opacity: 0;
-    color: transparent !important;
-  }
-  tr.removing td:not(.row-h) {
-    background: rgba(255,107,107,0.08) !important;
-    text-decoration: line-through;
-  }
-  tr.removing.collapsed td {
-    padding-top: 0; padding-bottom: 0;
-    font-size: 0; line-height: 0;
-    border-top-width: 0; border-bottom-width: 0;
-  }
-
-  .scan-line {
-    position: absolute; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    box-shadow: 0 0 20px rgba(0,212,170,0.8), 0 0 40px rgba(0,212,170,0.4);
-    opacity: 0;
-    pointer-events: none;
-    z-index: 2;
-    top: 0;
-  }
-  .scan-line.active { opacity: 1; }
-
-  .check-overlay {
-    position: absolute; inset: 0;
+    background: rgba(0, 212, 170, 0.06);
+    border: 1px solid rgba(0, 212, 170, 0.25);
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-dim);
     display: flex; align-items: center; justify-content: center;
-    pointer-events: none; opacity: 0; transition: opacity .3s ease;
-    z-index: 3;
+    transition:
+      transform 0.75s cubic-bezier(0.34, 1.2, 0.64, 1),
+      background 0.4s ease,
+      border-color 0.4s ease,
+      color 0.4s ease,
+      box-shadow 0.4s ease;
+    will-change: transform;
   }
-  .check-overlay.show { opacity: 1; }
-  .check-overlay svg { width: 84px; height: 84px; filter: drop-shadow(0 0 24px rgba(0,212,170,0.7)); }
-  .check-overlay circle { stroke-dasharray: 176; stroke-dashoffset: 176; animation: drawCircle .5s ease forwards; }
-  .check-overlay path { stroke-dasharray: 60; stroke-dashoffset: 60; animation: drawCheck .4s ease .4s forwards; }
-  @keyframes drawCircle { to { stroke-dashoffset: 0; } }
-  @keyframes drawCheck { to { stroke-dashoffset: 0; } }
+  .mini-grid.scattered .mini-cell {
+    transform: translate(var(--tx, 0), var(--ty, 0)) rotate(var(--tr, 0deg));
+  }
+  .mini-grid.scattered .mini-cell.dirty {
+    background: rgba(255, 107, 107, 0.08);
+    border-color: rgba(255, 107, 107, 0.4);
+    color: rgba(255, 107, 107, 0.7);
+  }
+  .mini-grid.sorted .mini-cell {
+    box-shadow: 0 0 12px rgba(0, 212, 170, 0.15);
+  }
+  .mini-grid.sorted .mini-cell.flash {
+    animation: cellGlow 0.6s ease;
+  }
+  @keyframes cellGlow {
+    0% { background: rgba(0, 212, 170, 0.35); box-shadow: 0 0 20px rgba(0, 212, 170, 0.5); }
+    100% { background: rgba(0, 212, 170, 0.06); box-shadow: 0 0 12px rgba(0, 212, 170, 0.15); }
+  }
+  .mini-hint {
+    position: absolute;
+    bottom: 8px; left: 0; right: 0;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dimmer);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .4s ease;
+  }
+  .mini-stage:hover .mini-hint { opacity: 0.6; }
 
   .demo-caption {
     margin-top: 14px;
@@ -406,7 +363,6 @@
 
   @media (max-width: 768px) {
     .demo-wrap { overflow-x: hidden; }
-    table.sheet { font-size: 11px; }
   }
 
   section { padding: 100px 0; }
@@ -731,6 +687,26 @@
     flex-wrap: wrap;
   }
   .footer-inner img { height: 24px; width: auto; opacity: 0.6; display: block; }
+  .footer-quote {
+    margin: 18px auto 0;
+    max-width: 520px;
+    font-size: 12.5px;
+    color: rgba(230, 232, 239, 0.24);
+    font-style: italic;
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.55;
+    text-align: center;
+    padding: 0 16px;
+  }
+  .footer-quote-attr {
+    display: block;
+    font-style: normal;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(0, 212, 170, 0.3);
+    margin-top: 4px;
+    letter-spacing: 0.02em;
+  }
 
   .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
   .reveal.in { opacity: 1; transform: none; }
@@ -757,9 +733,7 @@
 
 <nav class="top" id="topnav" aria-label="Primary">
   <div class="container">
-    <a href="#top" class="nav-logo" aria-label="YTCodes home">
-      <img src="logo_terminal.svg" alt="YTCodes" height="36" />
-    </a>
+    <a href="#top" class="brand" aria-label="YTCodes home">ytcodes<span class="dot">.</span>work</a>
     <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks"><span></span></button>
     <div class="nav-links" id="navLinks">
       <a href="#tools">Tools</a>
@@ -783,77 +757,57 @@
         </div>
       </div>
 
-      <div class="value-cards reveal" aria-label="What this means for you">
-        <div class="value-card">
-          <div class="value-card-icon" aria-hidden="true">📊</div>
-          <h3>Your spreadsheet runs itself</h3>
-          <p>That report your team rebuilds every Monday? It can be done in one click. Same output, same format, zero manual work.</p>
-        </div>
-        <div class="value-card">
-          <div class="value-card-icon" aria-hidden="true">🔍</div>
-          <h3>Messy data, cleaned automatically</h3>
-          <p>Duplicates, typos, inconsistent formats — the tool finds them, fixes them, and logs every change. You review, not rebuild.</p>
-        </div>
-        <div class="value-card">
-          <div class="value-card-icon" aria-hidden="true">⚡</div>
-          <h3>Hours become seconds</h3>
-          <p>If your team copies, pastes, reformats, or cross-references the same files every week — that process can be automated permanently.</p>
-        </div>
-      </div>
-
-      <div class="value-hook reveal">
-        <p>// No software to install. It runs inside the Excel you already have.</p>
-      </div>
-
-      <div class="before-after reveal" aria-label="Before and after comparison">
-        <div class="ba-before">Before: 3 hours, 4 spreadsheets, 12 copy-paste steps, 2 formatting mistakes.</div>
-        <div class="ba-after">After: One click. Same result. Every time.</div>
-      </div>
-
-      <div class="demo-wrap" role="img" aria-label="Animated demo of messy spreadsheet data being cleaned by automation">
+      <div class="demo-wrap" role="img" aria-label="Interactive demo: scattered cells organizing into a clean grid">
         <div class="demo-header">
           <div class="demo-dots" aria-hidden="true"><span></span><span></span><span></span></div>
-          <div class="demo-title">vendor_data.xlsx — cleanup.bas</div>
-          <div class="demo-status" id="demoStatus"><span id="statusText">Unclean · 7 rows</span></div>
+          <div class="demo-title">data.xlsx — organize</div>
+          <div class="demo-status" id="demoStatus"><span id="statusText">Scattered</span></div>
         </div>
-        <div class="grid-scroll" id="gridScroll">
-          <div class="scan-line" id="scanLine" aria-hidden="true"></div>
-          <table class="sheet" id="sheet" aria-hidden="true">
-            <colgroup>
-              <col style="width:30px" />
-              <col class="col-vendor" />
-              <col class="col-date" />
-              <col class="col-amount" />
-              <col class="col-status hide-sm" />
-            </colgroup>
-            <thead>
-              <tr>
-                <th class="row-h"></th>
-                <th>A · Vendor</th>
-                <th>B · Date</th>
-                <th>C · Amount</th>
-                <th class="hide-sm">D · Status</th>
-              </tr>
-            </thead>
-            <tbody id="sheetBody"></tbody>
-          </table>
-          <div class="check-overlay" id="checkOverlay" aria-hidden="true">
-            <svg viewBox="0 0 64 64" fill="none">
-              <circle cx="32" cy="32" r="28" fill="#0a0a0f" stroke="#00d4aa" stroke-width="3"/>
-              <path d="M20 33 L29 42 L45 24" stroke="#00d4aa" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
+        <div class="mini-stage" id="miniStage">
+          <div class="mini-grid scattered" id="miniGrid"></div>
+          <div class="mini-hint">click to organize</div>
         </div>
         <div class="demo-caption">
-          <span id="phaseLabel">// scanning source…</span>
+          <span id="phaseLabel">// unsorted data</span>
           <div class="phase-indicator" aria-hidden="true">
-            <span class="pip"></span><span class="pip"></span><span class="pip"></span>
+            <span class="pip"></span><span class="pip"></span>
           </div>
         </div>
       </div>
     </div>
   </div>
 </header>
+
+<section class="value-section" aria-label="What this means for you">
+  <div class="container">
+    <div class="value-cards reveal">
+      <div class="value-card">
+        <div class="value-card-icon" aria-hidden="true">📊</div>
+        <h3>Your spreadsheet runs itself</h3>
+        <p>That report your team rebuilds every Monday? It can be done in one click. Same output, same format, zero manual work.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-card-icon" aria-hidden="true">🔍</div>
+        <h3>Messy data, cleaned automatically</h3>
+        <p>Duplicates, typos, inconsistent formats — the tool finds them, fixes them, and logs every change. You review, not rebuild.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-card-icon" aria-hidden="true">⚡</div>
+        <h3>Hours become seconds</h3>
+        <p>If your team copies, pastes, reformats, or cross-references the same files every week — that process can be automated permanently.</p>
+      </div>
+    </div>
+
+    <div class="value-hook reveal">
+      <p>// No software to install. It runs inside the Excel you already have.</p>
+    </div>
+
+    <div class="before-after reveal" aria-label="Before and after comparison">
+      <div class="ba-before">Before: 3 hours, 4 spreadsheets, 12 copy-paste steps, 2 formatting mistakes.</div>
+      <div class="ba-after">After: One click. Same result. Every time.</div>
+    </div>
+  </div>
+</section>
 
 <section class="stats" aria-label="Impact stats">
   <div class="container">
@@ -1008,6 +962,10 @@
     <img src="logo_terminal.svg" alt="YTCodes" height="24" />
     <span>© 2026 YTCodes · Data in. Signal out.</span>
   </div>
+  <div class="footer-quote">
+    &ldquo;Music, movies, microcode, and high-speed pizza delivery.&rdquo;
+    <span class="footer-quote-attr">— what's left when everything else gets automated</span>
+  </div>
 </footer>
 
 <script>
@@ -1140,148 +1098,91 @@ TOOLS.forEach(t => {
   io.observe(btn);
 });
 
-// ---------- Spreadsheet animation ----------
-// rows[i].clean.vendor can be a { name, canonical } object. dup => mark as DUPLICATE
-const ROWS = [
-  { dirty:['ACME Corp',         '03/15/2026',    '$1,234.56',     'ACTIVE'],
-    clean:['ACME Corp',         '2026-03-15',    '$1,234.56',     'Active'], changed:[false,true,false,true] },
-  { dirty:['acme corporation',  '2026-03-15',    '1234.56',       'active'],
-    clean:['Acme Corp',         '2026-03-15',    '$1,234.56',     'Active'], changed:[true,false,true,true], dup:true },
-  { dirty:['Globex LLC',        'March 15, 2026','$1234.56 USD',  'Active'],
-    clean:['Globex LLC',        '2026-03-15',    '$1,234.56',     'Active'], changed:[false,true,true,false] },
-  { dirty:['Acme Corp.',        '15-Mar-26',     '1,234.56',      ''],
-    clean:['Acme Corp',         '2026-03-15',    '$1,234.56',     'Unknown'], changed:[true,true,true,true], dup:true },
-  { dirty:['Initech',           '04/02/2026',    '$980.00',       'active'],
-    clean:['Initech',           '2026-04-02',    '$980.00',       'Active'], changed:[false,true,false,true] },
-  { dirty:['ACME CORP LLC',     '2026-03-16',    '$1,234.56',     'Active'],
-    clean:['Acme Corp',         '2026-03-16',    '$1,234.56',     'Active'], changed:[true,false,false,false], dup:true },
-  { dirty:['Soylent',           'Mar 18, 2026',  '2,450',         ''],
-    clean:['Soylent Corp',      '2026-03-18',    '$2,450.00',     'Unknown'], changed:[true,true,true,true] },
-];
-
-const sheetBody = document.getElementById('sheetBody');
-const gridScroll = document.getElementById('gridScroll');
-const scanLine = document.getElementById('scanLine');
+// ---------- Scatter-Organize mini animation ----------
+const miniStage = document.getElementById('miniStage');
+const miniGrid = document.getElementById('miniGrid');
 const statusEl = document.getElementById('demoStatus');
 const statusText = document.getElementById('statusText');
 const phaseLabel = document.getElementById('phaseLabel');
 const pips = document.querySelectorAll('.phase-indicator .pip');
-const checkOverlay = document.getElementById('checkOverlay');
 
-function emptyCell(v) {
-  return v === '' ? '<span style="color:#5b6275">—</span>' : v;
+const CELL_COUNT = 9;
+const CELL_LABELS = ['A1','B2','C3','D4','E5','F6','G7','H8','I9'];
+const DIRTY_INDICES = [1, 3, 6];
+
+const cells = [];
+for (let i = 0; i < CELL_COUNT; i++) {
+  const cell = document.createElement('div');
+  cell.className = 'mini-cell';
+  if (DIRTY_INDICES.includes(i)) cell.classList.add('dirty');
+  cell.textContent = CELL_LABELS[i];
+  miniGrid.appendChild(cell);
+  cells.push(cell);
 }
 
-function renderDirty() {
-  sheetBody.innerHTML = '';
-  ROWS.forEach((r, i) => {
-    const tr = document.createElement('tr');
-    tr.dataset.idx = i;
-    tr.innerHTML = `
-      <td class="row-h">${i+1}</td>
-      <td class="dirty">${r.dirty[0]}</td>
-      <td class="dirty">${r.dirty[1]}</td>
-      <td class="dirty">${r.dirty[2]}</td>
-      <td class="dirty hide-sm">${emptyCell(r.dirty[3])}</td>
-    `;
-    sheetBody.appendChild(tr);
+function randRange(min, max) { return Math.random() * (max - min) + min; }
+function setScatterOffsets() {
+  cells.forEach(cell => {
+    cell.style.setProperty('--tx', randRange(-50, 50).toFixed(1) + 'px');
+    cell.style.setProperty('--ty', randRange(-40, 40).toFixed(1) + 'px');
+    cell.style.setProperty('--tr', randRange(-22, 22).toFixed(1) + 'deg');
+  });
+}
+function setPip(n) { pips.forEach((p, i) => p.classList.toggle('active', i <= n)); }
+
+function showScattered() {
+  setScatterOffsets();
+  miniGrid.classList.add('scattered');
+  miniGrid.classList.remove('sorted');
+  statusEl.classList.remove('state-clean');
+  statusText.textContent = 'Scattered';
+  phaseLabel.textContent = '// unsorted data';
+  setPip(0);
+}
+
+function showSorted() {
+  miniGrid.classList.remove('scattered');
+  miniGrid.classList.add('sorted');
+  statusEl.classList.add('state-clean');
+  statusText.textContent = 'Organized';
+  phaseLabel.textContent = '// sorted ✓';
+  setPip(1);
+  // brief flash on each cell, staggered
+  cells.forEach((cell, i) => {
+    setTimeout(() => {
+      cell.classList.remove('flash');
+      void cell.offsetWidth;
+      cell.classList.add('flash');
+    }, i * 40);
   });
 }
 
-const wait = ms => new Promise(r => setTimeout(r, ms));
-function setPip(n) { pips.forEach((p, i) => p.classList.toggle('active', i <= n)); }
-
-async function runAnimation() {
-  while (true) {
-    // PHASE 1 — Unclean
-    renderDirty();
-    statusEl.classList.remove('state-clean');
-    statusText.textContent = 'Unclean · 7 rows';
-    phaseLabel.textContent = '// scanning source…';
-    setPip(0);
-    checkOverlay.classList.remove('show');
-    scanLine.classList.remove('active');
-    scanLine.style.top = '0px';
-    await wait(3000);
-
-    // PHASE 2 — Processing: scan line sweeps, each row transforms
-    phaseLabel.textContent = '// running cleanup.bas';
-    setPip(1);
-    scanLine.classList.add('active');
-
-    const rows = Array.from(sheetBody.querySelectorAll('tr'));
-    const totalMs = 4000;
-    const perRow = totalMs / rows.length;
-
-    for (let i = 0; i < rows.length; i++) {
-      const tr = rows[i];
-      const r = ROWS[i];
-      // move scan line to this row's top
-      const rowTop = tr.offsetTop;
-      scanLine.style.transition = 'top .35s ease';
-      scanLine.style.top = (rowTop + tr.offsetHeight / 2) + 'px';
-      await wait(perRow * 0.45);
-
-      // transform cells
-      const tds = tr.querySelectorAll('td');
-      const mapping = [null, 1, 2, 3, 4]; // skip row-h (index 0)
-      for (let c = 1; c <= 4; c++) {
-        const td = tds[c];
-        const cleanVal = r.clean[c-1];
-        const displayVal = (cleanVal === '' || cleanVal === undefined) ? emptyCell('') : cleanVal;
-        const baseHtml = (c === 4) ? displayVal : displayVal;
-        // set clean
-        td.classList.remove('dirty');
-        td.classList.add('clean');
-        // preserve dup badge injection on vendor col (1) for dup rows on last cell
-        if (c === 1 && r.dup) {
-          td.innerHTML = cleanVal + '<span class="dup-badge">DUPLICATE</span>';
-        } else {
-          td.innerHTML = baseHtml;
-        }
-        // flash
-        td.classList.remove('flash');
-        // force reflow
-        void td.offsetWidth;
-        td.classList.add('flash');
-      }
-      await wait(perRow * 0.55);
-    }
-
-    scanLine.classList.remove('active');
-
-    // PHASE 3 — Clean: remove duplicates, show checkmark
-    await wait(400);
-    phaseLabel.textContent = '// removing duplicates…';
-    const dupRows = rows.filter((_, i) => ROWS[i].dup);
-    dupRows.forEach(tr => tr.classList.add('removing'));
-    await wait(500);
-    // collapse heights via CSS class (container has fixed height so no layout shift)
-    dupRows.forEach(tr => tr.classList.add('collapsed'));
-    await wait(500);
-
-    statusEl.classList.add('state-clean');
-    statusText.textContent = 'Clean · 4 unique rows';
-    phaseLabel.textContent = '// 4 unique rows · 3 duplicates removed';
-    setPip(2);
-    checkOverlay.classList.add('show');
-    await wait(2200);
-    checkOverlay.classList.remove('show');
-    await wait(300);
-  }
+let loopTimer = null;
+let isPaused = false;
+function scheduleLoop() {
+  clearTimeout(loopTimer);
+  if (isPaused) return;
+  const sorted = miniGrid.classList.contains('sorted');
+  loopTimer = setTimeout(() => {
+    if (sorted) showScattered(); else showSorted();
+    scheduleLoop();
+  }, sorted ? 2400 : 2600);
 }
+
+// Click interaction — toggle immediately and reset loop timing
+miniStage.addEventListener('click', () => {
+  if (miniGrid.classList.contains('sorted')) showScattered();
+  else showSorted();
+  scheduleLoop();
+});
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 if (reduced) {
-  renderDirty();
-  // flip to clean statically
-  document.querySelectorAll('td.dirty').forEach(td => { td.classList.remove('dirty'); td.classList.add('clean'); });
-  statusEl.classList.add('state-clean');
-  statusText.textContent = 'Clean · 4 unique rows';
+  showSorted();
   phaseLabel.textContent = '// animation disabled (reduced motion)';
-  setPip(2);
 } else {
-  runAnimation();
+  showScattered();
+  setTimeout(() => { showSorted(); scheduleLoop(); }, 1200);
 }
 
 // ---------- Contact form (Formspree) ----------
