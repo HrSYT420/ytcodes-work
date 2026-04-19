@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DCP_Rules &mdash; Deep-Dive Guide</title>
+<style>
+  body {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11pt;
+    color: #1a1a1a;
+    max-width: 960px;
+    margin: 40px auto;
+    line-height: 1.6;
+  }
+  h1 { font-size: 22pt; color: #1F4E79; border-bottom: 3px solid #1F4E79; padding-bottom: 6px; margin-top: 0; }
+  h2 { font-size: 15pt; color: #2E75B6; border-bottom: 1.5px solid #BDD7EE; padding-bottom: 4px; margin-top: 32px; }
+  h3 { font-size: 12pt; color: #1F4E79; margin-top: 22px; margin-bottom: 6px; }
+  h4 { font-size: 11pt; color: #2E75B6; margin-top: 14px; margin-bottom: 4px; }
+  p  { margin: 6px 0 10px 0; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 10.5pt; }
+  th  { background-color: #2E75B6; color: white; padding: 7px 10px; text-align: left; font-weight: bold; }
+  td  { padding: 6px 10px; border: 1px solid #BDD7EE; vertical-align: top; }
+  tr:nth-child(even) td { background-color: #EBF3FB; }
+  .tip     { background-color: #E2EFDA; border-left: 4px solid #70AD47; padding: 8px 14px; margin: 10px 0; border-radius: 2px; }
+  .warning { background-color: #FFF2CC; border-left: 4px solid #FFC000; padding: 8px 14px; margin: 10px 0; border-radius: 2px; }
+  .note    { background-color: #DEEAF1; border-left: 4px solid #2E75B6; padding: 8px 14px; margin: 10px 0; border-radius: 2px; }
+  .danger  { background-color: #FCE4D6; border-left: 4px solid #C00000; padding: 8px 14px; margin: 10px 0; border-radius: 2px; }
+  code { background-color: #F2F2F2; font-family: Consolas, "Courier New", monospace; font-size: 10pt; padding: 1px 4px; border-radius: 2px; color: #C00000; }
+  pre  { background-color: #F7F7F7; border: 1px solid #D0D0D0; border-left: 4px solid #2E75B6;
+         font-family: Consolas, "Courier New", monospace; font-size: 10pt; padding: 12px 16px;
+         margin: 10px 0 14px 0; border-radius: 2px; overflow-x: auto; line-height: 1.5; }
+  ul, ol { margin: 6px 0 10px 0; padding-left: 26px; }
+  li { margin-bottom: 5px; }
+  .toc { background-color: #F7FBFF; border: 1px solid #BDD7EE; padding: 14px 24px; margin: 20px 0; border-radius: 4px; }
+  .toc h2  { border: none; margin-top: 0; font-size: 13pt; }
+  .toc ol  { margin: 4px 0; }
+  .toc li  { margin-bottom: 3px; color: #2E75B6; }
+  .toc a   { color: #2E75B6; text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  .subtitle { color: #595959; font-size: 12pt; margin-top: -6px; margin-bottom: 24px; }
+  .section-intro { color: #595959; font-style: italic; margin-bottom: 12px; }
+  .btn-label { display: inline-block; background-color: #1F4E79; color: white; font-weight: bold;
+               padding: 2px 9px; font-size: 10pt; border-radius: 2px; }
+  .tab-label { display: inline-block; background-color: #D6E4F0; color: #1F4E79; font-weight: bold;
+               padding: 1px 7px; font-size: 10pt; border-radius: 2px; }
+  .step-box    { border: 1px solid #BDD7EE; border-radius: 4px; padding: 10px 16px; margin: 10px 0; background-color: #F7FBFF; }
+  .step-number { display: inline-block; background-color: #2E75B6; color: white; border-radius: 50%;
+                 width: 22px; height: 22px; text-align: center; line-height: 22px;
+                 font-size: 10pt; font-weight: bold; margin-right: 6px; }
+  .tag { display: inline-block; padding: 1px 7px; border-radius: 3px; font-size: 9.5pt; font-weight: bold; margin-right: 2px; }
+  .tag-flag     { background-color: #FFF2CC; color: #7F6000; }
+  .tag-drop     { background-color: #FCE4D6; color: #843C0B; }
+  .tag-keep     { background-color: #E2EFDA; color: #375623; }
+  .tag-short    { background-color: #FFCCCC; color: #843C0B; }
+  .tag-excess   { background-color: #E5CCFF; color: #5B2E91; }
+  .swatch {
+    display: inline-block; width: 16px; height: 12px; border: 1px solid #aaa;
+    border-radius: 2px; vertical-align: middle; margin-right: 4px;
+  }
+  .diagram-wrap {
+    border: 1px solid #BDD7EE; background-color: #F7FBFF; padding: 16px;
+    border-radius: 4px; margin: 14px 0; text-align: center;
+  }
+  .diagram-caption {
+    color: #595959; font-size: 10pt; font-style: italic; margin-top: 6px;
+  }
+  hr { border: none; border-top: 1px solid #BDD7EE; margin: 32px 0; }
+  .plain-eng {
+    background-color: #FFF9E6; border-left: 4px solid #E8B923;
+    padding: 8px 14px; margin: 10px 0; border-radius: 2px;
+  }
+  .plain-eng strong { color: #8A6D00; }
+</style>
+</head>
+<body>
+
+<h1>DCP_Rules &mdash; Deep-Dive Guide</h1>
+<p class="subtitle">Companion to Section 8 of the main user manual &nbsp;|&nbsp; Beta Version 1.0 &nbsp;|&nbsp; April 2026</p>
+
+<div class="note">
+<strong>Who this guide is for:</strong> Anyone who needs to read, edit, or create rows on the
+<span class="tab-label">DCP_Rules</span> tab. No programming background is assumed. Every
+technical concept on the sheet is explained in plain English first, then with a diagram,
+then with a worked example.
+</div>
+
+<div class="note">
+<strong>Why a separate guide?</strong> The main user manual covers all eight sheets in the tool.
+This guide zooms in on just <span class="tab-label">DCP_Rules</span> because that sheet is
+where 90 percent of the tool's power lives &mdash; and where users most often get stuck.
+</div>
+
+<div class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#s1">What Is a Rule?</a></li>
+    <li><a href="#s2">What Is a Token?</a></li>
+    <li><a href="#s3">Anatomy of a Rule (Diagram)</a></li>
+    <li><a href="#s4">Column-by-Column Guide</a></li>
+    <li><a href="#s5">How a Rule Is Evaluated (Workflow Diagram)</a></li>
+    <li><a href="#s6">How to Add a New Rule</a></li>
+    <li><a href="#s7">Worked Examples</a></li>
+    <li><a href="#s8">Highlight Colour Reference</a></li>
+    <li><a href="#s9">Troubleshooting</a></li>
+    <li><a href="#s10">Glossary</a></li>
+  </ol>
+</div>
+
+
+<!-- =============================================================== -->
+<h2 id="s1">1. What Is a Rule?</h2>
+
+<p class="section-intro">
+A rule is one row on the <span class="tab-label">DCP_Rules</span> tab. It tells the tool
+&ldquo;whenever you see a row that looks like <em>this</em>, do <em>that</em>.&rdquo;
+</p>
+
+<p>
+Think of it the same way you'd write an instruction for a colleague reviewing the same report
+by hand:
+</p>
+
+<div class="plain-eng">
+<strong>&ldquo;For every row where <em>Potential Shortage/Excess</em> is less than zero,
+highlight it in red and label it SHORTAGE.&rdquo;</strong>
+</div>
+
+<p>
+That sentence is a rule. On the <span class="tab-label">DCP_Rules</span> sheet, that same
+instruction is split across 12 columns &mdash; one column per element of the sentence. The
+macro reads every rule on every row, decides which rows match, and applies the labels and
+colours to your output file.
+</p>
+
+<p>
+You can have as many rules as you like. Rules never conflict dangerously &mdash; the worst
+that can happen is two rules label the same row, in which case both labels appear in the
+<code>Rule Hits</code> column and the row takes the colour of whichever rule fires first in
+sheet order.
+</p>
+
+
+<!-- =============================================================== -->
+<h2 id="s2">2. What Is a Token?</h2>
+
+<p class="section-intro">
+A <strong>token</strong> is a short internal name for a column in the source file. Rules talk
+to columns through tokens.
+</p>
+
+<p>
+The Oracle DCP report has dozens of columns, and the exact header text sometimes changes
+(<em>Inventory Org</em> one month, <em>Inv Org</em> the next). The tool solves this with a
+two-layer lookup:
+</p>
+
+<ol>
+  <li>The <span class="tab-label">DCP_Columns</span> sheet lists every <strong>token</strong>
+      the tool understands &mdash; things like <code>Inventory Org</code>, <code>Potential Shortage /Excess</code>,
+      <code>Buyer Default Name</code>.</li>
+  <li>Next to each token, a list of <strong>aliases</strong> is kept &mdash; all the header
+      texts Oracle has ever used for that column. The tool picks whichever alias matches
+      your source file today.</li>
+</ol>
+
+<p>
+Because of this, <strong>rules only need to know the token</strong>. If Oracle renames a
+header next year, you edit <span class="tab-label">DCP_Columns</span> once and every rule
+that references that token keeps working.
+</p>
+
+<div class="tip">
+<strong>Where to find the list of tokens:</strong> Open <span class="tab-label">DCP_Columns</span>.
+Column <code>A</code> is the complete list of tokens available to you. Any token you see there
+can be used in the <em>Scope Token</em> or <em>Trigger Token</em> cell of a rule.
+</div>
+
+<div class="note">
+<strong>Can you add your own tokens?</strong> Yes. See Section 6 of the main user manual for
+the &ldquo;Adding your own tokens&rdquo; subsection. Briefly: add a row to
+<span class="tab-label">DCP_Columns</span> with a new token name and the alias(es) that match
+your source header, then use the new token name in any rule.
+</div>
+
+
+<!-- =============================================================== -->
+<h2 id="s3">3. Anatomy of a Rule (Diagram)</h2>
+
+<p class="section-intro">
+Every rule has three logical parts: <strong>Scope</strong> (who does this apply to?),
+<strong>Trigger</strong> (what condition fires it?), and <strong>Action</strong> (what do
+we do when it fires?). The 12 columns on the sheet break down into these three parts.
+</p>
+
+<div class="diagram-wrap">
+<svg width="900" height="260" viewBox="0 0 900 260" xmlns="http://www.w3.org/2000/svg">
+  <!-- SCOPE BOX -->
+  <rect x="30" y="40" width="250" height="180" rx="8" ry="8"
+        fill="#DEEAF1" stroke="#2E75B6" stroke-width="2"/>
+  <text x="155" y="66" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="16" font-weight="bold" fill="#1F4E79">SCOPE</text>
+  <text x="155" y="88" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="11" font-style="italic" fill="#595959">Which rows does this rule look at?</text>
+  <text x="50" y="118" font-family="Calibri, Arial" font-size="11" fill="#1a1a1a">
+    <tspan x="50" dy="0" font-weight="bold">Scope Token</tspan>
+    <tspan x="50" dy="16">(column D)</tspan>
+    <tspan x="50" dy="22" font-weight="bold">Scope Values</tspan>
+    <tspan x="50" dy="16">(column E)</tspan>
+  </text>
+  <text x="50" y="210" font-family="Calibri, Arial" font-size="10" fill="#595959"
+        font-style="italic">Leave blank = applies
+    <tspan x="50" dy="14">to every row.</tspan>
+  </text>
+
+  <!-- TRIGGER BOX -->
+  <rect x="320" y="40" width="250" height="180" rx="8" ry="8"
+        fill="#FFF2CC" stroke="#BF8F00" stroke-width="2"/>
+  <text x="445" y="66" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="16" font-weight="bold" fill="#7F6000">TRIGGER</text>
+  <text x="445" y="88" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="11" font-style="italic" fill="#595959">What condition fires the rule?</text>
+  <text x="340" y="118" font-family="Calibri, Arial" font-size="11" fill="#1a1a1a">
+    <tspan x="340" dy="0" font-weight="bold">Trigger Token</tspan>
+    <tspan x="340" dy="16">(column F)</tspan>
+    <tspan x="340" dy="22" font-weight="bold">Operator</tspan>
+    <tspan x="340" dy="16">(column G)</tspan>
+    <tspan x="340" dy="22" font-weight="bold">Trigger Value</tspan>
+    <tspan x="340" dy="16">(column H)</tspan>
+  </text>
+
+  <!-- ACTION BOX -->
+  <rect x="610" y="40" width="250" height="180" rx="8" ry="8"
+        fill="#E2EFDA" stroke="#548235" stroke-width="2"/>
+  <text x="735" y="66" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="16" font-weight="bold" fill="#375623">ACTION</text>
+  <text x="735" y="88" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="11" font-style="italic" fill="#595959">What happens when it fires?</text>
+  <text x="630" y="118" font-family="Calibri, Arial" font-size="11" fill="#1a1a1a">
+    <tspan x="630" dy="0" font-weight="bold">Action</tspan>
+    <tspan x="630" dy="16">(column I)</tspan>
+    <tspan x="630" dy="22" font-weight="bold">Tag Text</tspan>
+    <tspan x="630" dy="16">(column J)</tspan>
+    <tspan x="630" dy="22" font-weight="bold">Highlight</tspan>
+    <tspan x="630" dy="16">(column L)</tspan>
+  </text>
+
+  <!-- Arrows -->
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2E75B6"/>
+    </marker>
+  </defs>
+  <line x1="280" y1="130" x2="318" y2="130" stroke="#2E75B6" stroke-width="2"
+        marker-end="url(#arrow)"/>
+  <line x1="570" y1="130" x2="608" y2="130" stroke="#2E75B6" stroke-width="2"
+        marker-end="url(#arrow)"/>
+
+  <!-- Header -->
+  <text x="450" y="20" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="13" font-weight="bold" fill="#1F4E79">
+    Every rule is Scope &rarr; Trigger &rarr; Action
+  </text>
+</svg>
+<div class="diagram-caption">Columns A (Enabled), B (Rule ID), C (Rule Name), K (Notes), J (Tag Text) are organisational. The three boxes above hold the logic.</div>
+</div>
+
+<p>
+The shorthand:
+</p>
+
+<table>
+  <tr><th style="width:18%">Part</th><th style="width:24%">Columns</th><th>What it answers</th></tr>
+  <tr><td>SCOPE</td><td>D, E</td>
+      <td>Which subset of rows this rule applies to. Optional &mdash; skip it to apply the
+      rule to <em>every</em> row.</td></tr>
+  <tr><td>TRIGGER</td><td>F, G, H</td>
+      <td>The actual test: pick a column, pick an operator, pick a value.</td></tr>
+  <tr><td>ACTION</td><td>I, J, L</td>
+      <td>What to do when the test passes: keep/drop the row, tag it, colour it.</td></tr>
+  <tr><td>Organisation</td><td>A, B, C, K</td>
+      <td>On/off switch, ID, human name, free-text notes. No effect on the logic.</td></tr>
+</table>
+
+
+<!-- =============================================================== -->
+<h2 id="s4">4. Column-by-Column Guide</h2>
+
+<p class="section-intro">
+Each column on <span class="tab-label">DCP_Rules</span> in the order they appear on the sheet.
+</p>
+
+<h3>4.1 &nbsp; Column A &mdash; Enabled</h3>
+<p>
+Accepts <code>Y</code> or <code>N</code>.
+</p>
+<ul>
+  <li><code>Y</code> &mdash; the rule is active. The tool will evaluate it on every row of
+      the source file during the next <span class="btn-label">Run Extract</span>.</li>
+  <li><code>N</code> &mdash; the rule is parked. The tool reads the row but does nothing with
+      it. All its other settings are preserved for when you turn it back on.</li>
+</ul>
+<div class="plain-eng">
+<strong>Why it matters:</strong> This is your quick on/off switch. Turn off a rule for one
+run without deleting it. Handy when you want to compare results &ldquo;with&rdquo; vs
+&ldquo;without&rdquo; a specific check.
+</div>
+
+<h3>4.2 &nbsp; Column B &mdash; Rule ID</h3>
+<p>
+A short label like <code>R1</code>, <code>R2</code>, <code>R3</code>. Purely for human
+reference &mdash; the tool doesn't use it internally.
+</p>
+<div class="plain-eng">
+<strong>Why it matters:</strong> When a row in the output is flagged, you'll want to know
+<em>which</em> rule caught it. Referring to &ldquo;rule R4&rdquo; in a conversation is much
+faster than quoting its full condition.
+</div>
+<div class="tip">
+<strong>Tip:</strong> Keep IDs sequential and unique. Factory rules are <code>R1</code>
+through <code>R5</code>; your own rules can pick up from <code>R6</code>.
+</div>
+
+<h3>4.3 &nbsp; Column C &mdash; Rule Name</h3>
+<p>
+A one-line, human-readable description of what the rule does. For example:
+<em>Flag all rows where potential shortage is below zero</em>.
+</p>
+<div class="plain-eng">
+<strong>Why it matters:</strong> Three months from now you'll look at your own sheet and
+wonder what you were thinking. The Rule Name is your note-to-future-self. The tool never
+reads it &mdash; it's there for you.
+</div>
+
+<h3>4.4 &nbsp; Column D &mdash; Scope Token</h3>
+<p>
+The name of the column (a <strong>token</strong>, see Section 2) whose value decides whether
+this rule applies to a given row. <strong>Leave blank to apply the rule to every row.</strong>
+</p>
+<div class="plain-eng">
+<strong>Plain English:</strong> &ldquo;Only look at this rule when I'm dealing with rows
+whose <em>Inventory Org</em> matches one of the values I'm about to give you.&rdquo; In that
+sentence, <em>Inventory Org</em> is the Scope Token.
+</div>
+<div class="note">
+<strong>Example:</strong> You want a rule that only applies to three specific orgs.
+Set <strong>Scope Token</strong> = <code>Inventory Org</code> and put the three org numbers
+into the next column (Scope Values). The rule will evaluate its trigger only on rows in those
+orgs and ignore every other row.
+</div>
+
+<div class="warning">
+<strong>Important &mdash; Scope Token is a single column.</strong> Do not type multiple
+tokens separated by commas in column D (e.g. <code>Inventory Org, Buyer Default Name</code>).
+The tool treats the entire cell as one column name, fails the lookup, and the rule silently
+never fires. To combine two column conditions, see Section 7's
+<em>&ldquo;Scope + Trigger = AND&rdquo;</em> example &mdash; that pattern lets you test two
+different columns in a single rule.
+</div>
+
+<h3>4.5 &nbsp; Column E &mdash; Scope Values</h3>
+<p>
+A comma-separated list of values to match against the Scope Token column. If the row's value
+in that column is in the list, the rule proceeds to its trigger. If not, the rule does
+nothing on that row.
+</p>
+<div class="plain-eng">
+<strong>Plain English:</strong> The Scope Values answer &ldquo;which <em>specific values</em>
+in the Scope Token column should make this rule pay attention?&rdquo;
+</div>
+<table>
+  <tr><th style="width:30%">Scope Token</th><th style="width:30%">Scope Values</th><th>Meaning</th></tr>
+  <tr><td>(blank)</td><td>(blank)</td><td>Apply to every row.</td></tr>
+  <tr><td><code>Inventory Org</code></td><td><code>320, 327, 613</code></td>
+      <td>Apply only to rows in orgs 320, 327, or 613.</td></tr>
+  <tr><td><code>Buyer Default Name</code></td><td><code>Alice, Bob</code></td>
+      <td>Apply only to rows whose buyer is Alice or Bob.</td></tr>
+  <tr><td><code>Item Source Type</code></td><td><code>Supplier</code></td>
+      <td>Apply only to supplier-sourced items.</td></tr>
+</table>
+<div class="warning">
+<strong>Important:</strong> Values in column E are matched <em>exactly</em> (case-insensitive,
+trimmed of whitespace). If the source cell says &ldquo;320&rdquo; and you type &ldquo;320A&rdquo;,
+that row is skipped.
+</div>
+
+<h4>When your values already contain a comma</h4>
+<p>
+Buyer names in Oracle are often formatted <code>Smith, John</code> &mdash; the value itself
+contains a comma. A plain comma-separated list would split that one name into two. To handle
+this, the Scope Values cell supports a <strong>semicolon auto-detect</strong>:
+</p>
+<table>
+  <tr><th style="width:38%">What you type in column E</th><th>How the tool parses it</th></tr>
+  <tr><td><code>320, 327, 613</code></td>
+      <td>Comma list &mdash; splits into <code>320</code>, <code>327</code>, <code>613</code>.</td></tr>
+  <tr><td><code>Smith, John; Doe, Jane</code></td>
+      <td>Contains a semicolon &rarr; splits on <code>;</code> into
+      <code>Smith, John</code> and <code>Doe, Jane</code>.</td></tr>
+  <tr><td><code>Smith, John</code></td>
+      <td>No semicolon &rarr; the tool splits on comma and looks for two values
+      (<code>Smith</code> and <code>John</code>). Will not match the buyer. Add a trailing
+      semicolon: <code>Smith, John;</code> to force semicolon mode.</td></tr>
+</table>
+<div class="tip">
+<strong>Rule of thumb:</strong> If any of your values contain a comma, put a semicolon
+between them &mdash; the entire cell then uses semicolons as the separator and commas inside
+values are preserved verbatim.
+</div>
+
+<h3>4.6 &nbsp; Column F &mdash; Trigger Token</h3>
+<p>
+The name of the column that the rule actually inspects &mdash; the column whose value decides
+whether the rule <em>fires</em>. This is required for every rule.
+</p>
+<div class="plain-eng">
+<strong>Plain English:</strong> &ldquo;Look at the value in <em>this</em> column, and decide
+whether my rule should do something.&rdquo;
+</div>
+<div class="note">
+<strong>Difference from Scope Token:</strong> Scope Token narrows <em>which rows</em> the
+rule pays attention to. Trigger Token is the column whose value is actually tested. They can
+be the same column or different columns.
+</div>
+
+<h3>4.7 &nbsp; Column G &mdash; Operator</h3>
+<p>
+The comparison to perform between the Trigger Token's cell value and the Trigger Value. You
+pick one from the following list:
+</p>
+<table>
+  <tr><th style="width:16%">Operator</th><th style="width:28%">Meaning</th><th>Example (cell = 5, rule Trigger Value = 10)</th></tr>
+  <tr><td><code>LT</code></td><td>Less than</td><td>5 &lt; 10 &rarr; fires</td></tr>
+  <tr><td><code>LE</code></td><td>Less than or equal</td><td>5 &le; 10 &rarr; fires</td></tr>
+  <tr><td><code>GT</code></td><td>Greater than</td><td>5 &gt; 10 &rarr; does not fire</td></tr>
+  <tr><td><code>GE</code></td><td>Greater than or equal</td><td>5 &ge; 10 &rarr; does not fire</td></tr>
+  <tr><td><code>EQ</code></td><td>Equals (case-insensitive for text)</td><td>5 = 10 &rarr; does not fire</td></tr>
+  <tr><td><code>NE</code></td><td>Not equal</td><td>5 &ne; 10 &rarr; fires</td></tr>
+  <tr><td><code>IN</code></td>
+      <td>Cell value is in the comma-list you provided</td>
+      <td>Cell = <code>Active</code>, Trigger Value = <code>Active, Pending</code> &rarr; fires</td></tr>
+  <tr><td><code>NOTIN</code></td>
+      <td>Cell value is <em>not</em> in the comma-list</td>
+      <td>Cell = <code>Active</code>, Trigger Value = <code>Obsolete</code> &rarr; fires</td></tr>
+  <tr><td><code>BLANK</code></td>
+      <td>Cell is empty <em>or</em> holds a blank sentinel (see note below). Trigger Value is ignored.</td>
+      <td>Empty cell &rarr; fires. Cell = <code>-</code> &rarr; fires.</td></tr>
+  <tr><td><code>NOTBLANK</code></td>
+      <td>Cell has a real value (not empty, not a blank sentinel). Trigger Value is ignored.</td>
+      <td>Cell = <code>Supplier</code> &rarr; fires. Cell = <code>-</code> &rarr; does <em>not</em> fire.</td></tr>
+  <tr><td><code>CONTAINS</code></td>
+      <td>Cell contains the Trigger Value as a substring (case-insensitive)</td>
+      <td>Cell = <code>Manual Plan</code>, Trigger Value = <code>plan</code> &rarr; fires</td></tr>
+</table>
+<div class="plain-eng">
+<strong>Rule of thumb:</strong> Use <code>LT</code>/<code>GT</code> for numbers,
+<code>EQ</code>/<code>NE</code> for single-value text, <code>IN</code>/<code>NOTIN</code>
+for a list of text values, and <code>BLANK</code>/<code>NOTBLANK</code> when the presence or
+absence of a value is what matters.
+</div>
+
+<h4>Blank sentinels &mdash; why <code>-</code> counts as blank</h4>
+<p>
+Oracle and several other source systems export a literal dash (<code>-</code>) when a field
+has no value, instead of leaving the cell empty. To keep <code>BLANK</code> and
+<code>NOTBLANK</code> rules working on that data, the tool treats a configurable list of
+<em>sentinel</em> values as blank.
+</p>
+<p>
+The list lives on the <span class="tab-label">Run</span> tab in cell
+<code>C12</code> (<strong>Blank indicators</strong>). The default is:
+</p>
+<table>
+  <tr><th style="width:22%">Cell on Run tab</th><th>Default value</th><th>Meaning</th></tr>
+  <tr><td><code>C12</code></td>
+      <td><code>-, --, N/A, #N/A, NA</code></td>
+      <td>Any cell whose trimmed value matches one of these (case-insensitive) is
+      considered blank by <code>BLANK</code> / <code>NOTBLANK</code>. Truly empty cells
+      are always blank regardless of this list.</td></tr>
+</table>
+<div class="tip">
+<strong>Editing the list:</strong> Open the Run tab, edit <code>C12</code>, and re-run the
+extract. No VBE access required. Clearing the cell resets it to the default on the next
+<span class="btn-label">Setup Workbook</span> or <span class="btn-label">Amend Sheet Setup</span>.
+</div>
+<div class="note">
+<strong>Scope of the sentinel list:</strong> Only <code>BLANK</code> / <code>NOTBLANK</code>
+consult this list. <code>EQ</code>, <code>IN</code>, <code>CONTAINS</code> etc. still match
+literally &mdash; if you want a rule to fire on cells equal to <code>-</code>, write
+<code>EQ</code> with Trigger Value <code>-</code>. Numeric operators
+(<code>LT</code>/<code>GT</code>) treat non-numeric dashes as zero, which is a separate
+quirk: filter those rows out on <span class="tab-label">DCP_Filters</span> if it matters.
+</div>
+
+<h3>4.8 &nbsp; Column H &mdash; Trigger Value</h3>
+<p>
+The value you compare against. <strong>This is entirely user-determined</strong> &mdash; the
+tool does not suggest, derive, or auto-fill this cell. You type whatever value makes sense
+for the operator you picked.
+</p>
+<table>
+  <tr><th style="width:20%">Operator</th><th>What to type in Trigger Value</th></tr>
+  <tr><td><code>LT, LE, GT, GE</code></td>
+      <td>A single number: <code>0</code>, <code>100</code>, <code>-5</code>.</td></tr>
+  <tr><td><code>EQ, NE</code></td>
+      <td>A single text or number: <code>Active</code>, <code>Supplier</code>, <code>0</code>.</td></tr>
+  <tr><td><code>IN, NOTIN</code></td>
+      <td>A comma-separated list: <code>320, 327, 613</code> or <code>Active, Pending</code>.
+      If any of your values already contains a comma (e.g. buyer names like
+      <code>Smith, John</code>), switch the whole list to semicolons instead
+      &mdash; the parser auto-detects the delimiter. See the note below.</td></tr>
+  <tr><td><code>BLANK, NOTBLANK</code></td>
+      <td>Leave blank. The value is ignored.</td></tr>
+  <tr><td><code>CONTAINS</code></td>
+      <td>A substring: <code>plan</code>, <code>drop</code>, <code>2026</code>.</td></tr>
+</table>
+<div class="tip">
+<strong>Tip:</strong> Numbers are numbers, text is text. <code>EQ</code> with value
+<code>0</code> matches numeric zero only; it will not match the text &ldquo;Zero&rdquo;.
+</div>
+
+<h4>When your <code>IN</code> / <code>NOTIN</code> list contains values with commas</h4>
+<p>
+Same rule as Scope Values in &sect;4.5: if any value you want to list already contains a
+comma, switch the whole list to semicolons. As soon as the parser sees a <code>;</code> in
+the cell it treats semicolons as the separator and leaves embedded commas intact.
+</p>
+<table>
+  <tr><th style="width:35%">What you type in Trigger Value</th><th>How the rule engine reads it</th></tr>
+  <tr><td><code>IN</code> = <code>320, 327, 613</code></td>
+      <td>Three values: <code>320</code>, <code>327</code>, <code>613</code>. Works as expected.</td></tr>
+  <tr><td><code>IN</code> = <code>Smith, John; Doe, Jane</code></td>
+      <td>Two values: <code>Smith, John</code> and <code>Doe, Jane</code>. Semicolon wins.</td></tr>
+  <tr><td><code>IN</code> = <code>Smith, John</code></td>
+      <td>Two broken fragments: <code>Smith</code> and <code>John</code>. Add a trailing
+      semicolon &mdash; <code>Smith, John;</code> &mdash; to force semicolon mode for a
+      single buyer name.</td></tr>
+</table>
+
+<h3>4.9 &nbsp; Column I &mdash; Action</h3>
+<p>
+What the tool does when the rule fires on a row. Pick one of:
+</p>
+<table>
+  <tr><th style="width:22%">Action</th><th>Effect</th></tr>
+  <tr><td><span class="tag tag-flag">FLAG</span></td>
+      <td><strong>Keep the row in the output.</strong> Add the rule's Tag Text to the
+      <code>Rule Hits</code> column and paint the row in the rule's Highlight colour.
+      Most rules you write will be FLAG rules.</td></tr>
+  <tr><td><span class="tag tag-drop">DROP</span></td>
+      <td><strong>Remove the row from the output entirely.</strong> Use this when you want
+      to hide rows you've already decided are noise. DROP takes precedence over every other
+      action &mdash; if any DROP rule fires, the row disappears.</td></tr>
+  <tr><td><span class="tag tag-keep">KEEP_ONLY</span></td>
+      <td><strong>Mark the row as a &ldquo;keeper&rdquo;.</strong> If any KEEP_ONLY rule is
+      enabled anywhere on the sheet, the tool flips its behaviour: only rows that fire at
+      least one KEEP_ONLY rule are written to the output. All other rows are dropped.</td></tr>
+</table>
+<div class="warning">
+<strong>KEEP_ONLY behaviour is global.</strong> Enabling even one KEEP_ONLY rule changes how
+every other row is treated. If you want to see only shortage rows, that's a KEEP_ONLY use
+case. If you just want to tag shortage rows in red while still seeing everything else, use
+FLAG.
+</div>
+
+<h3>4.10 &nbsp; Column J &mdash; Tag Text</h3>
+<p>
+A short label &mdash; usually 1 to 10 characters &mdash; that gets added to the
+<code>Rule Hits</code> column on the output file whenever this rule fires. If multiple rules
+fire on the same row, their tags are joined with a semicolon: <code>SHORTAGE; R4 HIT</code>.
+</p>
+<div class="plain-eng">
+<strong>Why it matters:</strong> The <code>Rule Hits</code> column is how you spot which
+rule caught a row. Keep tag texts short and unique so you can filter or sort the output
+file on them easily.
+</div>
+<table>
+  <tr><th style="width:30%">Good Tag Text</th><th>Why</th></tr>
+  <tr><td><code>SHORTAGE</code></td><td>Short, ALLCAPS, describes the condition.</td></tr>
+  <tr><td><code>EXCESS</code></td><td>Short, ALLCAPS, descriptive.</td></tr>
+  <tr><td><code>R4 HIT</code></td><td>Ties back to Rule ID for quick reference.</td></tr>
+  <tr><td><code>No supplier</code></td><td>Readable, specific.</td></tr>
+</table>
+
+<h3>4.11 &nbsp; Column K &mdash; Notes</h3>
+<p>
+Free-text notes. The tool doesn't read this column at all. Use it to record why you created
+the rule, who asked for it, or when it was last reviewed.
+</p>
+<div class="plain-eng">
+<strong>Why it matters:</strong> Six months from now, someone (possibly you) will ask why
+rule R7 exists. A Notes entry like &ldquo;Added 2026-03 at Jane's request after the March
+MBR&rdquo; saves a half-hour conversation.
+</div>
+
+<h3>4.12 &nbsp; Column L &mdash; Highlight</h3>
+<p>
+The colour the tool paints the row when this rule fires. There are <strong>six</strong>
+ways to specify a colour &mdash; pick whichever feels most natural.
+</p>
+<table>
+  <tr><th style="width:22%">Format</th><th>What to type in column L</th><th>Example</th></tr>
+  <tr><td>Keyword</td>
+      <td><code>SHORTAGE</code> (preset light red) or <code>EXCESS</code> (preset light lavender).</td>
+      <td><span class="tag tag-short">SHORTAGE</span> <span class="tag tag-excess">EXCESS</span></td></tr>
+  <tr><td>Colour name</td>
+      <td>One of ~24 built-in names: <code>RED</code>, <code>BLUE</code>, <code>GREEN</code>,
+      <code>YELLOW</code>, <code>ORANGE</code>, <code>PURPLE</code>, <code>PINK</code>,
+      <code>HOTPINK</code>, <code>LIGHTBLUE</code>, <code>LIGHTGREEN</code>, <code>LIGHTYELLOW</code>,
+      <code>LAVENDER</code>, <code>CYAN</code>, <code>MAGENTA</code>, <code>GRAY</code>,
+      <code>LIGHTGRAY</code>, <code>AMBER</code>, <code>SALMON</code>, <code>GOLD</code>,
+      etc.</td>
+      <td><code>HOTPINK</code></td></tr>
+  <tr><td>Hex code</td>
+      <td><code>#RRGGBB</code> web hex.</td>
+      <td><code>#FF69B4</code></td></tr>
+  <tr><td>R,G,B</td>
+      <td>Three numbers 0-255 separated by commas.</td>
+      <td><code>255,105,180</code></td></tr>
+  <tr><td>Long value</td>
+      <td>A single Excel colour integer (advanced; copy from another workbook's Immediate window).</td>
+      <td><code>11862015</code></td></tr>
+  <tr><td>Cell fill</td>
+      <td>Leave column L <strong>blank</strong> and paint the <em>cell itself</em> with Excel's
+      paint-bucket. The tool reads the cell's fill colour.</td>
+      <td>Yellow-painted cell &rarr; yellow row</td></tr>
+</table>
+<div class="tip">
+<strong>Easiest for non-technical users:</strong> Leave column L blank, click the cell, press
+the paint-bucket in Excel's Home ribbon, pick any colour you like. The tool reads it at run
+time. You never need to know what hex codes or RGB numbers are.
+</div>
+<div class="warning">
+<strong>Fallback colour:</strong> If nothing in column L parses and the cell isn't painted,
+the row is highlighted in amber. So even a typo cannot cause a rule to &ldquo;lose&rdquo; its
+highlight &mdash; the row still stands out; it just won't be the colour you intended.
+</div>
+
+
+<!-- =============================================================== -->
+<h2 id="s5">5. How a Rule Is Evaluated (Workflow Diagram)</h2>
+
+<p class="section-intro">
+For each row in the source file, the tool walks every enabled rule through the decision tree
+below. This explains <em>exactly</em> what happens and in what order.
+</p>
+
+<div class="diagram-wrap">
+<svg width="900" height="780" viewBox="0 0 900 780" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2E75B6"/>
+    </marker>
+  </defs>
+
+  <!-- Start -->
+  <rect x="340" y="20" width="220" height="44" rx="22" ry="22"
+        fill="#1F4E79" stroke="#1F4E79"/>
+  <text x="450" y="47" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="13" font-weight="bold" fill="white">Row from source file</text>
+
+  <!-- Enabled? -->
+  <polygon points="450,90 590,150 450,210 310,150"
+           fill="#FFF2CC" stroke="#BF8F00" stroke-width="2"/>
+  <text x="450" y="144" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="12" font-weight="bold" fill="#7F6000">Rule Enabled?</text>
+  <text x="450" y="164" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="10" fill="#7F6000">(col A = Y)</text>
+
+  <!-- Skip Rule -->
+  <rect x="650" y="130" width="160" height="40" rx="6" ry="6"
+        fill="#F2F2F2" stroke="#A6A6A6"/>
+  <text x="730" y="155" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="11" fill="#595959">Skip this rule</text>
+
+  <!-- Scope check -->
+  <polygon points="450,240 610,310 450,380 290,310"
+           fill="#DEEAF1" stroke="#2E75B6" stroke-width="2"/>
+  <text x="450" y="300" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="12" font-weight="bold" fill="#1F4E79">Scope Token blank OR</text>
+  <text x="450" y="316" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="12" font-weight="bold" fill="#1F4E79">row matches Scope Values?</text>
+
+  <!-- Rule doesn't fire -->
+  <rect x="650" y="290" width="160" height="40" rx="6" ry="6"
+        fill="#F2F2F2" stroke="#A6A6A6"/>
+  <text x="730" y="315" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="11" fill="#595959">Rule doesn't fire</text>
+
+  <!-- Trigger evaluation -->
+  <polygon points="450,410 610,480 450,550 290,480"
+           fill="#FFF2CC" stroke="#BF8F00" stroke-width="2"/>
+  <text x="450" y="470" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="12" font-weight="bold" fill="#7F6000">Does cell at Trigger Token</text>
+  <text x="450" y="486" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="12" font-weight="bold" fill="#7F6000">satisfy</text>
+  <text x="450" y="502" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="12" font-weight="bold" fill="#7F6000">Operator + Trigger Value?</text>
+
+  <!-- Rule doesn't fire (trigger branch) -->
+  <rect x="650" y="460" width="160" height="40" rx="6" ry="6"
+        fill="#F2F2F2" stroke="#A6A6A6"/>
+  <text x="730" y="485" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="11" fill="#595959">Rule doesn't fire</text>
+
+  <!-- Fire action dispatch -->
+  <rect x="330" y="580" width="240" height="44" rx="6" ry="6"
+        fill="#E2EFDA" stroke="#548235" stroke-width="2"/>
+  <text x="450" y="608" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="13" font-weight="bold" fill="#375623">Rule fires. Apply Action.</text>
+
+  <!-- Three actions -->
+  <rect x="60" y="680" width="220" height="70" rx="6" ry="6"
+        fill="#FFF2CC" stroke="#BF8F00" stroke-width="2"/>
+  <text x="170" y="706" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="12" font-weight="bold" fill="#7F6000">FLAG</text>
+  <text x="170" y="724" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="10" fill="#7F6000">Keep row. Add Tag Text.</text>
+  <text x="170" y="738" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="10" fill="#7F6000">Paint row the rule's colour.</text>
+
+  <rect x="340" y="680" width="220" height="70" rx="6" ry="6"
+        fill="#FCE4D6" stroke="#C00000" stroke-width="2"/>
+  <text x="450" y="706" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="12" font-weight="bold" fill="#843C0B">DROP</text>
+  <text x="450" y="724" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="10" fill="#843C0B">Remove row from output.</text>
+  <text x="450" y="738" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="10" fill="#843C0B">Takes priority over FLAG.</text>
+
+  <rect x="620" y="680" width="220" height="70" rx="6" ry="6"
+        fill="#E2EFDA" stroke="#548235" stroke-width="2"/>
+  <text x="730" y="706" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="12" font-weight="bold" fill="#375623">KEEP_ONLY</text>
+  <text x="730" y="724" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="10" fill="#375623">Mark row as keeper.</text>
+  <text x="730" y="738" text-anchor="middle" font-family="Calibri, Arial"
+        font-size="10" fill="#375623">Non-keepers dropped at end.</text>
+
+  <!-- Arrows -->
+  <line x1="450" y1="64" x2="450" y2="88" stroke="#2E75B6" stroke-width="2" marker-end="url(#a2)"/>
+  <line x1="450" y1="210" x2="450" y2="238" stroke="#2E75B6" stroke-width="2" marker-end="url(#a2)"/>
+  <line x1="450" y1="380" x2="450" y2="408" stroke="#2E75B6" stroke-width="2" marker-end="url(#a2)"/>
+  <line x1="450" y1="550" x2="450" y2="578" stroke="#2E75B6" stroke-width="2" marker-end="url(#a2)"/>
+
+  <!-- No arrows -->
+  <line x1="590" y1="150" x2="648" y2="150" stroke="#2E75B6" stroke-width="2" marker-end="url(#a2)"/>
+  <line x1="610" y1="310" x2="648" y2="310" stroke="#2E75B6" stroke-width="2" marker-end="url(#a2)"/>
+  <line x1="610" y1="480" x2="648" y2="480" stroke="#2E75B6" stroke-width="2" marker-end="url(#a2)"/>
+
+  <!-- Yes / No labels -->
+  <text x="462" y="80" font-family="Calibri, Arial" font-size="10" fill="#375623" font-weight="bold">yes</text>
+  <text x="615" y="145" font-family="Calibri, Arial" font-size="10" fill="#843C0B" font-weight="bold">no</text>
+  <text x="462" y="232" font-family="Calibri, Arial" font-size="10" fill="#375623" font-weight="bold">yes</text>
+  <text x="615" y="305" font-family="Calibri, Arial" font-size="10" fill="#843C0B" font-weight="bold">no</text>
+  <text x="462" y="402" font-family="Calibri, Arial" font-size="10" fill="#375623" font-weight="bold">yes</text>
+  <text x="615" y="475" font-family="Calibri, Arial" font-size="10" fill="#843C0B" font-weight="bold">no</text>
+
+  <!-- Dispatch arrows to 3 actions -->
+  <line x1="380" y1="624" x2="200" y2="678" stroke="#2E75B6" stroke-width="2" marker-end="url(#a2)"/>
+  <line x1="450" y1="624" x2="450" y2="678" stroke="#2E75B6" stroke-width="2" marker-end="url(#a2)"/>
+  <line x1="520" y1="624" x2="700" y2="678" stroke="#2E75B6" stroke-width="2" marker-end="url(#a2)"/>
+</svg>
+<div class="diagram-caption">Flow for a single rule against a single row. The tool repeats this for every enabled rule, for every row in the source.</div>
+</div>
+
+<h3>Order of evaluation within one row</h3>
+<ol>
+  <li>All filters on <span class="tab-label">DCP_Filters</span> are checked first. If any
+      filter rejects the row, it's dropped before rules even run.</li>
+  <li>For each enabled rule, in sheet order, the tool runs the flow above.</li>
+  <li>If any <code>DROP</code> rule fires, the row is removed and no further rules are
+      evaluated for that row.</li>
+  <li>All other firing rules contribute their Tag Text to the <code>Rule Hits</code> column.</li>
+  <li>The row's highlight colour comes from the <em>first</em> firing rule's Highlight
+      setting.</li>
+  <li>After every row has been processed, if any <code>KEEP_ONLY</code> rule is enabled
+      anywhere, rows that didn't fire at least one <code>KEEP_ONLY</code> rule are dropped.</li>
+</ol>
+
+
+<!-- =============================================================== -->
+<h2 id="s6">6. How to Add a New Rule</h2>
+
+<p class="section-intro">
+Follow these six steps to create any rule, from the simplest flag to a scoped KEEP_ONLY
+combination.
+</p>
+
+<div class="step-box">
+  <span class="step-number">1</span>
+  <strong>Open <span class="tab-label">DCP_Rules</span> and find the first empty row.</strong>
+  The factory rules occupy rows 2-6; your rules start at row 7.
+</div>
+
+<div class="step-box">
+  <span class="step-number">2</span>
+  <strong>Write the rule in plain English first.</strong> Before touching the sheet, finish
+  this sentence out loud:
+  <br><em>&ldquo;When a row has [column X] [comparison] [value], do [action] and label it
+  [tag].&rdquo;</em>
+  <br>For example: <em>&ldquo;When a row has <strong>MIN QTY</strong> greater than
+  <strong>0</strong> and <strong>Potential Shortage /Excess</strong> less than
+  <strong>0</strong>, do <strong>FLAG</strong> and label it <strong>MIN SHORT</strong>.&rdquo;</em>
+</div>
+
+<div class="step-box">
+  <span class="step-number">3</span>
+  <strong>Decide the scope.</strong> Does the rule apply to every row, or only rows in
+  specific orgs / buyers / item types? If &ldquo;every row&rdquo; &rarr; leave Scope Token
+  and Scope Values blank. Otherwise fill both.
+</div>
+
+<div class="step-box">
+  <span class="step-number">4</span>
+  <strong>Fill the 12 columns.</strong> A typical minimal rule needs: Enabled,
+  Rule ID, Rule Name, Trigger Token, Operator, Trigger Value, Action, Tag Text, Highlight.
+  Notes is optional. Scope columns are optional.
+</div>
+
+<div class="step-box">
+  <span class="step-number">5</span>
+  <strong>Save the workbook.</strong> Rules are read fresh on every
+  <span class="btn-label">Run Extract</span> click, so no restart is needed &mdash; just save.
+</div>
+
+<div class="step-box">
+  <span class="step-number">6</span>
+  <strong>Run <span class="btn-label">Run Extract</span> on a known file and verify.</strong>
+  Pick a source file where you already know a few rows should be flagged. Open the output,
+  sort or filter on <code>Rule Hits</code>, and confirm the right rows have your Tag Text.
+</div>
+
+<div class="tip">
+<strong>Safety net:</strong> Starting a rule as <code>Enabled = N</code> lets you type the
+whole row, save, and come back to it later &mdash; the tool won't evaluate it until you
+flip it to <code>Y</code>.
+</div>
+
+
+<!-- =============================================================== -->
+<h2 id="s7">7. Worked Examples</h2>
+
+<p class="section-intro">
+Each example starts with the plain-English sentence, then shows exactly what goes in each
+column.
+</p>
+
+<h3>Example AA &mdash; Combine two columns with AND (the most-asked pattern)</h3>
+<p><em>&ldquo;Flag a row only when <strong>Inventory Org = 898</strong> AND <strong>Item
+Source Type = Make</strong>.&rdquo;</em></p>
+<p>
+Every rule has <strong>two</strong> column slots: Scope (columns D+E) and Trigger
+(columns F+G+H). A rule only fires when <em>both</em> slots match on the same row, so you
+already have AND built in. Put one condition in Scope and the other in Trigger:
+</p>
+<table>
+  <tr><th>A<br>Enabled</th><th>B<br>Rule ID</th><th>C<br>Rule Name</th>
+      <th>D<br>Scope Token</th><th>E<br>Scope Values</th>
+      <th>F<br>Trigger Token</th><th>G<br>Op</th><th>H<br>Trig Value</th>
+      <th>I<br>Action</th><th>J<br>Tag Text</th><th>K<br>Notes</th><th>L<br>Highlight</th></tr>
+  <tr><td>Y</td><td>R20</td><td>Flag org 898 Make items</td>
+      <td><code>Inventory Org</code></td><td><code>898</code></td>
+      <td><code>Item Source Type</code></td><td>EQ</td><td>Make</td>
+      <td>FLAG</td><td>898 MAKE</td><td>Two-column AND</td><td>ORANGE</td></tr>
+</table>
+<div class="tip">
+<strong>Reading the rule:</strong> &ldquo;On rows where Inventory Org is 898
+<em>(Scope passes)</em>, AND Item Source Type equals Make <em>(Trigger passes)</em>, FLAG
+the row.&rdquo; Either column alone is not enough &mdash; the row has to satisfy both.
+</div>
+<div class="plain-eng">
+<strong>Scaling the pattern:</strong>
+<ul>
+  <li><strong>Need 2 conditions?</strong> One in Scope, one in Trigger. Done in one rule.</li>
+  <li><strong>Need 3 or more conditions?</strong> Write two rules with the <em>same Tag Text</em>
+  and enable both. Then add a KEEP_ONLY or filter layer if you need to hide rows that
+  don't meet all of them &mdash; or, more commonly, use a pre-filter on DCP_Filters for one
+  of the conditions and let the rule handle the other two. (DCP_Filters runs first, so it
+  narrows the dataset before any rule is tested.)</li>
+  <li><strong>Need OR across columns?</strong> Write two separate rules, each with its own
+  Scope/Trigger pair and the same Tag Text. Either rule firing tags the row.</li>
+</ul>
+</div>
+
+<h3>Example A &mdash; Flag all shortage rows in red</h3>
+<p><em>&ldquo;Any row whose Potential Shortage /Excess is less than zero &rarr; highlight red
+and tag SHORTAGE.&rdquo;</em></p>
+<table>
+  <tr><th>A<br>Enabled</th><th>B<br>Rule ID</th><th>C<br>Rule Name</th>
+      <th>D<br>Scope Token</th><th>E<br>Scope Values</th>
+      <th>F<br>Trigger Token</th><th>G<br>Op</th><th>H<br>Trig Value</th>
+      <th>I<br>Action</th><th>J<br>Tag Text</th><th>K<br>Notes</th><th>L<br>Highlight</th></tr>
+  <tr><td>Y</td><td>R1</td><td>Flag shortages</td>
+      <td>(blank)</td><td>(blank)</td>
+      <td><code>Potential Shortage /Excess</code></td><td>LT</td><td>0</td>
+      <td>FLAG</td><td>SHORTAGE</td><td>Factory rule</td><td>SHORTAGE</td></tr>
+</table>
+
+<h3>Example B &mdash; Flag shortages, but only for the 3 orgs my team owns</h3>
+<p><em>&ldquo;For rows in orgs 320, 327, or 613, if Potential Shortage /Excess is less than
+zero &rarr; tag 'MY ORG SHORT' in pink.&rdquo;</em></p>
+<table>
+  <tr><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th><th>I</th><th>J</th><th>K</th><th>L</th></tr>
+  <tr><td>Y</td><td>R6</td><td>My team shortages</td>
+      <td><code>Inventory Org</code></td><td><code>320, 327, 613</code></td>
+      <td><code>Potential Shortage /Excess</code></td><td>LT</td><td>0</td>
+      <td>FLAG</td><td>MY ORG SHORT</td><td>Added 2026-04</td><td>HOTPINK</td></tr>
+</table>
+
+<h3>Example C &mdash; Drop every row where the buyer is &ldquo;ToBeReassigned&rdquo;</h3>
+<p><em>&ldquo;Any row whose Buyer Default Name equals ToBeReassigned &rarr; remove from
+output.&rdquo;</em></p>
+<table>
+  <tr><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th><th>I</th><th>J</th><th>K</th><th>L</th></tr>
+  <tr><td>Y</td><td>R7</td><td>Drop reassigned-buyer noise</td>
+      <td>(blank)</td><td>(blank)</td>
+      <td><code>Buyer Default Name</code></td><td>EQ</td><td>ToBeReassigned</td>
+      <td>DROP</td><td>(ignored)</td><td>Per Jane, 2026-04</td><td>(ignored)</td></tr>
+</table>
+
+<h3>Example D &mdash; Only show rows that are either a shortage or an excess</h3>
+<p><em>&ldquo;Show me rows where Potential Shortage /Excess is below 0 (R5) OR above 0 (R6).
+Hide every other row.&rdquo;</em></p>
+<p>Two rules together, both with Action = <code>KEEP_ONLY</code>:</p>
+<table>
+  <tr><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th><th>I</th><th>J</th><th>K</th><th>L</th></tr>
+  <tr><td>Y</td><td>R5</td><td>Keep shortages</td>
+      <td>(blank)</td><td>(blank)</td>
+      <td><code>Potential Shortage /Excess</code></td><td>LT</td><td>0</td>
+      <td>KEEP_ONLY</td><td>SHORT</td><td></td><td>SHORTAGE</td></tr>
+  <tr><td>Y</td><td>R6</td><td>Keep excesses</td>
+      <td>(blank)</td><td>(blank)</td>
+      <td><code>Potential Shortage /Excess</code></td><td>GT</td><td>0</td>
+      <td>KEEP_ONLY</td><td>EXCESS</td><td></td><td>EXCESS</td></tr>
+</table>
+<div class="warning">
+<strong>Reminder:</strong> When any <code>KEEP_ONLY</code> rule is enabled, rows that fire
+<em>no</em> <code>KEEP_ONLY</code> rule are dropped. In Example D, rows with zero potential
+shortage/excess disappear entirely. That's intentional.
+</div>
+
+<h3>Example E &mdash; Flag rows where a supplier item has a blank source org</h3>
+<p><em>&ldquo;For rows whose Item Source Type is Supplier, if Item Inventory Org (Source) is
+blank, flag as 'MISSING SRC ORG' in amber.&rdquo;</em></p>
+<table>
+  <tr><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th><th>I</th><th>J</th><th>K</th><th>L</th></tr>
+  <tr><td>Y</td><td>R8</td><td>Supplier missing source org</td>
+      <td><code>Item Source Type</code></td><td><code>Supplier</code></td>
+      <td><code>Item Inventory Org (Source)</code></td><td>BLANK</td><td>(blank)</td>
+      <td>FLAG</td><td>MISSING SRC ORG</td><td>Data-quality check</td><td>AMBER</td></tr>
+</table>
+
+
+<!-- =============================================================== -->
+<h2 id="s8">8. Highlight Colour Reference</h2>
+
+<p class="section-intro">
+Every way you can tell the tool what colour to paint a flagged row.
+</p>
+
+<h3>Colour name cheat sheet</h3>
+<table>
+  <tr><th style="width:22%">Name you can type</th><th>Approximate shade</th></tr>
+  <tr><td><code>RED</code></td><td><span class="swatch" style="background:#FF0000"></span>Pure red</td></tr>
+  <tr><td><code>GREEN</code></td><td><span class="swatch" style="background:#00FF00"></span>Pure green</td></tr>
+  <tr><td><code>BLUE</code></td><td><span class="swatch" style="background:#0000FF"></span>Pure blue</td></tr>
+  <tr><td><code>YELLOW</code></td><td><span class="swatch" style="background:#FFFF00"></span>Pure yellow</td></tr>
+  <tr><td><code>ORANGE</code></td><td><span class="swatch" style="background:#FFA500"></span>Orange</td></tr>
+  <tr><td><code>PURPLE</code></td><td><span class="swatch" style="background:#800080"></span>Purple</td></tr>
+  <tr><td><code>PINK</code></td><td><span class="swatch" style="background:#FFC0CB"></span>Soft pink</td></tr>
+  <tr><td><code>HOTPINK</code> / <code>BOLDPINK</code></td><td><span class="swatch" style="background:#FF69B4"></span>Bold pink</td></tr>
+  <tr><td><code>LIGHTPINK</code></td><td><span class="swatch" style="background:#FFB6C1"></span>Lighter pink</td></tr>
+  <tr><td><code>LIGHTBLUE</code></td><td><span class="swatch" style="background:#ADD8E6"></span>Light blue</td></tr>
+  <tr><td><code>LIGHTGREEN</code></td><td><span class="swatch" style="background:#90EE90"></span>Light green</td></tr>
+  <tr><td><code>LIGHTYELLOW</code></td><td><span class="swatch" style="background:#FFFFE0"></span>Very light yellow</td></tr>
+  <tr><td><code>LAVENDER</code></td><td><span class="swatch" style="background:#E6E6FA"></span>Pale lavender</td></tr>
+  <tr><td><code>CYAN</code></td><td><span class="swatch" style="background:#00FFFF"></span>Cyan</td></tr>
+  <tr><td><code>MAGENTA</code></td><td><span class="swatch" style="background:#FF00FF"></span>Magenta</td></tr>
+  <tr><td><code>GRAY</code> / <code>GREY</code></td><td><span class="swatch" style="background:#808080"></span>Mid gray</td></tr>
+  <tr><td><code>LIGHTGRAY</code> / <code>LIGHTGREY</code></td><td><span class="swatch" style="background:#D3D3D3"></span>Light gray</td></tr>
+  <tr><td><code>AMBER</code></td><td><span class="swatch" style="background:#FFBF00"></span>Amber (the fallback)</td></tr>
+  <tr><td><code>SALMON</code></td><td><span class="swatch" style="background:#FA8072"></span>Salmon</td></tr>
+  <tr><td><code>GOLD</code></td><td><span class="swatch" style="background:#FFD700"></span>Gold</td></tr>
+  <tr><td><code>WHITE</code> / <code>BLACK</code></td><td>White / Black (use with care)</td></tr>
+</table>
+
+<h3>Priority order when column L contains text</h3>
+<ol>
+  <li>Keyword (<code>SHORTAGE</code> or <code>EXCESS</code>)</li>
+  <li>Hex (<code>#RRGGBB</code>)</li>
+  <li>R,G,B (<code>255,105,180</code>)</li>
+  <li>Long integer</li>
+  <li>Colour name lookup</li>
+  <li>Cell fill colour (only if column L is blank)</li>
+  <li>Fallback to AMBER if nothing resolved</li>
+</ol>
+
+<h3>Easiest for visual users</h3>
+<ol>
+  <li>Leave column L blank.</li>
+  <li>Click the L cell.</li>
+  <li>Home ribbon &rarr; Fill Colour drop-down &rarr; pick a shade.</li>
+  <li>Save.</li>
+</ol>
+<p>
+That's it. The rule's flagged rows will match the colour you painted.
+</p>
+
+
+<!-- =============================================================== -->
+<h2 id="s9">9. Troubleshooting</h2>
+
+<table>
+  <tr><th style="width:34%">Symptom</th><th>Likely cause</th><th>Fix</th></tr>
+  <tr><td>Rule never fires, even though I can see matching rows in the source.</td>
+      <td>The Scope Token or Trigger Token doesn't match a token on
+      <span class="tab-label">DCP_Columns</span>. Typo, or the token was removed.</td>
+      <td>Check spelling against <span class="tab-label">DCP_Columns</span> column A. Tokens
+      are case-insensitive but must be otherwise identical (spaces count).</td></tr>
+  <tr><td>Rule fires on every row, not just the ones I wanted.</td>
+      <td>Scope Token is blank. An empty Scope means &ldquo;apply to every row&rdquo;.</td>
+      <td>Fill in a Scope Token and Scope Values, or use a narrower Trigger condition.</td></tr>
+  <tr><td>I put two token names in Scope Token separated by a comma and the rule never fires.</td>
+      <td>Scope Token is a <em>single</em> column &mdash; not a list. The engine treats
+      <code>Inventory Org, Item Source Type</code> as a literal column name and can never
+      find a match.</td>
+      <td>Use the Scope + Trigger AND pattern (Section 7, Example AA): put one condition
+      in Scope (D+E), the other in Trigger (F+G+H). For three or more conditions, chain
+      two rules with the same Tag Text, or move one condition to
+      <span class="tab-label">DCP_Filters</span>.</td></tr>
+  <tr><td>A rule on buyer names like <code>Smith, John</code> never fires, even though I
+      copied the name exactly.</td>
+      <td>Your Scope Values / Trigger Value list uses commas, but the buyer name itself
+      contains a comma. The parser splits on the comma inside the name and ends up looking
+      for <code>Smith</code> and <code>John</code> as two separate buyers.</td>
+      <td>Switch the list to semicolons: <code>Smith, John; Doe, Jane</code>. For a
+      <em>single</em> buyer name, add a trailing semicolon to force semicolon mode:
+      <code>Smith, John;</code>. See Section 4.5 and Section 4.8 for the full parse table.</td></tr>
+  <tr><td>My <code>BLANK</code> rule doesn't fire, even though the cell looks empty.</td>
+      <td>The source cell contains a sentinel like <code>-</code>, <code>--</code>, or
+      <code>N/A</code> &mdash; not a truly empty cell. The default sentinel list covers the
+      common ones, but the source may be using something else (e.g. <code>None</code>,
+      <code>TBD</code>).</td>
+      <td>Open the <span class="tab-label">Run</span> tab, edit cell <code>C12</code>
+      (<strong>Blank indicators</strong>), and add the token. Separate tokens with commas:
+      <code>-, --, N/A, #N/A, NA, None, TBD</code>. Re-run the extract.</td></tr>
+  <tr><td>A <code>LT</code> / <code>GT</code> rule doesn't fire on what looks like a number.</td>
+      <td>The source cell contains the value as text, not as a number. Oracle sometimes
+      exports numbers as text.</td>
+      <td>Check the cell in the source file. If it's left-aligned, it's text. Re-save the
+      source, or use <code>CONTAINS</code> with the text you need.</td></tr>
+  <tr><td>Flagged row is amber, not the colour I specified.</td>
+      <td>Typo in column L, or a colour name the tool doesn't recognise.</td>
+      <td>Pick a name from the cheat sheet in Section 8. When in doubt, just paint the cell.</td></tr>
+  <tr><td>KEEP_ONLY rule dropped rows I wanted to see.</td>
+      <td>As soon as one <code>KEEP_ONLY</code> rule is enabled, every row that doesn't
+      fire a <code>KEEP_ONLY</code> rule is dropped.</td>
+      <td>Either add more <code>KEEP_ONLY</code> rules covering the rows you want to keep,
+      or switch the action back to <code>FLAG</code>.</td></tr>
+  <tr><td>Multiple rules fire but only one tag shows up.</td>
+      <td>One of the firing rules has Action = <code>DROP</code>. DROP removes the row, so
+      no other tags are written.</td>
+      <td>Change the DROP rule to FLAG, or exclude that row from the DROP rule's scope.</td></tr>
+  <tr><td>I deleted a rule row and now something's off.</td>
+      <td>Rules are read top-to-bottom, and highlight colour comes from the
+      <em>first</em> firing rule.</td>
+      <td>Order matters only for colour. If colour changes, re-check which rule now fires
+      first on that row.</td></tr>
+  <tr><td><span class="btn-label">Setup Workbook</span> wiped my custom rules.</td>
+      <td><span class="btn-label">Setup Workbook</span> is a hard reset that re-seeds every
+      sheet.</td>
+      <td>Use <span class="btn-label">Amend Sheet Setup</span> after first-time setup. It
+      preserves existing rows.</td></tr>
+</table>
+
+
+<!-- =============================================================== -->
+<h2 id="s10">10. Glossary</h2>
+
+<table>
+  <tr><th style="width:26%">Term</th><th>Meaning</th></tr>
+  <tr><td>Token</td>
+      <td>Internal name for a column (like <code>Inventory Org</code>). Listed in column A
+      of <span class="tab-label">DCP_Columns</span>. Rules reference columns via tokens,
+      not via the raw source header text.</td></tr>
+  <tr><td>Alias</td>
+      <td>One of the possible source header texts that the tool should accept as matching a
+      given token. Aliases live in column B of <span class="tab-label">DCP_Columns</span>.</td></tr>
+  <tr><td>Rule</td>
+      <td>A single row on <span class="tab-label">DCP_Rules</span> that tests every row of the
+      source and performs an action (FLAG / DROP / KEEP_ONLY) on matches.</td></tr>
+  <tr><td>Scope</td>
+      <td>The optional narrowing clause of a rule &mdash; &ldquo;only apply to rows where X
+      matches one of these values&rdquo;. Columns D and E together.</td></tr>
+  <tr><td>Trigger</td>
+      <td>The condition that fires the rule &mdash; column, operator, value. Columns F, G,
+      and H together.</td></tr>
+  <tr><td>Action</td>
+      <td>What happens when the rule fires. One of <code>FLAG</code>, <code>DROP</code>,
+      <code>KEEP_ONLY</code>. Column I.</td></tr>
+  <tr><td>Tag Text</td>
+      <td>Short label appended to the output's <code>Rule Hits</code> column when the rule
+      fires. Column J.</td></tr>
+  <tr><td>Highlight</td>
+      <td>Colour spec (keyword, name, hex, R,G,B, long, or cell fill) used to paint the row
+      when the rule fires. Column L.</td></tr>
+  <tr><td>Rule Hits column</td>
+      <td>The last column in the output .xlsx, auto-added by the tool. Contains the joined
+      Tag Text values of every rule that fired on that row.</td></tr>
+  <tr><td>FLAG</td>
+      <td>Action that keeps the row, tags it, and paints it.</td></tr>
+  <tr><td>DROP</td>
+      <td>Action that removes the row from the output entirely. Beats FLAG.</td></tr>
+  <tr><td>KEEP_ONLY</td>
+      <td>Action that flips the tool into &ldquo;only show rows that fire at least one
+      KEEP_ONLY rule&rdquo; mode &mdash; a whitelist. All non-whitelisted rows are dropped.</td></tr>
+  <tr><td>Operator</td>
+      <td>The comparison performed between the Trigger Token cell and the Trigger Value.
+      One of <code>LT</code>, <code>LE</code>, <code>GT</code>, <code>GE</code>, <code>EQ</code>,
+      <code>NE</code>, <code>IN</code>, <code>NOTIN</code>, <code>BLANK</code>,
+      <code>NOTBLANK</code>, <code>CONTAINS</code>.</td></tr>
+  <tr><td>Trigger Value</td>
+      <td>The reference value you compare against. User-typed. For <code>IN</code> /
+      <code>NOTIN</code>, a comma-separated list; for <code>BLANK</code> / <code>NOTBLANK</code>,
+      ignored.</td></tr>
+  <tr><td>Enabled</td>
+      <td>Column A switch. <code>Y</code> runs the rule; <code>N</code> parks it for later.</td></tr>
+</table>
+
+
+<hr>
+<p style="color:#8A8A8A; font-size:9.5pt; text-align:center;">
+DCP Report Formatter &mdash; DCP_Rules Deep-Dive Guide &nbsp;|&nbsp; Beta Version 1.0 &nbsp;|&nbsp; April 2026
+<br>
+Companion document to <code>DCP_User_Manual.html</code>. For all other sheets, refer to the main manual.
+</p>
+
+</body>
+</html>

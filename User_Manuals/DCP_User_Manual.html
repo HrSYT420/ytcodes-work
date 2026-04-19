@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DCP Report Formatter &mdash; User Manual</title>
+<style>
+  body {
+    font-family: Calibri, Arial, sans-serif;
+    font-size: 11pt;
+    color: #1a1a1a;
+    max-width: 960px;
+    margin: 40px auto;
+    line-height: 1.6;
+  }
+  h1 { font-size: 22pt; color: #1F4E79; border-bottom: 3px solid #1F4E79; padding-bottom: 6px; margin-top: 0; }
+  h2 { font-size: 15pt; color: #2E75B6; border-bottom: 1.5px solid #BDD7EE; padding-bottom: 4px; margin-top: 32px; }
+  h3 { font-size: 12pt; color: #1F4E79; margin-top: 22px; margin-bottom: 6px; }
+  h4 { font-size: 11pt; color: #2E75B6; margin-top: 14px; margin-bottom: 4px; }
+  p  { margin: 6px 0 10px 0; }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 10.5pt; }
+  th  { background-color: #2E75B6; color: white; padding: 7px 10px; text-align: left; font-weight: bold; }
+  td  { padding: 6px 10px; border: 1px solid #BDD7EE; vertical-align: top; }
+  tr:nth-child(even) td { background-color: #EBF3FB; }
+  .tip     { background-color: #E2EFDA; border-left: 4px solid #70AD47; padding: 8px 14px; margin: 10px 0; border-radius: 2px; }
+  .warning { background-color: #FFF2CC; border-left: 4px solid #FFC000; padding: 8px 14px; margin: 10px 0; border-radius: 2px; }
+  .note    { background-color: #DEEAF1; border-left: 4px solid #2E75B6; padding: 8px 14px; margin: 10px 0; border-radius: 2px; }
+  .danger  { background-color: #FCE4D6; border-left: 4px solid #C00000; padding: 8px 14px; margin: 10px 0; border-radius: 2px; }
+  code { background-color: #F2F2F2; font-family: Consolas, "Courier New", monospace; font-size: 10pt; padding: 1px 4px; border-radius: 2px; color: #C00000; }
+  pre  { background-color: #F7F7F7; border: 1px solid #D0D0D0; border-left: 4px solid #2E75B6;
+         font-family: Consolas, "Courier New", monospace; font-size: 10pt; padding: 12px 16px;
+         margin: 10px 0 14px 0; border-radius: 2px; overflow-x: auto; line-height: 1.5; }
+  ul, ol { margin: 6px 0 10px 0; padding-left: 26px; }
+  li { margin-bottom: 5px; }
+  .toc { background-color: #F7FBFF; border: 1px solid #BDD7EE; padding: 14px 24px; margin: 20px 0; border-radius: 4px; }
+  .toc h2  { border: none; margin-top: 0; font-size: 13pt; }
+  .toc ol  { margin: 4px 0; }
+  .toc li  { margin-bottom: 3px; color: #2E75B6; }
+  .toc a   { color: #2E75B6; text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  .subtitle { color: #595959; font-size: 12pt; margin-top: -6px; margin-bottom: 24px; }
+  .section-intro { color: #595959; font-style: italic; margin-bottom: 12px; }
+  .btn-label { display: inline-block; background-color: #1F4E79; color: white; font-weight: bold;
+               padding: 2px 9px; font-size: 10pt; border-radius: 2px; }
+  .tab-label { display: inline-block; background-color: #D6E4F0; color: #1F4E79; font-weight: bold;
+               padding: 1px 7px; font-size: 10pt; border-radius: 2px; }
+  .step-box    { border: 1px solid #BDD7EE; border-radius: 4px; padding: 10px 16px; margin: 10px 0; background-color: #F7FBFF; }
+  .step-number { display: inline-block; background-color: #2E75B6; color: white; border-radius: 50%;
+                 width: 22px; height: 22px; text-align: center; line-height: 22px;
+                 font-size: 10pt; font-weight: bold; margin-right: 6px; }
+  .tag { display: inline-block; padding: 1px 7px; border-radius: 3px; font-size: 9.5pt; font-weight: bold; margin-right: 2px; }
+  .tag-flag     { background-color: #FFF2CC; color: #7F6000; }
+  .tag-drop     { background-color: #FCE4D6; color: #843C0B; }
+  .tag-keep     { background-color: #E2EFDA; color: #375623; }
+  .tag-short    { background-color: #FFCCCC; color: #843C0B; }
+  .tag-excess   { background-color: #E5CCFF; color: #5B2E91; }
+  .swatch {
+    display: inline-block; width: 16px; height: 12px; border: 1px solid #aaa;
+    border-radius: 2px; vertical-align: middle; margin-right: 4px;
+  }
+  hr { border: none; border-top: 1px solid #BDD7EE; margin: 32px 0; }
+</style>
+</head>
+<body>
+
+<h1>DCP Report Formatter &mdash; User Manual</h1>
+<p class="subtitle">User Manual &amp; Job Aid &nbsp;|&nbsp; Beta Version 1.0 &nbsp;|&nbsp; April 2026</p>
+
+<div class="note">
+<strong>Who this manual is for:</strong> Planners and buyers who receive the Oracle DCP
+(Demand &mdash; Capacity &mdash; Planning) report every day or every week and need to turn
+its 9,000+ rows into a focused, filtered, colour-highlighted worksheet they can act on.
+No programming is required. Everything you configure lives on ordinary Excel tabs inside
+the tool workbook.
+</div>
+
+<div class="note">
+<strong>Beta status:</strong> This document describes Beta Version 1.0. The column, filter,
+and rule sheets are the intended permanent layout, but the default seeded rules and column
+aliases may change as the team learns what planners need most. Save your custom edits to
+<span class="tab-label">DCP_Filters</span>, <span class="tab-label">DCP_Rules</span>, and
+<span class="tab-label">DCP_Columns</span> when you upgrade: <span class="btn-label">Amend Sheet Setup</span>
+will not overwrite them.
+</div>
+
+<div class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#s1">What Does This Tool Do?</a></li>
+    <li><a href="#s2">Workbook Sheets</a></li>
+    <li><a href="#s3">First-Time Setup</a></li>
+    <li><a href="#s4">Quick Start &mdash; Typical Workflow</a></li>
+    <li><a href="#s5">Run Sheet &mdash; Buttons</a></li>
+    <li><a href="#s6">DCP_Columns &mdash; Mapping Source Headers to Tokens</a></li>
+    <li><a href="#s7">DCP_Filters &mdash; Keeping Only the Rows You Want</a></li>
+    <li><a href="#s8">DCP_Rules &mdash; Flag, Drop, or Keep-Only Logic</a></li>
+    <li><a href="#s9">Highlight Colours for Rules</a></li>
+    <li><a href="#s10">DCP_SumColumns &mdash; Totals Row on the Output</a></li>
+    <li><a href="#s11">Understanding the Output File</a></li>
+    <li><a href="#s12">DCP_Last_Run Status Sheet</a></li>
+    <li><a href="#s13">Output Filename Tokens</a></li>
+    <li><a href="#s14">Troubleshooting</a></li>
+    <li><a href="#s15">Glossary</a></li>
+  </ol>
+</div>
+
+<hr>
+
+
+<!-- =============================================================== -->
+<h2 id="s1">1. What Does This Tool Do?</h2>
+
+<p>
+The DCP Report Formatter reads a raw Oracle DCP report, applies the filters and business
+rules you define on worksheets, highlights the rows you want to look at, and saves the
+result to a new <code>.xlsx</code> file in a folder of your choice. The original source
+file is never modified.
+</p>
+
+<table>
+  <tr><th style="width:20%">Input</th><th>Output</th></tr>
+  <tr>
+    <td>Oracle DCP report (<code>.xlsx</code>, <code>.xlsm</code>, <code>.xlsb</code>, <code>.xls</code>, or <code>.csv</code>)
+    with a single header row and up to thirty-seven columns of item, org, demand, supply and cost data.</td>
+    <td>A clean <code>.xlsx</code> file in the output folder with: a styled header band, a SUM / AVG / COUNT band
+    on row 2 for every numeric column you enabled, filtered data rows from row 3 downward, a <code>Rule Hits</code>
+    column at the end, and colour-highlighted rows for every rule that fired.</td>
+  </tr>
+</table>
+
+<div class="tip">
+<strong>In plain terms:</strong> You give it the Oracle export. It gives you back a tidy
+Excel file with the junk rows removed, totals at the top, and the problem rows painted
+in colour so you can see them at a glance.
+</div>
+
+
+<!-- =============================================================== -->
+<h2 id="s2">2. Workbook Sheets</h2>
+
+<p class="section-intro">
+The tool workbook contains the tabs listed below. Most of them are reference or configuration
+sheets you edit once and leave alone; only the <span class="tab-label">Run</span> tab is touched
+on every run.
+</p>
+
+<table>
+  <tr><th style="width:22%">Sheet</th><th>Purpose</th><th style="width:18%">Do you edit it?</th></tr>
+  <tr>
+    <td><span class="tab-label">Instructions</span></td>
+    <td>Quick-start reference seeded by the tool. Read-only for users.</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td><span class="tab-label">Run</span></td>
+    <td>The control panel. Source file path, output folder, filename pattern, open-after-save flag, and all buttons.</td>
+    <td>Yes &mdash; every run</td>
+  </tr>
+  <tr>
+    <td><span class="tab-label">DCP_Columns</span></td>
+    <td>Lists every column the macro looks for. The <code>Aliases</code> column lets you teach the tool the exact
+    header text your source file uses. The <code>Format</code> column controls the Excel number format of each
+    column in the output.</td>
+    <td>Yes &mdash; once, when your source header text changes</td>
+  </tr>
+  <tr>
+    <td><span class="tab-label">DCP_Filters</span></td>
+    <td>INCLUDE / EXCLUDE filters. Each row trims the data by Inventory Org, Buyer, Status, Product Family, etc.</td>
+    <td>Yes &mdash; whenever you want to change scope</td>
+  </tr>
+  <tr>
+    <td><span class="tab-label">DCP_Rules</span></td>
+    <td>Business rules that FLAG, DROP or KEEP_ONLY rows. This is where you add the logic for shortage detection,
+    excess detection, MOQ exceptions, supplier-source sanity checks, etc.</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td><span class="tab-label">DCP_SumColumns</span></td>
+    <td>Tells the tool which numeric columns should get a <code>SUM</code>, <code>AVG</code>, or <code>COUNT</code>
+    formula on row 2 of the output file.</td>
+    <td>Yes &mdash; rarely</td>
+  </tr>
+  <tr>
+    <td><span class="tab-label">DCP_Last_Run</span></td>
+    <td>Status dashboard. After every run it shows the saved file path (as a clickable hyperlink),
+    row counts, filter and rule counts, and a green OK / red ERROR indicator.</td>
+    <td>No &mdash; read-only</td>
+  </tr>
+  <tr>
+    <td><span class="tab-label">Log</span></td>
+    <td>Append-only history of every run, file pick, and error. Useful for debugging.</td>
+    <td>No &mdash; read-only</td>
+  </tr>
+</table>
+
+
+<!-- =============================================================== -->
+<h2 id="s3">3. First-Time Setup</h2>
+
+<p class="section-intro">
+Run these steps once on a fresh workbook to create the tab structure. After the first setup
+you only use <span class="btn-label">Amend Sheet Setup</span> when you upgrade the macro code.
+</p>
+
+<h3>3.1 &mdash; Create the sheets</h3>
+
+<div class="step-box">
+  <span class="step-number">1</span>
+  <strong>Open the tool workbook and enable macros.</strong><br>
+  If the yellow security bar appears at the top, click <em>Enable Content</em>.
+</div>
+<div class="step-box">
+  <span class="step-number">2</span>
+  <strong>Click <span class="btn-label">Setup Workbook</span> on the <span class="tab-label">Run</span> tab.</strong><br>
+  This creates the <span class="tab-label">Instructions</span>, <span class="tab-label">DCP_Columns</span>,
+  <span class="tab-label">DCP_Filters</span>, <span class="tab-label">DCP_Rules</span>,
+  <span class="tab-label">DCP_SumColumns</span>, <span class="tab-label">DCP_Last_Run</span>, and
+  <span class="tab-label">Log</span> tabs and seeds them with default content.
+</div>
+<div class="step-box">
+  <span class="step-number">3</span>
+  <strong>Review the <span class="tab-label">Instructions</span> tab.</strong><br>
+  This is the short summary the tool ships with. Open the configuration tabs next.
+</div>
+
+<div class="warning">
+<strong>Important:</strong> <span class="btn-label">Setup Workbook</span> is a full factory reset.
+If you run it again later it will <em>overwrite</em> every customisation you have made to
+<span class="tab-label">DCP_Columns</span>, <span class="tab-label">DCP_Filters</span>,
+<span class="tab-label">DCP_Rules</span>, and <span class="tab-label">DCP_SumColumns</span>.
+For a safe re-run, click <span class="btn-label">Amend Sheet Setup</span> instead &mdash;
+it only adds sheets that are missing and leaves your edits intact.
+</div>
+
+<h3>3.2 &mdash; Run-sheet cell reference</h3>
+
+<p>These are the cells you fill in before each run, along with their default values and hints.</p>
+
+<table>
+  <tr><th style="width:8%">Cell</th><th style="width:32%">Field</th><th>Example / default</th></tr>
+  <tr><td><code>C6</code></td><td>Source file path</td>
+      <td>Full path to the DCP report &mdash; typically filled by <span class="btn-label">Pick Source File</span>.
+      Supports <code>.xlsx / .xlsm / .xlsb / .xls / .csv</code>.</td></tr>
+  <tr><td><code>C7</code></td><td>Source sheet name</td>
+      <td>Default <code>Sheet1</code>. Ignored for CSV sources &mdash; the tool auto-resolves.</td></tr>
+  <tr><td><code>C8</code></td><td>Header row number</td>
+      <td>Default <code>1</code>. Change only if your source has banners above the header.</td></tr>
+  <tr><td><code>C9</code></td><td>Output folder</td>
+      <td>Folder where the new <code>.xlsx</code> is saved. Fill via <span class="btn-label">Pick Output Folder</span>.</td></tr>
+  <tr><td><code>C10</code></td><td>Output filename</td>
+      <td>Default <code>DCP_Output_{DATE}_{TIME}.xlsx</code>. See Section 13 for token list.</td></tr>
+  <tr><td><code>C11</code></td><td>Open after save (Y/N)</td>
+      <td>Default <code>Y</code>. <code>Y</code> opens the file in Excel after saving; <code>N</code> leaves it on disk only.</td></tr>
+</table>
+
+
+<!-- =============================================================== -->
+<h2 id="s4">4. Quick Start &mdash; Typical Workflow</h2>
+
+<p class="section-intro">
+The routine weekly run after your first setup is three clicks. Anything you have already
+configured on the <span class="tab-label">DCP_Filters</span>, <span class="tab-label">DCP_Rules</span>,
+and <span class="tab-label">DCP_SumColumns</span> tabs is reused automatically.
+</p>
+
+<table>
+  <tr><th style="width:12%">Step</th><th>Action</th></tr>
+  <tr><td>1</td>
+      <td>Click <span class="btn-label">Pick Source File</span> and select today's DCP export.</td></tr>
+  <tr><td>2</td>
+      <td>Confirm the output folder in <code>C9</code> is correct. If not, click
+          <span class="btn-label">Pick Output Folder</span>.</td></tr>
+  <tr><td>3</td>
+      <td>Click <span class="btn-label">Run Extract</span>. A progress window shows rows processed.</td></tr>
+  <tr><td>4</td>
+      <td>When the summary pop-up appears, the tool jumps to the <span class="tab-label">DCP_Last_Run</span> tab.
+          If <code>C11</code> is <code>Y</code> the saved file also opens automatically.</td></tr>
+</table>
+
+<div class="tip">
+<strong>Tip:</strong> The filename tokens <code>{DATE}</code> and <code>{TIME}</code> guarantee a unique
+file per run, so you never overwrite yesterday's output by accident.
+</div>
+
+
+<!-- =============================================================== -->
+<h2 id="s5">5. Run Sheet &mdash; Buttons</h2>
+
+<p class="section-intro">
+Every button visible on the <span class="tab-label">Run</span> tab is listed below. The macro
+the button runs is shown in column C on the sheet itself.
+</p>
+
+<table>
+  <tr><th style="width:24%">Button</th><th>What it does</th><th style="width:22%">When to use</th></tr>
+  <tr>
+    <td><span class="btn-label">Setup Workbook</span></td>
+    <td>Full factory reset. Wipes and re-seeds every setup sheet with defaults.</td>
+    <td>First time only, or when you want a clean reset.</td>
+  </tr>
+  <tr>
+    <td><span class="btn-label">Amend Sheet Setup</span></td>
+    <td>Safe rerun. Creates missing sheets; never touches existing ones.</td>
+    <td>After importing a new version of the macro.</td>
+  </tr>
+  <tr>
+    <td><span class="btn-label">Pick Source File</span></td>
+    <td>File-picker dialog. Writes the chosen path into <code>C6</code>.</td>
+    <td>Every run &mdash; select today's DCP file.</td>
+  </tr>
+  <tr>
+    <td><span class="btn-label">Pick Output Folder</span></td>
+    <td>Folder-picker dialog. Writes the chosen path into <code>C9</code>.</td>
+    <td>First time, and whenever you change output location.</td>
+  </tr>
+  <tr>
+    <td><span class="btn-label">Run (Dialog)</span></td>
+    <td>Opens the <code>frmDCPRun</code> preflight form &mdash; one-stop panel showing
+    source file, output folder, filename pattern, and open-after-save toggle in one place.</td>
+    <td>Use this instead of editing cells one-by-one.</td>
+  </tr>
+  <tr>
+    <td><span class="btn-label">Run Extract</span></td>
+    <td>Reads the source, applies filters and rules, saves the output <code>.xlsx</code>.</td>
+    <td>The main action.</td>
+  </tr>
+  <tr>
+    <td><span class="btn-label">Open Output Folder</span></td>
+    <td>Opens the folder from <code>C9</code> in Windows Explorer.</td>
+    <td>To browse past runs.</td>
+  </tr>
+  <tr>
+    <td><span class="btn-label">Open Last Output</span></td>
+    <td>Opens the most recently saved <code>.xlsx</code> (reads the hyperlink on
+    <span class="tab-label">DCP_Last_Run</span>).</td>
+    <td>When you closed the file and want it back.</td>
+  </tr>
+  <tr>
+    <td><span class="btn-label">Open Instructions</span></td>
+    <td>Navigates to the <span class="tab-label">Instructions</span> tab.</td>
+    <td>Quick reference.</td>
+  </tr>
+</table>
+
+
+<!-- =============================================================== -->
+<h2 id="s6">6. DCP_Columns &mdash; Mapping Source Headers to Tokens</h2>
+
+<p class="section-intro">
+The macro refers to columns by internal names called <strong>tokens</strong>. The
+<span class="tab-label">DCP_Columns</span> tab maps each token to the actual header text your
+source file uses. If Oracle renames a header, you fix it here &mdash; not in the code.
+</p>
+
+<table>
+  <tr><th style="width:6%">Col</th><th style="width:22%">Field</th><th>What to put in it</th></tr>
+  <tr><td><code>A</code></td><td>Token</td><td>Internal name. <strong>Do not change</strong>.</td></tr>
+  <tr><td><code>B</code></td><td>Aliases</td>
+      <td>Comma-separated list of header texts the tool should accept as matching this token.
+      Add any new wording Oracle uses.</td></tr>
+  <tr><td><code>C</code></td><td>Required</td>
+      <td><code>Y</code> or <code>N</code>. A Required column missing from the source will stop the run.</td></tr>
+  <tr><td><code>D</code></td><td>Type</td><td><code>TEXT</code>, <code>NUM</code>, or <code>KEY</code>. Reference only.</td></tr>
+  <tr><td><code>E</code></td><td>Notes</td><td>Free text.</td></tr>
+  <tr><td><code>F</code></td><td>Format</td>
+      <td>Excel number format string (e.g. <code>#,##0.00</code>). Applied to that column in the
+      output file. Leave blank to inherit the source column's own format.</td></tr>
+  <tr><td><code>G</code></td><td>Extract</td>
+      <td><code>Y</code> (or blank) to write this column to the output <code>.xlsx</code>;
+      <code>N</code> to skip it. Filters and rules still see every column regardless &mdash; the
+      flag only controls what lands in the final file.</td></tr>
+</table>
+
+<div class="tip">
+<strong>Tip:</strong> To add a new alias, just type it into column B after a comma. The tool
+does a case-insensitive match, so <em>Inventory Org</em> and <em>INVENTORY ORG</em> both work.
+</div>
+
+<div class="warning">
+<strong>Important:</strong> Aliases use a <strong>comma</strong> delimiter, not a pipe (<code>|</code>).
+Example: <code>Inventory Org, Inv Org, Org</code>.
+</div>
+
+<h3>Picking just the columns you care about</h3>
+
+<p>
+The source report from Oracle can have 37+ columns. If you only need a handful &mdash; say 6 &mdash;
+set the <strong>Extract</strong> column (<code>G</code>) to <code>N</code> for everything you
+want to drop, and leave it blank (or <code>Y</code>) for the columns you want to keep. The
+output file will contain only those columns, plus the automatic <code>Rule Hits</code> column
+at the end.
+</p>
+
+<div class="note">
+<strong>Note:</strong> Excluding a column from the output does <em>not</em> remove it from
+filter or rule evaluation. A rule can still trigger on <code>Average Daily Usage</code> even
+if you've hidden that column from the final file. This lets you filter by columns you don't
+want to see, and see columns you don't want to filter by.
+</div>
+
+<div class="tip">
+<strong>Tip:</strong> The first time you press <span class="btn-label">Amend Sheet Setup</span>
+after upgrading to this release, the new <strong>Extract</strong> column is added with
+<code>Y</code> pre-filled on every row &mdash; so the behaviour matches the previous version
+until you change it.
+</div>
+
+
+<!-- =============================================================== -->
+<h2 id="s7">7. DCP_Filters &mdash; Keeping Only the Rows You Want</h2>
+
+<p class="section-intro">
+Each row on the <span class="tab-label">DCP_Filters</span> tab is one independent filter. All
+enabled filters must pass for a row to be kept (AND logic across filters). If no filters are
+enabled, every row is kept.
+</p>
+
+<table>
+  <tr><th style="width:6%">Col</th><th style="width:22%">Field</th><th>What to put in it</th></tr>
+  <tr><td><code>A</code></td><td>Enabled</td><td><code>Y</code> to apply this filter, <code>N</code> to ignore it.</td></tr>
+  <tr><td><code>B</code></td><td>Token</td><td>The column to test &mdash; must exactly match a token in <span class="tab-label">DCP_Columns</span>.</td></tr>
+  <tr><td><code>C</code></td><td>Mode</td><td><code>INCLUDE</code> keeps only matching values.
+      <code>EXCLUDE</code> drops matching values.</td></tr>
+  <tr><td><code>D</code></td><td>Values</td><td>Comma-separated list of values to match. Blank means the filter
+      is effectively a no-op (everything passes).</td></tr>
+  <tr><td><code>E</code></td><td>Notes</td><td>Free text.</td></tr>
+</table>
+
+<h3>Examples</h3>
+<table>
+  <tr><th style="width:20%">Intent</th><th>Token</th><th>Mode</th><th>Values</th></tr>
+  <tr><td>Keep only active items</td><td><code>Inventory Item Status</code></td><td><code>INCLUDE</code></td>
+      <td><code>Active</code></td></tr>
+  <tr><td>Only three orgs of interest</td><td><code>Inventory Org</code></td><td><code>INCLUDE</code></td>
+      <td><code>320, 327, 613</code></td></tr>
+  <tr><td>Drop a problem buyer</td><td><code>Buyer Default Name</code></td><td><code>EXCLUDE</code></td>
+      <td><code>ToBeReassigned</code></td></tr>
+</table>
+
+
+<!-- =============================================================== -->
+<h2 id="s8">8. DCP_Rules &mdash; Flag, Drop, or Keep-Only Logic</h2>
+
+<p class="section-intro">
+Rules are the heart of the tool. A rule <em>fires</em> when a row matches its Scope (or has no
+Scope) <em>and</em> the Trigger cell satisfies the Operator test. When a rule fires, one of
+three actions is taken.
+</p>
+
+<h3>Action column values</h3>
+<table>
+  <tr><th style="width:14%">Action</th><th>Effect</th></tr>
+  <tr><td><span class="tag tag-flag">FLAG</span></td>
+      <td>Keep the row. Append <code>Tag Text</code> to the <code>Rule Hits</code> column.
+      Paint the row in the rule's highlight colour (see Section 9).</td></tr>
+  <tr><td><span class="tag tag-drop">DROP</span></td>
+      <td>Drop the row from the output. Takes priority over FLAG.</td></tr>
+  <tr><td><span class="tag tag-keep">KEEP_ONLY</span></td>
+      <td>Mark the row as a keeper. If <em>any</em> KEEP_ONLY rule is enabled, rows that never
+      fire a KEEP_ONLY rule are dropped.</td></tr>
+</table>
+
+<h3>Column reference</h3>
+<table>
+  <tr><th style="width:6%">Col</th><th style="width:20%">Field</th><th>What to put in it</th></tr>
+  <tr><td><code>A</code></td><td>Enabled</td><td><code>Y</code> or <code>N</code>.</td></tr>
+  <tr><td><code>B</code></td><td>Rule ID</td><td>Short label like <code>R1</code>, <code>R2</code>, ...</td></tr>
+  <tr><td><code>C</code></td><td>Rule Name</td><td>Description for humans.</td></tr>
+  <tr><td><code>D</code></td><td>Scope Token</td><td>Optional &mdash; restricts the rule to rows whose Scope Token
+      column matches one of the Scope Values. Blank means <em>applies to every row</em>.</td></tr>
+  <tr><td><code>E</code></td><td>Scope Values</td><td>Comma-separated values paired with <code>D</code>.</td></tr>
+  <tr><td><code>F</code></td><td>Trigger Token</td><td>The column the rule inspects.</td></tr>
+  <tr><td><code>G</code></td><td>Operator</td>
+      <td><code>LT</code>, <code>LE</code>, <code>GT</code>, <code>GE</code>, <code>EQ</code>,
+      <code>NE</code>, <code>IN</code>, <code>NOTIN</code>, <code>BLANK</code>, <code>NOTBLANK</code>,
+      <code>CONTAINS</code>.</td></tr>
+  <tr><td><code>H</code></td><td>Trigger Value</td>
+      <td>The value compared against the trigger cell. For <code>IN</code> / <code>NOTIN</code>
+      use a comma list.</td></tr>
+  <tr><td><code>I</code></td><td>Action</td><td><code>FLAG</code>, <code>DROP</code>, or <code>KEEP_ONLY</code>.</td></tr>
+  <tr><td><code>J</code></td><td>Tag Text</td><td>Short label added to the output
+      <code>Rule Hits</code> column when the rule fires.</td></tr>
+  <tr><td><code>K</code></td><td>Notes</td><td>Free text.</td></tr>
+  <tr><td><code>L</code></td><td>Highlight</td><td>Colour for the row when the rule fires. See Section 9.</td></tr>
+</table>
+
+<h3>Seeded rules</h3>
+<table>
+  <tr><th style="width:8%">Rule ID</th><th>Purpose</th><th style="width:12%">Default</th></tr>
+  <tr><td><code>R1</code></td><td>Flag rows where <em>Potential Shortage/Excess</em> is less than zero.</td>
+      <td>Enabled</td></tr>
+  <tr><td><code>R2</code></td><td>Flag orgs <code>4M4</code>/<code>4M5</code> when an MOQ is set.</td>
+      <td>Disabled</td></tr>
+  <tr><td><code>R3</code></td><td>Flag orgs <code>320</code>/<code>327</code> planned as <em>Not Planned</em>.</td>
+      <td>Disabled</td></tr>
+  <tr><td><code>R4</code></td><td>Flag items whose Source Type is <em>Supplier</em> but whose
+      Item Inventory Org is not blank.</td><td>Enabled</td></tr>
+  <tr><td><code>R5</code></td><td>Flag rows where Potential Shortage/Excess is greater than zero (excess focus).</td>
+      <td>Disabled</td></tr>
+</table>
+
+<div class="tip">
+<strong>Tip:</strong> To add your own rule, pick the next free row, set <code>Enabled = Y</code>,
+give it a new Rule ID (e.g. <code>R6</code>), fill in Scope / Trigger / Operator / Value, set
+the Action, and write a short Tag Text. No code changes needed.
+</div>
+
+
+<!-- =============================================================== -->
+<h2 id="s9">9. Highlight Colours for Rules</h2>
+
+<p class="section-intro">
+Column <code>L</code> on <span class="tab-label">DCP_Rules</span> controls the row colour in
+the output file when a rule fires. You can use any of six formats &mdash; whichever is easiest.
+</p>
+
+<table>
+  <tr><th style="width:22%">Format</th><th>What to type in col L</th><th style="width:28%">Example</th></tr>
+  <tr><td>Keyword</td>
+      <td><code>SHORTAGE</code> &mdash; preset light red.<br>
+          <code>EXCESS</code> &mdash; preset light lavender.</td>
+      <td><span class="tag tag-short">SHORTAGE</span> <span class="tag tag-excess">EXCESS</span></td></tr>
+  <tr><td>Color name</td>
+      <td>One of: <code>WHITE</code>, <code>BLACK</code>, <code>RED</code>, <code>GREEN</code>,
+          <code>BLUE</code>, <code>YELLOW</code>, <code>ORANGE</code>, <code>PURPLE</code>,
+          <code>PINK</code>, <code>HOTPINK</code>, <code>BOLDPINK</code>, <code>LIGHTPINK</code>,
+          <code>LIGHTBLUE</code>, <code>LIGHTGREEN</code>, <code>LIGHTYELLOW</code>,
+          <code>LAVENDER</code>, <code>CYAN</code>, <code>MAGENTA</code>, <code>GRAY</code>,
+          <code>LIGHTGRAY</code>, <code>AMBER</code>, <code>SALMON</code>, <code>GOLD</code>.</td>
+      <td><code>HOTPINK</code></td></tr>
+  <tr><td>Hex</td>
+      <td><code>#RRGGBB</code> in web hex notation.</td>
+      <td><code>#FF69B4</code></td></tr>
+  <tr><td>R,G,B</td>
+      <td>Three integers 0-255 separated by commas.</td>
+      <td><code>255,105,180</code></td></tr>
+  <tr><td>Long</td>
+      <td>A single Excel colour Long value (the number you see in the Immediate window).</td>
+      <td><code>11862015</code></td></tr>
+  <tr><td>Cell fill</td>
+      <td>Leave column <code>L</code> <strong>blank</strong> and paint the cell itself using Excel's
+          paint-bucket tool. The tool reads <code>Interior.Color</code>.</td>
+      <td>Yellow-painted cell &rarr; yellow row</td></tr>
+</table>
+
+<h3>Priority order</h3>
+<p>When column <code>L</code> has text, the tool tries, in order: keyword &rarr; hex &rarr; R,G,B
+&rarr; Long &rarr; color name. If none parse and the cell itself is painted, it reads the fill
+colour. If nothing resolves, it falls back to amber.</p>
+
+<div class="tip">
+<strong>Example &mdash; adding rule R6 in bold pink:</strong>
+<ol>
+  <li>On <span class="tab-label">DCP_Rules</span>, fill a new row with <code>Enabled=Y</code>,
+  <code>Rule ID=R6</code>, your scope/trigger/operator/value, <code>Action=FLAG</code>,
+  <code>Tag Text=R6 HIT</code>.</li>
+  <li>In column <code>L</code> type <code>HOTPINK</code> (or <code>#FF69B4</code>, or
+  <code>255,105,180</code>, or paint the cell bright pink and leave the text blank).</li>
+  <li>Save and click <span class="btn-label">Run Extract</span>. Rows that hit R6 are now painted pink.</li>
+</ol>
+</div>
+
+<div class="warning">
+<strong>Important:</strong> If two rules fire on the same row, the row takes the colour of the
+first matching rule in sheet order. Put your highest-priority colour rule near the top of
+<span class="tab-label">DCP_Rules</span>.
+</div>
+
+
+<!-- =============================================================== -->
+<h2 id="s10">10. DCP_SumColumns &mdash; Totals Row on the Output</h2>
+
+<p class="section-intro">
+Row 2 of every output file is reserved for formulas over the data range. The
+<span class="tab-label">DCP_SumColumns</span> tab controls which columns get a formula and
+which formula they get.
+</p>
+
+<table>
+  <tr><th style="width:6%">Col</th><th style="width:22%">Field</th><th>What to put in it</th></tr>
+  <tr><td><code>A</code></td><td>Enabled</td><td><code>Y</code> or <code>N</code>.</td></tr>
+  <tr><td><code>B</code></td><td>Token</td><td>The column to total &mdash; must match a token
+      in <span class="tab-label">DCP_Columns</span>.</td></tr>
+  <tr><td><code>C</code></td><td>Formula</td><td><code>SUM</code>, <code>AVG</code>, or <code>COUNT</code>.
+      Blank defaults to <code>SUM</code>.</td></tr>
+  <tr><td><code>D</code></td><td>Notes</td><td>Free text.</td></tr>
+</table>
+
+<p>By default the tool seeds 16 numeric quantity and cost tokens with <code>SUM</code> enabled.
+Disable any row you do not want totalled, or change the formula to <code>AVG</code> / <code>COUNT</code>.</p>
+
+
+<!-- =============================================================== -->
+<h2 id="s11">11. Understanding the Output File</h2>
+
+<p class="section-intro">
+Every run writes a brand-new <code>.xlsx</code> workbook in the output folder. The layout is
+the same every time.
+</p>
+
+<table>
+  <tr><th style="width:12%">Row</th><th>What is there</th></tr>
+  <tr><td><code>1</code></td>
+      <td>Header band &mdash; dark navy fill, white text. Columns copied from the source header,
+      plus one extra column called <code>Rule Hits</code> at the very end.</td></tr>
+  <tr><td><code>2</code></td>
+      <td>Formula band &mdash; light-red fill. Contains <code>SUM</code>/<code>AVG</code>/<code>COUNT</code>
+      formulas for every token enabled on <span class="tab-label">DCP_SumColumns</span>.</td></tr>
+  <tr><td><code>3+</code></td>
+      <td>Data rows. Order matches the original source. Flagged rows are filled with the colour
+      from the rule that hit (Section 9). The <code>Rule Hits</code> column lists the tag text of
+      every rule that fired on that row, separated by <code>;</code>.</td></tr>
+</table>
+
+<h3>Formatting applied automatically</h3>
+<ul>
+  <li>Row 1 is frozen so the header stays visible when you scroll.</li>
+  <li>AutoFilter is enabled on row 1.</li>
+  <li>Every column is auto-fitted to its widest cell.</li>
+  <li>Numeric columns use the format from <span class="tab-label">DCP_Columns</span> column F,
+  or inherit the source column's format if F is blank.</li>
+</ul>
+
+<div class="tip">
+<strong>Tip:</strong> The 16 seeded numeric-quantity tokens default to <code>#,##0.00</code>, which
+keeps near-zero Oracle floats like <code>-4.5E-13</code> from showing up in scientific notation.
+</div>
+
+
+<!-- =============================================================== -->
+<h2 id="s12">12. DCP_Last_Run Status Sheet</h2>
+
+<p class="section-intro">
+After every run the tool writes a short status block on the
+<span class="tab-label">DCP_Last_Run</span> tab. Use it to find the last output file without
+leaving the workbook.
+</p>
+
+<table>
+  <tr><th style="width:30%">Field</th><th>Meaning</th></tr>
+  <tr><td>Run timestamp</td><td>Exact date and time of the last run.</td></tr>
+  <tr><td>Source file</td><td>The <code>.xlsx</code> or <code>.csv</code> that fed the run.</td></tr>
+  <tr><td>Source sheet</td><td>Sheet name inside the source (auto for CSV).</td></tr>
+  <tr><td>Output file</td><td>Full path of the saved <code>.xlsx</code>, stored as a clickable hyperlink.
+      Click it to open the file. <span class="btn-label">Open Last Output</span> does the same thing.</td></tr>
+  <tr><td>Rows read / kept / dropped / flagged</td><td>The row counts.</td></tr>
+  <tr><td>Filters applied</td><td>Number of enabled filters on this run.</td></tr>
+  <tr><td>Rules applied</td><td>Number of enabled rules on this run.</td></tr>
+  <tr><td>Status</td><td>Green <em>OK</em> on success, or red <em>ERROR &mdash; &lt;message&gt;</em>.</td></tr>
+</table>
+
+
+<!-- =============================================================== -->
+<h2 id="s13">13. Output Filename Tokens</h2>
+
+<p class="section-intro">
+Cell <code>C10</code> on the <span class="tab-label">Run</span> tab is a filename pattern. Tokens
+in curly braces are replaced at run time.
+</p>
+
+<table>
+  <tr><th style="width:18%">Token</th><th>Replaced with</th><th style="width:28%">Example</th></tr>
+  <tr><td><code>{DATE}</code></td><td>Today's date in <code>yyyy-mm-dd</code> format.</td><td><code>2026-04-17</code></td></tr>
+  <tr><td><code>{TIME}</code></td><td>Current time in <code>hhmm</code> 24-hour format.</td><td><code>0935</code></td></tr>
+  <tr><td><code>{USER}</code></td><td>Windows username (<code>USERNAME</code> environment variable), sanitised.</td><td><code>jsmith</code></td></tr>
+  <tr><td><code>{SRC}</code></td><td>Source filename without extension, sanitised.</td><td><code>DCP_Weekly_2026-04-17</code></td></tr>
+</table>
+
+<p>Characters that Windows rejects (<code>\ / : * ? " &lt; &gt; |</code>) are stripped from
+<code>{USER}</code> and <code>{SRC}</code> automatically. If your pattern has no extension, the
+tool appends <code>.xlsx</code>.</p>
+
+<h3>Pattern examples</h3>
+<table>
+  <tr><th style="width:40%">Pattern in C10</th><th>Result</th></tr>
+  <tr><td><code>DCP_Output_{DATE}_{TIME}.xlsx</code> <em>(default)</em></td>
+      <td><code>DCP_Output_2026-04-17_0935.xlsx</code></td></tr>
+  <tr><td><code>{USER}_DCP_{DATE}.xlsx</code></td>
+      <td><code>jsmith_DCP_2026-04-17.xlsx</code></td></tr>
+  <tr><td><code>{SRC}_filtered.xlsx</code></td>
+      <td><code>DCP_Weekly_2026-04-17_filtered.xlsx</code></td></tr>
+</table>
+
+<div class="danger">
+<strong>Warning:</strong> A pattern with no date/time tokens will overwrite the previous
+run's file silently (<code>DisplayAlerts</code> is off under AppLock). If you want to keep
+history, always include <code>{DATE}</code> and <code>{TIME}</code>.
+</div>
+
+
+<!-- =============================================================== -->
+<h2 id="s14">14. Troubleshooting</h2>
+
+<p class="section-intro">
+The tool shows a pop-up message for every predictable failure. Match the message text below
+to find the fix.
+</p>
+
+<table>
+  <tr><th style="width:42%">Message</th><th>Cause and fix</th></tr>
+  <tr>
+    <td><em>Run sheet is missing. Click 'Setup Workbook' first.</em></td>
+    <td>You clicked a button before initialising the workbook. Click
+    <span class="btn-label">Setup Workbook</span> on a fresh instance, or
+    <span class="btn-label">Amend Sheet Setup</span> if you already have data.</td>
+  </tr>
+  <tr>
+    <td><em>Source file path is empty. Fill in cell C6 ...</em></td>
+    <td>Cell <code>C6</code> is blank. Click <span class="btn-label">Pick Source File</span>
+    or type the full path manually.</td>
+  </tr>
+  <tr>
+    <td><em>Output folder is empty. Fill in cell C9 ...</em></td>
+    <td>Cell <code>C9</code> is blank. Click <span class="btn-label">Pick Output Folder</span>.</td>
+  </tr>
+  <tr>
+    <td><em>Could not open source workbook: ...</em></td>
+    <td>The source file does not exist, is locked by another user, or is on a network
+    path that timed out. Confirm the path in <code>C6</code> and that you can open the
+    file in Excel manually.</td>
+  </tr>
+  <tr>
+    <td><em>Source sheet not found: 'Sheet1'</em></td>
+    <td>Your source file uses a different sheet name. Update <code>C7</code> on the
+    <span class="tab-label">Run</span> tab to match, or leave blank for CSV files.</td>
+  </tr>
+  <tr>
+    <td><em>No data rows found in source below the SUM band.</em></td>
+    <td>The tool looked for data in row <code>hdrRow + 2</code> (after a one-row SUM band)
+    but found nothing. Either the source has no data, or <code>C8</code> (header row) is wrong.</td>
+  </tr>
+  <tr>
+    <td><em>Output folder/filename could not be resolved.</em></td>
+    <td>Cell <code>C9</code> or <code>C10</code> is blank. Set both and try again.</td>
+  </tr>
+  <tr>
+    <td><em>The last saved output file no longer exists: ...</em></td>
+    <td>You clicked <span class="btn-label">Open Last Output</span> but the file was moved
+    or deleted since the last run. Run the extract again, or navigate manually.</td>
+  </tr>
+  <tr>
+    <td><em>Cancelled by user at row N</em></td>
+    <td>You clicked Cancel on the progress form. Nothing was saved. Click
+    <span class="btn-label">Run Extract</span> again to retry.</td>
+  </tr>
+</table>
+
+<h3>General tips</h3>
+<ul>
+  <li>Large DCP reports (30k+ rows) can take 1-2 minutes. The progress form updates every 500 rows.</li>
+  <li>CSV sources ignore the SUM-band skip &mdash; the tool starts reading data right after the header row.</li>
+  <li>If a rule fires but the row is not highlighted, make sure column <code>L</code> has a
+  value in one of the six formats listed in Section 9.</li>
+  <li>To test changes safely, toggle rules <code>Enabled=N</code> on
+  <span class="tab-label">DCP_Rules</span> and re-run. No code changes are needed.</li>
+  <li>The <span class="tab-label">Log</span> tab records every run and error &mdash; check it
+  when something unexpected happens.</li>
+</ul>
+
+
+<!-- =============================================================== -->
+<h2 id="s15">15. Glossary</h2>
+
+<table>
+  <tr><th style="width:24%">Term</th><th>Definition</th></tr>
+  <tr><td>DCP</td><td>Demand / Capacity / Planning report generated by Oracle &mdash; the source input for this tool.</td></tr>
+  <tr><td>Token</td><td>Internal column name the macro uses. Mapped to an actual source header via the Aliases column on <span class="tab-label">DCP_Columns</span>.</td></tr>
+  <tr><td>Alias</td><td>One of the header texts your source file may use for a given token. Multiple aliases per token, comma-separated.</td></tr>
+  <tr><td>Scope</td><td>Optional sub-condition on a rule. The rule only evaluates rows whose Scope Token column value is in the Scope Values list.</td></tr>
+  <tr><td>Trigger</td><td>The column and comparison that determines whether the rule fires.</td></tr>
+  <tr><td>FLAG</td><td>Rule action that keeps the row and paints it with the rule's highlight colour.</td></tr>
+  <tr><td>DROP</td><td>Rule action that removes the row from the output.</td></tr>
+  <tr><td>KEEP_ONLY</td><td>Rule action that marks a row as a keeper. If any KEEP_ONLY rule is enabled, rows that never fire a KEEP_ONLY rule are dropped.</td></tr>
+  <tr><td>MOQ</td><td>Minimum Order Quantity &mdash; the MIN QTY column in the DCP report.</td></tr>
+  <tr><td>Inventory Org</td><td>Oracle Inventory Organization code (e.g. <code>320</code>, <code>327</code>, <code>613</code>, <code>4M4</code>, <code>4M5</code>).</td></tr>
+  <tr><td>Source Type</td><td>Oracle Item Source Type: <em>Supplier</em>, <em>Inventory</em>, etc.</td></tr>
+  <tr><td>AppLock</td><td>Internal safeguard that switches off screen updating, events, alerts and auto-calculation while the macro runs. Lifted automatically when the run finishes (or fails).</td></tr>
+  <tr><td>Rule Hits</td><td>The extra column added at the end of the output file. Contains the Tag Text of every rule that fired on that row.</td></tr>
+</table>
+
+
+<hr>
+<p style="color:#595959; font-size:9.5pt;">
+  DCP Report Formatter (DCP) &nbsp;&mdash;&nbsp;
+  Modules: DCP1_Config &middot; DCP2_Helpers &middot; DCP3_Setup &middot; DCP4_ColumnResolver &middot;
+  DCP5_FilterEngine &middot; DCP6_RuleEngine &middot; DCP7_Extract &middot; DCP8_ProgressUI &middot;
+  DCP9_Orchestrator &middot; frmDCPProgress &middot; frmDCPRun
+</p>
+
+</body>
+</html>
