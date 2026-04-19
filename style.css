@@ -207,6 +207,9 @@ main section { padding: 44px 0; }
 .content-block strong { color: var(--text); font-weight: 600; }
 .content-block a { color: var(--accent); border-bottom: 1px dotted rgba(0,212,170,0.4); }
 .content-block a:hover { border-bottom-style: solid; }
+.content-block a.btn { border-bottom: none; }
+.content-block a.btn-primary { color: #042a22; }
+.content-block a.btn-ghost { color: var(--text); }
 .content-block code {
   font-family: var(--font-mono);
   font-size: 13px;
