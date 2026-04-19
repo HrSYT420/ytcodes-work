@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Record Matching &amp; Deduplication in Excel | YTCodes</title>
+<meta name="description" content="Custom record matching and deduplication tools for Excel. Vendor lists, customer registries, entity databases. Cluster review, confidence scoring, mapping tables." />
+<link rel="canonical" href="https://ytcodes.dev/services/record-matching/" />
+<link rel="icon" type="image/svg+xml" href="/logo_tag.svg" />
+<meta property="og:title" content="Record Matching &amp; Deduplication | YTCodes" />
+<meta property="og:description" content="Custom record matching and deduplication tools. Cluster review, confidence scoring, mapping tables." />
+<meta property="og:image" content="https://ytcodes.dev/cover.png" />
+<meta property="og:url" content="https://ytcodes.dev/services/record-matching/" />
+<meta property="og:type" content="website" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "Record Matching and Deduplication",
+  "provider": {"@type": "ProfessionalService", "name": "YTCodes Automation", "url": "https://ytcodes.dev"},
+  "areaServed": [{"@type": "City", "name": "Salt Lake City"}, {"@type": "Country", "name": "United States"}],
+  "description": "Custom record matching and deduplication tools for Excel. Vendor lists, customer registries, entity databases."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://ytcodes.dev/"},
+    {"@type": "ListItem", "position": 2, "name": "Services", "item": "https://ytcodes.dev/services/"},
+    {"@type": "ListItem", "position": 3, "name": "Record Matching", "item": "https://ytcodes.dev/services/record-matching/"}
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+<nav class="top" aria-label="Primary">
+  <div class="container">
+    <a href="/" class="brand">ytcodes<span class="dot">.</span>work</a>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+    <div class="nav-links" id="navLinks">
+      <a href="/tools/">Tools</a>
+      <a href="/services/" class="active">Services</a>
+      <a href="/#process">Process</a>
+      <a href="/#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span><a href="/services/">Services</a><span class="sep">/</span><span>Record Matching</span>
+  </nav>
+</div>
+
+<header class="subhero">
+  <div class="container">
+    <span class="eyebrow">// Service</span>
+    <h1>Record Matching &amp; Deduplication</h1>
+    <p class="lede">Your vendor list, customer registry, or entity database has grown organically. The same real-world record shows up under five different names with different capitalization, punctuation, and typos. Standard Excel tools cannot group them reliably.</p>
+    <p class="lede">I build custom matching tools that find those groups automatically, score each match by confidence, and produce a review-ready cluster report. Your analysts sign off on the canonical version. The tool generates the mapping table back to your system of record.</p>
+    <div class="subhero-cta">
+      <a href="/#contact" class="btn btn-primary">Get a quote</a>
+    </div>
+  </div>
+</header>
+
+<main>
+<section>
+<div class="container">
+<div class="content-block">
+
+<h2>What you get</h2>
+<ul class="capabilities">
+  <li>A matching tool tuned to your specific data shape and naming conventions</li>
+  <li>Configurable similarity thresholds for different record types</li>
+  <li>Cluster review interface so analysts can verify or override the tool's decisions</li>
+  <li>Mapping table output in the exact format your system of record expects</li>
+  <li>Changelog documenting every merge, split, and exception</li>
+</ul>
+
+<h2>Works on any record type</h2>
+<p>Vendors. Customers. Products. Legal entities. Any dataset where the same thing appears under multiple strings. The matching engine does not care about domain. It cares about the shape of the variation, which gets tuned during setup.</p>
+
+<h2>Reference tool</h2>
+<p>See the <a href="/tools/vendor-deduplication/">Vendor Deduplication Tool</a> for a concrete example of the output this service produces. Your version gets tuned for your data and your review workflow.</p>
+
+<h2>Pricing</h2>
+<p>Project-based pricing starting at $200. Scope and cost locked in writing before work begins. Matching projects typically finish in one to two weeks depending on data complexity.</p>
+
+<div class="callout">
+  <h3>Ready to clean up the list?</h3>
+  <p>Send a representative sample of the records and the reference data they should match against. Quote comes back same day.</p>
+  <a href="/#contact" class="btn btn-primary">Describe your problem</a>
+</div>
+
+</div>
+</div>
+</section>
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <img src="/logo_terminal.svg" alt="YTCodes" height="24" />
+    <span>&copy; 2026 YTCodes &middot; Data in. Signal out.</span>
+  </div>
+  <div class="footer-quote">
+    &ldquo;Music, movies, microcode, and high-speed pizza delivery.&rdquo;
+    <span class="footer-quote-attr">— what's left when everything else gets automated</span>
+  </div>
+</footer>
+
+<script>
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+if (hamburger && navLinks) {
+  hamburger.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+}
+</script>
+</body>
+</html>

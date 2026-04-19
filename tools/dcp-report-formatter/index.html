@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Oracle DCP Report Formatter | YTCodes</title>
+<meta name="description" content="Excel VBA tool that reads raw Oracle DCP exports, applies configurable filters and business rules, highlights problem rows, saves a clean output. Rules on plain Excel sheets." />
+<link rel="canonical" href="https://ytcodes.dev/tools/dcp-report-formatter/" />
+<link rel="icon" type="image/svg+xml" href="/logo_tag.svg" />
+<meta property="og:title" content="Oracle DCP Report Formatter | YTCodes" />
+<meta property="og:description" content="Reads raw Oracle DCP exports, applies configurable filters, highlights problem rows, saves a clean output file." />
+<meta property="og:image" content="https://ytcodes.dev/cover.png" />
+<meta property="og:url" content="https://ytcodes.dev/tools/dcp-report-formatter/" />
+<meta property="og:type" content="website" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "DCP Report Formatter",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Microsoft Excel (Windows)",
+  "description": "Excel VBA tool that reads raw Oracle DCP exports, applies configurable filters and business rules, highlights problem rows, and saves a clean output file.",
+  "author": {"@type": "Organization", "name": "YTCodes Automation", "url": "https://ytcodes.dev"},
+  "offers": {"@type": "Offer", "price": "200", "priceCurrency": "USD"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://ytcodes.dev/"},
+    {"@type": "ListItem", "position": 2, "name": "Tools", "item": "https://ytcodes.dev/tools/"},
+    {"@type": "ListItem", "position": 3, "name": "DCP Report Formatter", "item": "https://ytcodes.dev/tools/dcp-report-formatter/"}
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+<nav class="top" aria-label="Primary">
+  <div class="container">
+    <a href="/" class="brand">ytcodes<span class="dot">.</span>work</a>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+    <div class="nav-links" id="navLinks">
+      <a href="/tools/" class="active">Tools</a>
+      <a href="/services/">Services</a>
+      <a href="/#process">Process</a>
+      <a href="/#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span><a href="/tools/">Tools</a><span class="sep">/</span><span>DCP Report Formatter</span>
+  </nav>
+</div>
+
+<header class="subhero">
+  <div class="container">
+    <span class="eyebrow">// DCP · Beta</span>
+    <h1>Oracle DCP Report Formatter</h1>
+    <p class="lede">The Oracle DCP report arrives with 9,000+ rows and 37 columns. Finding the shortage rows, excess rows, and data-quality issues means hours of manual filtering before anything useful can be said about the data.</p>
+    <p class="lede">The DCP Report Formatter reads the raw Oracle export, applies your filters and business rules, highlights problem rows in color, and saves a clean output file. You configure the rules on plain Excel sheets. No code changes needed.</p>
+    <div class="subhero-cta">
+      <a href="/#contact" class="btn btn-primary">Get a quote</a>
+      <a href="/User_Manuals/DCP_User_Manual.html" class="btn btn-ghost">Read the manual</a>
+    </div>
+  </div>
+</header>
+
+<main>
+<section>
+<div class="container">
+<div class="content-block">
+
+<h2>Capabilities</h2>
+<ul class="capabilities">
+  <li>Ingests raw Oracle DCP exports up to 50,000 rows without performance issues</li>
+  <li>Rules defined on a dedicated Excel sheet, no VBA editing required</li>
+  <li>Highlights shortage rows, excess rows, and data-quality flags in distinct colors</li>
+  <li>Configurable column selection for the clean output file</li>
+  <li>Audit log showing every rule that fired on every row</li>
+  <li>Output file auto-named with the run date for easy archival</li>
+</ul>
+
+<h2>Rules live in Excel</h2>
+<p>The rules engine reads from a sheet in the same workbook. Adding a new rule means adding a row. Changing a threshold means editing a cell. The non-technical users who own the report requirements can maintain the logic without developer involvement.</p>
+
+<h2>Why it exists</h2>
+<p>The raw DCP export contains everything, most of which is noise for any given analyst. The work of pulling out just the actionable rows is mechanical and repeatable. The tool handles that mechanical work so the analyst time goes to interpretation instead of filtering.</p>
+
+<details class="doc-block">
+  <summary>Full documentation (click to expand)</summary>
+  <div class="doc-body">
+    <p>Two reference documents cover the tool. The user manual walks through running the tool and reviewing output. The rules guide documents the rules engine syntax and includes examples for the common shortage and excess patterns.</p>
+    <p>Read them here:</p>
+    <ul>
+      <li><a href="/User_Manuals/DCP_User_Manual.html">DCP User Manual</a></li>
+      <li><a href="/User_Manuals/DCP_Rules_Guide.html">DCP Rules Guide</a></li>
+    </ul>
+  </div>
+</details>
+
+<div class="callout">
+  <h3>Beta status</h3>
+  <p>The tool has been running against production DCP exports for several weeks. Core functionality is stable. The rules editor UX is being refined based on feedback from pilot users. New rule types added on request.</p>
+  <a href="/#contact" class="btn btn-primary">Request a demo</a>
+</div>
+
+<h2>Related services</h2>
+<p>Part of the <a href="/services/oracle-erp-automation/">Oracle ERP automation service</a>. For template-based output see the <a href="/tools/template-filler/">Template Automation tool</a>.</p>
+
+</div>
+</div>
+</section>
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <img src="/logo_terminal.svg" alt="YTCodes" height="24" />
+    <span>&copy; 2026 YTCodes &middot; Data in. Signal out.</span>
+  </div>
+  <div class="footer-quote">
+    &ldquo;Music, movies, microcode, and high-speed pizza delivery.&rdquo;
+    <span class="footer-quote-attr">— what's left when everything else gets automated</span>
+  </div>
+</footer>
+
+<script>
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+if (hamburger && navLinks) {
+  hamburger.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+}
+</script>
+</body>
+</html>

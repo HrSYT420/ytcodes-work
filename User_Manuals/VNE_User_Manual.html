@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:site_name" content="YTCodes Automation">
+<link rel="icon" type="image/svg+xml" href="/logo_tag.svg">
 <title>Vendor Normalization Engine — User Manual</title>
 <style>
   body {
@@ -168,9 +171,36 @@
   .cluster-example .cid { color: #1F4E79; font-weight: bold; }
   .cluster-example .rep { color: #375623; }
   .cluster-example .var { color: #595959; margin-left: 20px; }
+
+  /* YTCodes brand bar */
+  body { padding-top: 48px; }
+  .yt-brandbar {
+    position: fixed; top: 0; left: 0; right: 0; height: 40px;
+    background: #0a0e27;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px; z-index: 1000;
+    font-family: 'SF Mono', Consolas, 'DejaVu Sans Mono', monospace;
+    font-size: 13px;
+  }
+  .yt-brandbar a { text-decoration: none; }
+  .yt-brandbar .yt-home { color: #05d9e8; display: flex; align-items: center; gap: 8px; }
+  .yt-brandbar .yt-home .yt-mark { color: #ff2a6d; font-weight: 700; }
+  .yt-brandbar .yt-home .yt-host { color: rgba(255,255,255,0.55); }
+  .yt-brandbar .yt-cta { color: #05d9e8; font-size: 12px; }
+  .yt-brandbar .yt-cta:hover { text-decoration: underline; }
+  @media (max-width: 480px) { .yt-brandbar .yt-cta { display: none; } }
+  @media print { .yt-brandbar { display: none !important; } body { padding-top: 0 !important; } }
+
 </style>
 </head>
 <body>
+<div class="yt-brandbar" role="banner">
+  <a class="yt-home" href="https://ytcodes.dev">
+    <span class="yt-mark">YT</span>
+    <span class="yt-host">ytcodes.dev</span>
+  </a>
+  <a class="yt-cta" href="https://ytcodes.dev/#contact">Get a quote &rarr;</a>
+</div>
 
 <h1>Vendor Normalization Engine</h1>
 <p class="subtitle">User Manual &amp; Job Aid &nbsp;|&nbsp; Version 1.0 &nbsp;|&nbsp; March 2026</p>
@@ -2362,10 +2392,10 @@
 </table>
 
 <hr>
-<p style="color:#999; font-size:9pt; text-align:center;">
-  Vendor Normalization Engine &nbsp;|&nbsp; Job Aid v1.0 &nbsp;|&nbsp; March 2026 &nbsp;|&nbsp;
-  For internal use only |&nbsp; To report issues or request enhancements, contact Darek Krawczynski.
-</p>
+<div style="display:flex; align-items:center; justify-content:space-between; padding:16px 0; font-size:9.5pt; color:#595959; gap:16px; flex-wrap:wrap;">
+  <span>Vendor Normalization Engine &nbsp;|&nbsp; Job Aid v1.0 &nbsp;|&nbsp; March 2026 &nbsp;|&nbsp; For internal use only &nbsp;|&nbsp; To report issues or request enhancements, contact Darek Krawczynski.</span>
+  <a href="https://ytcodes.dev" style="color:#2E75B6; text-decoration:none; font-size:9pt;">ytcodes.dev</a>
+</div>
 
 </body>
 </html>

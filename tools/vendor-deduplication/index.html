@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Excel Vendor Deduplication Tool | YTCodes</title>
+<meta name="description" content="Production Excel VBA tool that deduplicates vendor and customer name lists. Similarity scoring, cluster review, reference cross-check. Color-coded analyst output." />
+<link rel="canonical" href="https://ytcodes.dev/tools/vendor-deduplication/" />
+<link rel="icon" type="image/svg+xml" href="/logo_tag.svg" />
+<meta property="og:title" content="Excel Vendor Deduplication Tool | YTCodes" />
+<meta property="og:description" content="Production Excel VBA tool that deduplicates vendor and customer name lists. Similarity scoring, cluster review, reference cross-check." />
+<meta property="og:image" content="https://ytcodes.dev/cover.png" />
+<meta property="og:url" content="https://ytcodes.dev/tools/vendor-deduplication/" />
+<meta property="og:type" content="website" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Vendor Normalization Engine",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Microsoft Excel (Windows)",
+  "description": "Excel VBA tool that deduplicates vendor and customer name lists using similarity scoring, cluster review, and reference cross-check.",
+  "author": {"@type": "Organization", "name": "YTCodes Automation", "url": "https://ytcodes.dev"},
+  "offers": {"@type": "Offer", "price": "200", "priceCurrency": "USD"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://ytcodes.dev/"},
+    {"@type": "ListItem", "position": 2, "name": "Tools", "item": "https://ytcodes.dev/tools/"},
+    {"@type": "ListItem", "position": 3, "name": "Vendor Deduplication", "item": "https://ytcodes.dev/tools/vendor-deduplication/"}
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+<nav class="top" aria-label="Primary">
+  <div class="container">
+    <a href="/" class="brand">ytcodes<span class="dot">.</span>work</a>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+    <div class="nav-links" id="navLinks">
+      <a href="/tools/" class="active">Tools</a>
+      <a href="/services/">Services</a>
+      <a href="/#process">Process</a>
+      <a href="/#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span><a href="/tools/">Tools</a><span class="sep">/</span><span>Vendor Deduplication</span>
+  </nav>
+</div>
+
+<header class="subhero">
+  <div class="container">
+    <span class="eyebrow">// VNE · Live</span>
+    <h1>Excel Vendor Deduplication Tool</h1>
+    <p class="lede">Vendor lists grow messy over time. The same supplier appears as five different names with different capitalization, abbreviations, and typos. Manual cleanup takes days.</p>
+    <p class="lede">The Vendor Normalization Engine scans your entire name list, groups similar entries into clusters using similarity scoring, then cross-references each cluster against your reference data. Output is color-coded for fast analyst review.</p>
+    <div class="subhero-cta">
+      <a href="/#contact" class="btn btn-primary">Get a quote</a>
+      <a href="/User_Manuals/VNE_User_Manual.html" class="btn btn-ghost">Read the manual</a>
+    </div>
+  </div>
+</header>
+
+<main>
+<section>
+<div class="container">
+<div class="content-block">
+
+<h2>Capabilities</h2>
+<ul class="capabilities">
+  <li>Configurable similarity thresholds per input list</li>
+  <li>Cluster review pane with keep / merge / split controls</li>
+  <li>Reference crosswalk flagging canonical matches against orphans</li>
+  <li>Handles lists up to several hundred thousand rows</li>
+  <li>Color-coded output showing confidence, action taken, and provenance</li>
+  <li>Clean mapping table suitable for feeding back into your system of record</li>
+</ul>
+
+<h2>Works on any name list</h2>
+<p>Vendor masters. Customer lists. Entity registries. Any dataset where the same real-world thing shows up under different strings. The matching engine does not care what the records represent. It cares about the shape of the variation.</p>
+
+<h2>Why it exists</h2>
+<p>Standard Excel <code>=COUNTIF</code> and pivot-table workflows break down once a name list grows past a few thousand rows with organic variation. Commercial master-data-management products cost tens of thousands per year and assume you have a data governance team. The Vendor Normalization Engine sits between those extremes. You get cluster-grade matching inside the Excel your analysts already open.</p>
+
+<details class="doc-block">
+  <summary>Full documentation (click to expand)</summary>
+  <div class="doc-body">
+    <p>The user manual covers: installation, input file setup, similarity threshold tuning, the cluster review workflow, reference crosswalk configuration, and output format. It also includes a troubleshooting section for the common input file issues.</p>
+    <p>Read it here: <a href="/User_Manuals/VNE_User_Manual.html">VNE User Manual</a>.</p>
+  </div>
+</details>
+
+<div class="callout">
+  <h3>Need something similar?</h3>
+  <p>Every dedup job has its own rules. Names, addresses, product SKUs, account numbers. Send a sample file and the current manual process. Quote comes back same day.</p>
+  <a href="/#contact" class="btn btn-primary">Describe your problem</a>
+</div>
+
+<h2>Related services</h2>
+<p>This tool is part of the <a href="/services/record-matching/">record matching service</a>. For broader data cleanup work beyond name matching, see the <a href="/services/excel-vba-development/">Excel VBA development service</a>.</p>
+
+</div>
+</div>
+</section>
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <img src="/logo_terminal.svg" alt="YTCodes" height="24" />
+    <span>&copy; 2026 YTCodes &middot; Data in. Signal out.</span>
+  </div>
+  <div class="footer-quote">
+    &ldquo;Music, movies, microcode, and high-speed pizza delivery.&rdquo;
+    <span class="footer-quote-attr">— what's left when everything else gets automated</span>
+  </div>
+</footer>
+
+<script>
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+if (hamburger && navLinks) {
+  hamburger.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+}
+</script>
+</body>
+</html>

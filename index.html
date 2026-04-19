@@ -604,6 +604,7 @@
   }
   .status.live { background: rgba(0,212,170,0.12); color: var(--accent); }
   .status.dev { background: rgba(255,181,71,0.12); color: var(--warn); }
+  .status.beta { background: rgba(79,142,247,0.14); color: var(--accent-2); }
 
   .tool h3 { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
   .tool p { color: var(--text-dim); font-size: 14.5px; }
@@ -908,9 +909,9 @@
     <a href="#top" class="brand" aria-label="YTCodes home">ytcodes<span class="dot">.</span>work</a>
     <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="navLinks"><span></span></button>
     <div class="nav-links" id="navLinks">
-      <a href="#tools">Tools</a>
+      <a href="/tools/">Tools</a>
+      <a href="/services/">Services</a>
       <a href="#process">Process</a>
-      <a href="#stack">Stack</a>
       <a href="#contact">Contact</a>
     </div>
   </div>
@@ -1210,43 +1211,50 @@ setTimeout(() => {
 
 // tools
 const TOOLS = [
-  { code:'VNE', name:'Name Normalization Engine', status:'live',
+  { code:'VNE', name:'Name Normalization Engine', status:'live', slug:'vendor-deduplication',
     desc:"Scans large name lists, groups near-duplicates into similarity clusters, cross-references against a reference extract.",
-    tags:['fuzzy match','clustering','deduplication'],
+    tags:['record matching','clustering','deduplication'],
     details:"Built for vendor, customer, and entity lists where the same name appears ten different ways. Configurable similarity thresholds, cluster review UI, and a reference-crosswalk step that flags canonical matches vs. orphans. Output: a clean mapping table you can feed back into your system of record.",
     manual:'User_Manuals/VNE_User_Manual.html'
   },
-  { code:'TFT', name:'Template Fill Pipeline', status:'live',
+  { code:'TFT', name:'Template Fill Pipeline', status:'live', slug:'template-filler',
     desc:"Maps columns from any raw data file to any output template. Configure once, run forever.",
     tags:['column mapping','batch output','recurring workflow'],
-    details:"Point at a source, point at a template, define the mapping once — the tool handles every subsequent run. Handles header drift, type coercion, and per-column transforms. Ideal for recurring report generation, client deliverables, and anything that lands in the same template every week.",
+    details:"Point at a source, point at a template, define the mapping once. The tool handles every subsequent run. Handles header drift, type coercion, and per-column transforms. Ideal for recurring report generation, client deliverables, and anything that lands in the same template every week.",
     manual:'User_Manuals/TFT_User_Manual.html'
   },
-  { code:'BPA', name:'Batch File Generator', status:'live',
+  { code:'BPA', name:'Batch File Generator', status:'live', slug:'oracle-erp-upload',
     desc:"Reads a source spreadsheet, validates every row, builds a review list, generates multiple output files in one click.",
     tags:['batch processing','multi-file output','email dispatch'],
-    details:"One source → many outputs. Validates rows against configurable rules, surfaces exceptions in a review pane, then emits per-row or per-group files. Optional Outlook dispatch step sends each output to the right recipient with a templated body.",
+    details:"One source, many outputs. Validates rows against configurable rules, surfaces exceptions in a review pane, then emits per-row or per-group files. Optional Outlook dispatch step sends each output to the right recipient with a templated body.",
     manual:'User_Manuals/BPA_User_Manual_V2.html'
   },
-  { code:'WPR', name:'Batch Validation Pipeline', status:'live',
+  { code:'WPR', name:'Batch Validation Pipeline', status:'live', slug:'payment-validation',
     desc:"Runs a multi-step validation pipeline on incoming data batches. Each step is independent.",
     tags:['multi-step pipeline','reconciliation','audit trail'],
-    details:"Each validation step is a module: run them in any order, skip any you don't need. Every step writes to an audit log so you can reconstruct exactly why a row passed or failed. Designed for teams that need to defend data quality decisions after the fact.",
+    details:"Each validation step is a module. Run them in any order. Skip any you don't need. Every step writes to an audit log so you can reconstruct exactly why a row passed or failed. Designed for teams that need to defend data quality decisions after the fact.",
     manual:'User_Manuals/WPR_User_Manual.html'
   },
-  { code:'WCL', name:'Workbook Cleaner', status:'dev',
+  { code:'DCP', name:'DCP Report Formatter', status:'beta', slug:'dcp-report-formatter',
+    desc:"Reads raw Oracle DCP exports, applies configurable filters and business rules, highlights problem rows, saves a clean output file.",
+    tags:['oracle dcp','report formatting','configurable rules'],
+    details:"Ingests the raw Oracle DCP export, applies filters and business rules defined on plain Excel sheets, highlights shortage and excess rows in color, saves a clean output file. Non-technical users maintain the rules without touching VBA.",
+    manual:'User_Manuals/DCP_User_Manual.html'
+  },
+  { code:'WCL', name:'Workbook Cleaner', status:'dev', slug:'workbook-cleaner',
     desc:"Ingests raw data files, applies configurable validation rules, eliminates duplicates, delivers a clean master file.",
     tags:['data cleaning','deduplication','validation rules'],
-    details:"The generalist cleaner — rules-based normalization, dedupe, and merge into a single master. Currently in active development; the engine is stable, the rules editor is being refined for non-technical users.",
+    details:"The generalist cleaner. Rules-based normalization, dedupe, and merge into a single master. Currently in active development. The engine is stable. The rules editor is being refined for non-technical users.",
     manual:null
   },
-  { code:'LIB', name:'Shared Utility Library', status:'live',
+  { code:'LIB', name:'Shared Utility Library', status:'live', slug:'vba-shared-library',
     desc:"Nine battle-tested VBA modules. Drop them into any new project and skip re-writing the same patterns.",
     tags:['reusable modules','VBA','developer kit'],
-    details:"File I/O, range utilities, logging, fuzzy comparison, Outlook dispatch, progress UI, config parsing, error wrappers, and collection helpers. Every module is self-contained with zero external references — drop in, reference, ship.",
+    details:"File I/O, range utilities, logging, fuzzy comparison, Outlook dispatch, progress UI, config parsing, error wrappers, and collection helpers. Every module is self-contained with zero external references. Drop in, reference, ship.",
     manual:'User_Manuals/LIB_User_Manual.html'
   },
 ];
+const statusLabel = { live: 'Live', dev: 'In Dev', beta: 'Beta' };
 const toolsGrid = document.getElementById('toolsGrid');
 TOOLS.forEach(t => {
   const btn = document.createElement('button');
@@ -1256,15 +1264,16 @@ TOOLS.forEach(t => {
   const manualLink = t.manual
     ? `<a class="tool-manual" href="${t.manual}" target="_blank" rel="noopener" onclick="event.stopPropagation()">📖 User Manual</a>`
     : '';
+  const pageLink = `<a class="tool-manual" href="/tools/${t.slug}/" onclick="event.stopPropagation()">→ View page</a>`;
   btn.innerHTML = `
     <div class="tool-head">
       <span class="badge">${t.code}</span>
-      <span class="status ${t.status}">${t.status==='live'?'Live':'In Dev'}</span>
+      <span class="status ${t.status}">${statusLabel[t.status] || t.status}</span>
     </div>
     <h3>${t.name}</h3>
     <p>${t.desc}</p>
     <div class="tags">${t.tags.map(x=>`<span class="tag">${x}</span>`).join('')}</div>
-    <div class="tool-details">${t.details}${manualLink ? '<br/>'+manualLink : ''}</div>
+    <div class="tool-details">${t.details}<br/>${pageLink}${manualLink ? ' &nbsp; '+manualLink : ''}</div>
     <div class="tool-toggle"><span class="chev">▾</span> <span class="toggle-label">More detail</span></div>
   `;
   btn.addEventListener('click', () => {

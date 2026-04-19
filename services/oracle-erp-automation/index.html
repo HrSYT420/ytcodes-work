@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Oracle ERP Automation | Upload, Report, Reconcile | YTCodes</title>
+<meta name="description" content="Oracle ERP automation for small businesses. Upload file generators, DCP report formatters, reconciliation tools that sit alongside Oracle workflows. Flat rate pricing." />
+<link rel="canonical" href="https://ytcodes.dev/services/oracle-erp-automation/" />
+<link rel="icon" type="image/svg+xml" href="/logo_tag.svg" />
+<meta property="og:title" content="Oracle ERP Automation | YTCodes" />
+<meta property="og:description" content="Upload file generators, DCP report formatters, reconciliation tools. Flat rate pricing." />
+<meta property="og:image" content="https://ytcodes.dev/cover.png" />
+<meta property="og:url" content="https://ytcodes.dev/services/oracle-erp-automation/" />
+<meta property="og:type" content="website" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "Oracle ERP Automation",
+  "provider": {"@type": "ProfessionalService", "name": "YTCodes Automation", "url": "https://ytcodes.dev"},
+  "areaServed": [{"@type": "City", "name": "Salt Lake City"}, {"@type": "Country", "name": "United States"}],
+  "description": "Oracle ERP automation: upload file generators, DCP report formatters, and reconciliation tools."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://ytcodes.dev/"},
+    {"@type": "ListItem", "position": 2, "name": "Services", "item": "https://ytcodes.dev/services/"},
+    {"@type": "ListItem", "position": 3, "name": "Oracle ERP Automation", "item": "https://ytcodes.dev/services/oracle-erp-automation/"}
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+<nav class="top" aria-label="Primary">
+  <div class="container">
+    <a href="/" class="brand">ytcodes<span class="dot">.</span>work</a>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+    <div class="nav-links" id="navLinks">
+      <a href="/tools/">Tools</a>
+      <a href="/services/" class="active">Services</a>
+      <a href="/#process">Process</a>
+      <a href="/#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span><a href="/services/">Services</a><span class="sep">/</span><span>Oracle ERP Automation</span>
+  </nav>
+</div>
+
+<header class="subhero">
+  <div class="container">
+    <span class="eyebrow">// Service</span>
+    <h1>Oracle ERP Automation</h1>
+    <p class="lede">Oracle ERP handles the core transactions. The work around it stays manual. Upload files get built by hand in Excel. DCP reports get filtered by hand every morning. Reconciliations match columns across exports by eye.</p>
+    <p class="lede">I build the Excel-side automation that sits between your team and Oracle. Upload file generators, DCP report formatters, and reconciliation tools built for the specific export formats your Oracle instance produces.</p>
+    <div class="subhero-cta">
+      <a href="/#contact" class="btn btn-primary">Get a quote</a>
+    </div>
+  </div>
+</header>
+
+<main>
+<section>
+<div class="container">
+<div class="content-block">
+
+<h2>What you get</h2>
+<ul class="capabilities">
+  <li>An Excel-side tool that reads your Oracle exports in their native format</li>
+  <li>Validation of every row before the upload file is written</li>
+  <li>Clean output files auto-named to match your upload naming convention</li>
+  <li>Audit log tying every output row back to its source</li>
+  <li>Reusable configuration so next month's run takes one click</li>
+</ul>
+
+<h2>Reference tools built with this service</h2>
+<ul>
+  <li><a href="/tools/oracle-erp-upload/">Oracle ERP Upload Automation</a> — RFQ data to upload files in one click</li>
+  <li><a href="/tools/dcp-report-formatter/">DCP Report Formatter</a> — raw DCP exports to clean actionable output</li>
+</ul>
+
+<h2>Pricing</h2>
+<p>Project-based pricing starting at $200. Scope and cost locked in writing before work begins. Most Oracle-adjacent projects finish in one to three weeks.</p>
+
+<div class="callout">
+  <h3>Start with a sample</h3>
+  <p>Send a representative Oracle export and describe the downstream process you run against it. Quote comes back same day.</p>
+  <a href="/#contact" class="btn btn-primary">Describe your problem</a>
+</div>
+
+</div>
+</div>
+</section>
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <img src="/logo_terminal.svg" alt="YTCodes" height="24" />
+    <span>&copy; 2026 YTCodes &middot; Data in. Signal out.</span>
+  </div>
+  <div class="footer-quote">
+    &ldquo;Music, movies, microcode, and high-speed pizza delivery.&rdquo;
+    <span class="footer-quote-attr">— what's left when everything else gets automated</span>
+  </div>
+</footer>
+
+<script>
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+if (hamburger && navLinks) {
+  hamburger.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+}
+</script>
+</body>
+</html>

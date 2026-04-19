@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Excel Data Cleanup Tool | YTCodes</title>
+<meta name="description" content="Excel VBA tool that ingests raw data files, applies configurable column-level validation rules, eliminates duplicates, delivers a clean analysis-ready master file." />
+<link rel="canonical" href="https://ytcodes.dev/tools/workbook-cleaner/" />
+<link rel="icon" type="image/svg+xml" href="/logo_tag.svg" />
+<meta property="og:title" content="Excel Data Cleanup Tool | YTCodes" />
+<meta property="og:description" content="Ingests raw data, applies validation rules, eliminates duplicates, delivers a clean master file with changelog." />
+<meta property="og:image" content="https://ytcodes.dev/cover.png" />
+<meta property="og:url" content="https://ytcodes.dev/tools/workbook-cleaner/" />
+<meta property="og:type" content="website" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Workbook Cleaner",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Microsoft Excel (Windows)",
+  "description": "Excel VBA tool that ingests raw data, applies configurable validation rules, eliminates duplicates, delivers a clean master file.",
+  "author": {"@type": "Organization", "name": "YTCodes Automation", "url": "https://ytcodes.dev"},
+  "offers": {"@type": "Offer", "price": "200", "priceCurrency": "USD"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://ytcodes.dev/"},
+    {"@type": "ListItem", "position": 2, "name": "Tools", "item": "https://ytcodes.dev/tools/"},
+    {"@type": "ListItem", "position": 3, "name": "Workbook Cleaner", "item": "https://ytcodes.dev/tools/workbook-cleaner/"}
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+<nav class="top" aria-label="Primary">
+  <div class="container">
+    <a href="/" class="brand">ytcodes<span class="dot">.</span>work</a>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+    <div class="nav-links" id="navLinks">
+      <a href="/tools/" class="active">Tools</a>
+      <a href="/services/">Services</a>
+      <a href="/#process">Process</a>
+      <a href="/#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span><a href="/tools/">Tools</a><span class="sep">/</span><span>Workbook Cleaner</span>
+  </nav>
+</div>
+
+<header class="subhero">
+  <div class="container">
+    <span class="eyebrow">// WCL · In Development</span>
+    <h1>Excel Data Cleanup Tool</h1>
+    <p class="lede">Data from multiple sources has grown organically. Duplicate IDs, inconsistent formats, missing required fields. Every analysis starts with an hour of cleanup before the real work begins.</p>
+    <p class="lede">The Workbook Cleaner ingests raw data files from any source, applies configurable column-level validation rules, eliminates duplicates, and delivers a single analysis-ready master file with a complete fix changelog.</p>
+    <div class="subhero-cta">
+      <a href="/#contact" class="btn btn-primary">Ask about early access</a>
+      <a href="/services/excel-vba-development/" class="btn btn-ghost">See the service</a>
+    </div>
+  </div>
+</header>
+
+<main>
+<section>
+<div class="container">
+<div class="content-block">
+
+<h2>Planned capabilities</h2>
+<ul class="capabilities">
+  <li>Drop-in support for CSV, XLSX, and TSV sources</li>
+  <li>Column-level rule editor for non-technical users</li>
+  <li>Duplicate detection across configurable key sets</li>
+  <li>Merge strategy per field: keep first, keep last, concatenate, numeric max</li>
+  <li>Full changelog showing every row that was fixed, merged, or dropped</li>
+  <li>Output in the same format as the input, or a normalized master layout</li>
+</ul>
+
+<h2>Status</h2>
+<p>The underlying engine is stable and has been used inside other tools on this site. The standalone version is in active development. The rules editor for non-technical users is being refined based on feedback from the teams piloting it.</p>
+
+<h2>Why it exists</h2>
+<p>The VNE tool solves one specific shape of cleanup: name matching. The Workbook Cleaner is the generalist. Different rules, different column types, same end goal. A single analysis-ready master file.</p>
+
+<div class="callout">
+  <h3>Early access</h3>
+  <p>If your team is waiting on a tool like this, get in touch. Early-access users shape the rules editor and the output format.</p>
+  <a href="/#contact" class="btn btn-primary">Ask about early access</a>
+</div>
+
+<h2>Related tools</h2>
+<p>For name-specific cleanup today use the <a href="/tools/vendor-deduplication/">Vendor Deduplication tool</a>. For template-based output formatting see the <a href="/tools/template-filler/">Template Automation tool</a>.</p>
+
+</div>
+</div>
+</section>
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <img src="/logo_terminal.svg" alt="YTCodes" height="24" />
+    <span>&copy; 2026 YTCodes &middot; Data in. Signal out.</span>
+  </div>
+  <div class="footer-quote">
+    &ldquo;Music, movies, microcode, and high-speed pizza delivery.&rdquo;
+    <span class="footer-quote-attr">— what's left when everything else gets automated</span>
+  </div>
+</footer>
+
+<script>
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+if (hamburger && navLinks) {
+  hamburger.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+}
+</script>
+</body>
+</html>

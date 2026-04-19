@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wire Payment Validation Tool | YTCodes</title>
+<meta name="description" content="Excel VBA tool that runs a five-step validation pipeline on incoming payment batches. Registry rebuild, name matching, account verification, inactive flagging. Full audit log." />
+<link rel="canonical" href="https://ytcodes.dev/tools/payment-validation/" />
+<link rel="icon" type="image/svg+xml" href="/logo_tag.svg" />
+<meta property="og:title" content="Wire Payment Validation Tool | YTCodes" />
+<meta property="og:description" content="Five-step validation pipeline on payment batches. Registry rebuild, name matching, account verification, inactive flagging." />
+<meta property="og:image" content="https://ytcodes.dev/cover.png" />
+<meta property="og:url" content="https://ytcodes.dev/tools/payment-validation/" />
+<meta property="og:type" content="website" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Batch Validation Pipeline",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Microsoft Excel (Windows)",
+  "description": "Excel VBA tool that runs a multi-step validation pipeline on payment batches with a complete audit log.",
+  "author": {"@type": "Organization", "name": "YTCodes Automation", "url": "https://ytcodes.dev"},
+  "offers": {"@type": "Offer", "price": "200", "priceCurrency": "USD"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://ytcodes.dev/"},
+    {"@type": "ListItem", "position": 2, "name": "Tools", "item": "https://ytcodes.dev/tools/"},
+    {"@type": "ListItem", "position": 3, "name": "Payment Validation", "item": "https://ytcodes.dev/tools/payment-validation/"}
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+<nav class="top" aria-label="Primary">
+  <div class="container">
+    <a href="/" class="brand">ytcodes<span class="dot">.</span>work</a>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+    <div class="nav-links" id="navLinks">
+      <a href="/tools/" class="active">Tools</a>
+      <a href="/services/">Services</a>
+      <a href="/#process">Process</a>
+      <a href="/#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span><a href="/tools/">Tools</a><span class="sep">/</span><span>Payment Validation</span>
+  </nav>
+</div>
+
+<header class="subhero">
+  <div class="container">
+    <span class="eyebrow">// WPR · Live</span>
+    <h1>Wire Payment Validation Tool</h1>
+    <p class="lede">Payment batches need multi-step validation before processing. Each check is manual: account verification, inactive supplier flags, name matching against the registry. Miss one, and a bad wire goes out.</p>
+    <p class="lede">The Batch Validation Pipeline runs five independent checks on any incoming payment batch. Each step produces a color-coded review package. Every decision gets logged so you can reconstruct why a row passed or failed.</p>
+    <div class="subhero-cta">
+      <a href="/#contact" class="btn btn-primary">Get a quote</a>
+      <a href="/User_Manuals/WPR_User_Manual.html" class="btn btn-ghost">Read the manual</a>
+    </div>
+  </div>
+</header>
+
+<main>
+<section>
+<div class="container">
+<div class="content-block">
+
+<h2>The five validation steps</h2>
+<ul class="capabilities">
+  <li>Import: raw payment batch arrives, normalizes to the canonical layout</li>
+  <li>Registry rebuild: refreshes the supplier registry from the source of truth</li>
+  <li>Name matching: payee names resolved against the registry with confidence scores</li>
+  <li>Account cross-check: bank routing and account numbers verified against known-good records</li>
+  <li>Inactive flagging: suppliers marked inactive surface for manual review before payout</li>
+</ul>
+
+<h2>Modular by design</h2>
+<p>Each step is a standalone module. Skip any that do not apply. Add new steps without changing existing logic. The review package produced by one step feeds directly into the next.</p>
+
+<h2>Why it exists</h2>
+<p>Regulators and auditors care about traceability. Every decision the tool makes writes to an audit log with enough context to defend the call months later. Manual workflows cannot reliably produce that trail. The tool produces it automatically.</p>
+
+<details class="doc-block">
+  <summary>Full documentation (click to expand)</summary>
+  <div class="doc-body">
+    <p>The user manual covers: pipeline setup, per-step configuration, confidence threshold tuning, the review package format, the audit log schema, and how to plug in additional validation steps.</p>
+    <p>Read it here: <a href="/User_Manuals/WPR_User_Manual.html">WPR User Manual</a>.</p>
+  </div>
+</details>
+
+<div class="callout">
+  <h3>Need something similar?</h3>
+  <p>Multi-step validation patterns work for any data batch where rows need to clear sequential checks before downstream processing. Send a sample batch and the checks you run today.</p>
+  <a href="/#contact" class="btn btn-primary">Describe your problem</a>
+</div>
+
+<h2>Related services</h2>
+<p>Part of the <a href="/services/payment-validation/">payment validation service</a>. For name-matching workflows inside the pipeline see the <a href="/tools/vendor-deduplication/">Vendor Deduplication tool</a>.</p>
+
+</div>
+</div>
+</section>
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <img src="/logo_terminal.svg" alt="YTCodes" height="24" />
+    <span>&copy; 2026 YTCodes &middot; Data in. Signal out.</span>
+  </div>
+  <div class="footer-quote">
+    &ldquo;Music, movies, microcode, and high-speed pizza delivery.&rdquo;
+    <span class="footer-quote-attr">— what's left when everything else gets automated</span>
+  </div>
+</footer>
+
+<script>
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+if (hamburger && navLinks) {
+  hamburger.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+}
+</script>
+</body>
+</html>

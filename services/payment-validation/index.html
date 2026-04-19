@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Payment Validation in Excel | Wire Batch Checks | YTCodes</title>
+<meta name="description" content="Multi-step payment validation pipelines for wire batches, supplier registries, and account reconciliation. Full audit trail. Color-coded review output." />
+<link rel="canonical" href="https://ytcodes.dev/services/payment-validation/" />
+<link rel="icon" type="image/svg+xml" href="/logo_tag.svg" />
+<meta property="og:title" content="Payment Validation | YTCodes" />
+<meta property="og:description" content="Multi-step payment validation pipelines for wire batches, supplier registries, and account reconciliation." />
+<meta property="og:image" content="https://ytcodes.dev/cover.png" />
+<meta property="og:url" content="https://ytcodes.dev/services/payment-validation/" />
+<meta property="og:type" content="website" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": "Payment Validation",
+  "provider": {"@type": "ProfessionalService", "name": "YTCodes Automation", "url": "https://ytcodes.dev"},
+  "areaServed": [{"@type": "City", "name": "Salt Lake City"}, {"@type": "Country", "name": "United States"}],
+  "description": "Multi-step payment validation pipelines for wire batches, supplier registries, and account reconciliation."
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://ytcodes.dev/"},
+    {"@type": "ListItem", "position": 2, "name": "Services", "item": "https://ytcodes.dev/services/"},
+    {"@type": "ListItem", "position": 3, "name": "Payment Validation", "item": "https://ytcodes.dev/services/payment-validation/"}
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+
+<nav class="top" aria-label="Primary">
+  <div class="container">
+    <a href="/" class="brand">ytcodes<span class="dot">.</span>work</a>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span></button>
+    <div class="nav-links" id="navLinks">
+      <a href="/tools/">Tools</a>
+      <a href="/services/" class="active">Services</a>
+      <a href="/#process">Process</a>
+      <a href="/#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <nav class="breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a><span class="sep">/</span><a href="/services/">Services</a><span class="sep">/</span><span>Payment Validation</span>
+  </nav>
+</div>
+
+<header class="subhero">
+  <div class="container">
+    <span class="eyebrow">// Service</span>
+    <h1>Payment Validation</h1>
+    <p class="lede">Wire batches and payment runs need validation before processing. Account numbers verified against the registry. Payee names matched against the supplier master. Inactive suppliers flagged before payout goes out the door.</p>
+    <p class="lede">I build multi-step validation pipelines for these batches. Each step runs independently. Every decision gets logged. Analysts get a color-coded review package showing exactly what passed and what needs a human call.</p>
+    <div class="subhero-cta">
+      <a href="/#contact" class="btn btn-primary">Get a quote</a>
+    </div>
+  </div>
+</header>
+
+<main>
+<section>
+<div class="container">
+<div class="content-block">
+
+<h2>What you get</h2>
+<ul class="capabilities">
+  <li>Modular pipeline where each validation step is a standalone component</li>
+  <li>Registry rebuild logic that keeps the supplier master current from source exports</li>
+  <li>Name-matching step tuned for your payee naming conventions</li>
+  <li>Account verification against known-good bank record sets</li>
+  <li>Complete audit log with enough context to defend any decision months later</li>
+</ul>
+
+<h2>Built for auditability</h2>
+<p>Regulators and internal auditors care about traceability. Every pass-fail decision the pipeline makes writes to a structured log. Pulling the reasoning for any specific row is a filter operation, not a forensic exercise.</p>
+
+<h2>Reference tool</h2>
+<p>See the <a href="/tools/payment-validation/">Wire Payment Validation Tool</a> for a concrete example of the multi-step pipeline this service builds.</p>
+
+<h2>Pricing</h2>
+<p>Project-based pricing starting at $200. Scope and cost locked in writing before work begins. Validation pipelines typically ship in two to four weeks depending on the number of steps.</p>
+
+<div class="callout">
+  <h3>Ready to tighten the pipeline?</h3>
+  <p>Send a sample payment batch and describe the checks your team runs today. Quote comes back same day.</p>
+  <a href="/#contact" class="btn btn-primary">Describe your problem</a>
+</div>
+
+</div>
+</div>
+</section>
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <img src="/logo_terminal.svg" alt="YTCodes" height="24" />
+    <span>&copy; 2026 YTCodes &middot; Data in. Signal out.</span>
+  </div>
+  <div class="footer-quote">
+    &ldquo;Music, movies, microcode, and high-speed pizza delivery.&rdquo;
+    <span class="footer-quote-attr">— what's left when everything else gets automated</span>
+  </div>
+</footer>
+
+<script>
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('navLinks');
+if (hamburger && navLinks) {
+  hamburger.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+}
+</script>
+</body>
+</html>
